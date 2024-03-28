@@ -1,0 +1,24 @@
+{
+  "name": "sidehustler",
+  "version": "1.0.0",
+  "description": "CS 554 Final Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "seed": "node ./tasks/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bishawjitsaha/SideHustler.git"
+  },
+  "author": "Bishawjit Saha, Dev Patel, Mihir Savalia, Andrew Hing, Robertson Romero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bishawjitsaha/SideHustler/issues"
+  },
+  "homepage": "https://github.com/bishawjitsaha/SideHustler#readme",
+  "dependencies": {
+    "mongodb": "^6.5.0"
+  }
+}
