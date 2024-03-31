@@ -94,7 +94,7 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.pfp)
 		update.pfp = validate.validateString(updatedUser.pfp, "updatedUser");
 	if (updatedUser.posts) {
-		update.posts = validate.validateArray(updatedUser.posts, "updatedUser");
+		update.posts = validate.validatePosts(updatedUser.posts, "updatedUser");
 		// Check if the posts exist
 		const postCollection = await posts();
 		for (let i = 0; i < updatedUser.posts.length; i++) {
@@ -108,9 +108,9 @@ export async function updateUserById(id, updatedUser) {
 		}
 	}
 	if (updatedUser.bio)
-		update.bio = validate.validateString(updatedUser.bio, "updatedUser");
+		update.bio = validate.validateBio(updatedUser.bio, "updatedUser");
 	if (updatedUser.education)
-		update.education = validate.validateObject(
+		update.education = validate.validateEducation(
 			updatedUser.education,
 			"updatedUser"
 		);
