@@ -42,7 +42,7 @@ export async function createUser(userName, firstName, lastName, email, age) {
 			average: null,
 			total: 0,
 		},
-		unAvailable: [
+		reservedTime: [
 			{
 				dateStart: "",
 				timeStart: "",
@@ -74,36 +74,47 @@ export async function uploadPFP() {
 	//upload profile picture in mongodb
 }
 
+export async function updateRating(id, rating) {
+	id = validate.validateId(id);
+	if (!rating || typeof rating !== "number" || rating < 0 || rating > 5) {
+		throw `Invalid rating: ${rating}`;
+	}
+
+	// get current rating
+	const currUser = await getUserById(id);
+	const currRating = currUser.rating;
+	const totalRating = currRating.average * currRating.total + rating;
+	const total = currRating.total + 1;
+	const newRating = totalRating / total;
+	return await updateUserById(id, {
+		rating: { average: newRating, total: total },
+	});
+}
+
+export async function updateReservedTime(id, reservedTime) {
+	id = validate.validateId(id);
+	if (!Array.isArray(reservedTime)) reservedTime = [reservedTime];
+	reservedTime = validate.validatereservedTime(reservedTime);
+
+	return await updateUserById(id, { reservedTime: reservedTime });
+}
+
 export async function updateUserById(id, updatedUser) {
 	id = validate.validateId(id);
 	const currUser = getUserById(id);
 	const update = {};
 	if (updatedUser.username)
-		update.username = validate.validateUsername(
-			updatedUser.username,
-			"updatedUser"
-		);
+		update.username = validate.validateUsername(updatedUser.username);
 	if (updatedUser.firstName)
-		update.firstName = validate.validateString(
-			updatedUser.firstName,
-			"updatedUser"
-		);
+		update.firstName = validate.validateString(updatedUser.firstName);
 	if (updatedUser.lastName)
-		update.lastName = validate.validateString(
-			updatedUser.lastName,
-			"updatedUser"
-		);
+		update.lastName = validate.validateString(updatedUser.lastName);
 	if (updatedUser.email)
-		update.email = validate.validateEmail(updatedUser.email, "updatedUser");
-	if (updatedUser.age)
-		update.age = validate.validateAge(updatedUser.age, "updatedUser");
-	if (updatedUser.pfp)
-		update.pfp = validate.validateString(updatedUser.pfp, "updatedUser");
+		update.email = validate.validateEmail(updatedUser.email);
+	if (updatedUser.age) update.age = validate.validateAge(updatedUser.age);
+	// update pfp using uploadPFP function
 	if (updatedUser.posts) {
-		const newPosts = validate.validatePosts(
-			updatedUser.posts,
-			"updatedUser"
-		);
+		const newPosts = validate.validatePosts(updatedUser.posts);
 		// Check if the posts exist Must update post collection before user
 		const postCollection = await posts();
 		for (let i = 0; i < updatedUser.posts.length; i++) {
@@ -118,39 +129,30 @@ export async function updateUserById(id, updatedUser) {
 		const currPosts = currUser.posts;
 		update.posts = currPosts.concat(newPosts);
 	}
-	if (updatedUser.bio)
-		update.bio = validate.validateBio(updatedUser.bio, "updatedUser");
+	if (updatedUser.bio) update.bio = validate.validateBio(updatedUser.bio);
 	if (updatedUser.education)
-		update.education = validate.validateEducation(
-			updatedUser.education,
-			"updatedUser"
-		);
+		update.education = validate.validateEducation(updatedUser.education);
 	if (updatedUser.experience) {
 		const newExperience = validate.validateExperience(
-			updatedUser.experience,
-			"updatedUser"
+			updatedUser.experience
 		);
 		const currExperience = currUser.experience;
 		update.experience = currExperience.concat(newExperience);
 	}
 	if (updatedUser.skills) {
-		const newSkills = validate.validateSkills(
-			updatedUser.skills,
-			"updatedUser"
-		);
+		const newSkills = validate.validateSkills(updatedUser.skills);
 		const currSkills = currUser.skills;
 		update.skills = currSkills.concat(newSkills);
 	}
 	if (updatedUser.rating)
-		update.rating = validate.validateRating(
-			updatedUser.rating,
-			"updatedUser"
+		update.rating = validate.validateRating(updatedUser.rating);
+	if (updatedUser.reservedTime) {
+		const newReservedTime = validate.validatereservedTime(
+			updatedUser.reservedTime
 		);
-	if (updatedUser.unAvailable)
-		update.unAvailable = validate.validateUnavailable(
-			updatedUser.unAvailable,
-			"updatedUser"
-		);
+		const currReservedTime = currUser.reservedTime;
+		update.reservedTime = currReservedTime.concat(newReservedTime);
+	}
 
 	const userCollection = await users();
 	const updatedInfo = await userCollection.findOneAndUpdate(
