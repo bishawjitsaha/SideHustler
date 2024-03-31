@@ -173,3 +173,36 @@ export const validateRating = (rating) => {
     }
     return rating;
 }
+
+export const validateUnAvailable = (arr) => {
+    if (!arr || !Array.isArray(arr)) {
+        throw `Invalid array: ${arr}`;
+    }
+    for (let i = 0; i < arr.length; i++) {
+        if (typeof arr[i] !== "object") throw `Invalid object: ${arr[i]}`;
+        if (!arr[i].dateStart || typeof arr[i].dateStart !== "string" || arr[i].dateStart.trim().length === 0) {
+            throw `Invalid string: ${arr[i].dateStart}`;
+        }
+        arr[i].dateStart.trim();
+        arr[i].dateStart = checkDate(arr[i].dateStart);
+        if (!arr[i].timeStart || typeof arr[i].timeStart !== "string" || arr[i].timeStart.trim().length === 0) {
+            throw `Invalid string: ${arr[i].timeStart}`;
+        }
+        arr[i].timeStart.trim();
+        const timeRegex = /^([0-5][0-9]|59):[0-5][0-9]$/;
+        if(!timeRegex.test(arr[i].timeStart)) throw 'Event time must be a valid time in the format HH:MM';
+
+        if (!arr[i].timeEnd || typeof arr[i].timeEnd !== "string" || arr[i].timeEnd.trim().length === 0) {
+            throw `Invalid string: ${arr[i].timeEnd}`;
+        }
+        arr[i].timeEnd.trim();
+        if(!timeRegex.test(arr[i].timeEnd)) throw 'Event time must be a valid time in the format HH:MM';
+        
+        if (!arr[i].dateEnd || typeof arr[i].dateEnd !== "string" || arr[i].dateEnd.trim().length === 0) {
+            throw `Invalid string: ${arr[i].dateEnd}`;
+        }
+        arr[i].dateEnd.trim();
+        arr[i].dateEnd = checkDate(arr[i].dateEnd);
+    }
+    return arr;
+}

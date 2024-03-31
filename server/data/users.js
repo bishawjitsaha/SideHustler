@@ -42,12 +42,12 @@ export async function createUser(userName, firstName, lastName, email, age) {
 			average: null,
 			total: 0,
 		},
-		unAvailable: {
+		unAvailable: [{
 			dateStart: "",
 			timeStart: "",
 			timeEnd: "",
 			dateEnd: "",
-		},
+		}],
 	};
 
 	const insertInfo = await userCollection.insertOne(newUser);
@@ -145,7 +145,7 @@ export async function updateUserById(id, updatedUser) {
 			"updatedUser"
 		);
 	if (updatedUser.unAvailable)
-		update.unAvailable = validate.validateObject(
+		update.unAvailable = validate.validateUnavailable(
 			updatedUser.unAvailable,
 			"updatedUser"
 		);
