@@ -39,7 +39,7 @@ export async function createUser(userName, firstName, lastName, email, age) {
 			},
 		],
 		rating: {
-			average: 0,
+			average: null,
 			total: 0,
 		},
 		unAvailable: {
