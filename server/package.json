@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CS 554 Final Project",
   "main": "app.js",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/bishawjitsaha/SideHustler#readme",
   "dependencies": {
+    "express": "^4.19.2",
     "mongodb": "^6.5.0"
   }
 }
