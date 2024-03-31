@@ -1,9 +1,9 @@
 import { users, posts } from "../config/mongoCollections.js";
 import { ReturnDocument } from "mongodb";
-import * as validate from "../validation/userValidation.js";
+import * as validate from "../helpers.js";
 
 export async function createUser(userName, firstName, lastName, email, age) {
-	userName = validate.validateString(userName, "userName");
+	userName = validate.validateUsername(userName, "userName");
 	firstName = validate.validateString(firstName, "firstName");
 	lastName = validate.validateString(lastName, "lastName");
 	email = validate.validateEmail(email);
@@ -73,7 +73,7 @@ export async function updateUserById(id, updatedUser) {
 	id = validate.validateId(id);
 	const update = {};
 	if (updatedUser.username)
-		update.username = validate.validateString(
+		update.username = validate.validateUsername(
 			updatedUser.username,
 			"updatedUser"
 		);
