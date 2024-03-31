@@ -160,3 +160,16 @@ export const validateExperience = (arr) => {
     }
     return arr;
 }
+
+export const validateRating = (rating) => {
+    if (!rating || typeof rating !== "object") {
+        throw `Invalid rating: ${rating}`;
+    }
+    if (!rating.average || typeof rating.average !== "number" || rating.average < 0 || rating.average > 5) {
+        throw `Invalid number: ${rating.average}`;
+    }
+    if (!rating.total || typeof rating.total !== "number" || rating.total < 0 || rating.total > 5) {
+        throw `Invalid number: ${rating.count}`;
+    }
+    return rating;
+}

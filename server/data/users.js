@@ -38,7 +38,10 @@ export async function createUser(userName, firstName, lastName, email, age) {
 				description: "",
 			},
 		],
-		reviews: null,
+		rating: {
+			average: 0,
+			total: 0,
+		},
 		unAvailable: {
 			dateStart: "",
 			timeStart: "",
@@ -95,7 +98,7 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.pfp)
 		update.pfp = validate.validateString(updatedUser.pfp, "updatedUser");
 	if (updatedUser.posts) {
-		const newPosts = validate.validateArray(
+		const newPosts = validate.validatePosts(
 			updatedUser.posts,
 			"updatedUser"
 		);
@@ -121,7 +124,7 @@ export async function updateUserById(id, updatedUser) {
 			"updatedUser"
 		);
 	if (updatedUser.experience) {
-		const newExperience = validate.validateArray(
+		const newExperience = validate.validateExperience(
 			updatedUser.experience,
 			"updatedUser"
 		);
@@ -129,16 +132,16 @@ export async function updateUserById(id, updatedUser) {
 		update.experience = currExperience.concat(newExperience);
 	}
 	if (updatedUser.skills) {
-		const newSkills = validate.validateArray(
+		const newSkills = validate.validateSkills(
 			updatedUser.skills,
 			"updatedUser"
 		);
 		const currSkills = currUser.skills;
 		update.skills = currSkills.concat(newSkills);
 	}
-	if (updatedUser.reviews)
-		update.reviews = validate.validateArray(
-			updatedUser.reviews,
+	if (updatedUser.rating)
+		update.rating = validate.validateRating(
+			updatedUser.rating,
 			"updatedUser"
 		);
 	if (updatedUser.unAvailable)
