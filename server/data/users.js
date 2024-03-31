@@ -71,6 +71,7 @@ export async function uploadPFP() {
 
 export async function updateUserById(id, updatedUser) {
 	id = validate.validateId(id);
+	const currUser = getUserById(id);
 	const update = {};
 	if (updatedUser.username)
 		update.username = validate.validateUsername(
@@ -94,8 +95,11 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.pfp)
 		update.pfp = validate.validateString(updatedUser.pfp, "updatedUser");
 	if (updatedUser.posts) {
-		update.posts = validate.validatePosts(updatedUser.posts, "updatedUser");
-		// Check if the posts exist
+		const newPosts = validate.validateArray(
+			updatedUser.posts,
+			"updatedUser"
+		);
+		// Check if the posts exist Must update post collection before user
 		const postCollection = await posts();
 		for (let i = 0; i < updatedUser.posts.length; i++) {
 			const post = await postCollection.findOne({
@@ -106,6 +110,8 @@ export async function updateUserById(id, updatedUser) {
 					"Post with id " + updatedUser.posts[i] + " does not exist"
 				);
 		}
+		const currPosts = currUser.posts;
+		update.posts = currPosts.concat(newPosts);
 	}
 	if (updatedUser.bio)
 		update.bio = validate.validateBio(updatedUser.bio, "updatedUser");
@@ -114,16 +120,22 @@ export async function updateUserById(id, updatedUser) {
 			updatedUser.education,
 			"updatedUser"
 		);
-	if (updatedUser.experience)
-		update.experience = validate.validateArray(
+	if (updatedUser.experience) {
+		const newExperience = validate.validateArray(
 			updatedUser.experience,
 			"updatedUser"
 		);
-	if (updatedUser.skills)
-		update.skills = validate.validateArray(
+		const currExperience = currUser.experience;
+		update.experience = currExperience.concat(newExperience);
+	}
+	if (updatedUser.skills) {
+		const newSkills = validate.validateArray(
 			updatedUser.skills,
 			"updatedUser"
 		);
+		const currSkills = currUser.skills;
+		update.skills = currSkills.concat(newSkills);
+	}
 	if (updatedUser.reviews)
 		update.reviews = validate.validateArray(
 			updatedUser.reviews,
