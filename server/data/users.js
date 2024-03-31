@@ -42,12 +42,14 @@ export async function createUser(userName, firstName, lastName, email, age) {
 			average: null,
 			total: 0,
 		},
-		unAvailable: {
-			dateStart: "",
-			timeStart: "",
-			timeEnd: "",
-			dateEnd: "",
-		},
+		unAvailable: [
+			{
+				dateStart: "",
+				timeStart: "",
+				timeEnd: "",
+				dateEnd: "",
+			},
+		],
 	};
 
 	const insertInfo = await userCollection.insertOne(newUser);
