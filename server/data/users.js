@@ -38,7 +38,10 @@ export async function createUser(userName, firstName, lastName, email, age) {
 				description: "",
 			},
 		],
-		reviews: null,
+		rating: {
+			average: null,
+			total: 0,
+		},
 		unAvailable: {
 			dateStart: "",
 			timeStart: "",
