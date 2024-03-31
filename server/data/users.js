@@ -3,7 +3,7 @@ import { ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 
 export async function createUser(userName, firstName, lastName, email, age) {
-	userName = validate.validateString(userName, "userName");
+	userName = validate.validateUsername(userName, "userName");
 	firstName = validate.validateString(firstName, "firstName");
 	lastName = validate.validateString(lastName, "lastName");
 	email = validate.validateEmail(email);
@@ -79,7 +79,7 @@ export async function updateUserById(id, updatedUser) {
 	const currUser = getUserById(id);
 	const update = {};
 	if (updatedUser.username)
-		update.username = validate.validateString(
+		update.username = validate.validateUsername(
 			updatedUser.username,
 			"updatedUser"
 		);
@@ -100,7 +100,7 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.pfp)
 		update.pfp = validate.validateString(updatedUser.pfp, "updatedUser");
 	if (updatedUser.posts) {
-		const newPosts = validate.validateArray(
+		const newPosts = validate.validatePosts(
 			updatedUser.posts,
 			"updatedUser"
 		);
@@ -119,14 +119,14 @@ export async function updateUserById(id, updatedUser) {
 		update.posts = currPosts.concat(newPosts);
 	}
 	if (updatedUser.bio)
-		update.bio = validate.validateString(updatedUser.bio, "updatedUser");
+		update.bio = validate.validateBio(updatedUser.bio, "updatedUser");
 	if (updatedUser.education)
-		update.education = validate.validateObject(
+		update.education = validate.validateEducation(
 			updatedUser.education,
 			"updatedUser"
 		);
 	if (updatedUser.experience) {
-		const newExperience = validate.validateArray(
+		const newExperience = validate.validateExperience(
 			updatedUser.experience,
 			"updatedUser"
 		);
@@ -134,20 +134,20 @@ export async function updateUserById(id, updatedUser) {
 		update.experience = currExperience.concat(newExperience);
 	}
 	if (updatedUser.skills) {
-		const newSkills = validate.validateArray(
+		const newSkills = validate.validateSkills(
 			updatedUser.skills,
 			"updatedUser"
 		);
 		const currSkills = currUser.skills;
 		update.skills = currSkills.concat(newSkills);
 	}
-	if (updatedUser.reviews)
-		update.reviews = validate.validateArray(
-			updatedUser.reviews,
+	if (updatedUser.rating)
+		update.rating = validate.validateRating(
+			updatedUser.rating,
 			"updatedUser"
 		);
 	if (updatedUser.unAvailable)
-		update.unAvailable = validate.validateObject(
+		update.unAvailable = validate.validateUnavailable(
 			updatedUser.unAvailable,
 			"updatedUser"
 		);
