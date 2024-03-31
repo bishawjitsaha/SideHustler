@@ -1,6 +1,6 @@
 import { users, posts } from "../config/mongoCollections.js";
 import { ReturnDocument } from "mongodb";
-import * as validate from "../helpers.js";
+import * as validate from "../validation/userValidation.js";
 
 export async function createUser(userName, firstName, lastName, email, age) {
 	userName = validate.validateUsername(userName, "userName");
