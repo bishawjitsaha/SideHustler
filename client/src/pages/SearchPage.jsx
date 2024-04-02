@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import SearchBar from "./SearchBar";
-import SearchPostFilters from "./SearchPostsFilters";
-import SearchResult from "./SearchResult";
+import SearchBar from "../components/SearchBar";
+import SearchPostFilters from "../components/SearchPostsFilters";
+import SearchResult from "../components/SearchResult";
 
 const SearchPage = () => {
   const [searchResults, setSearchResults] = useState([]);
