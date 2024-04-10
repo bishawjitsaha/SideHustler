@@ -1,8 +1,8 @@
 import express from 'express';
 const router = express.Router();
 
-router.get('/home', (req, res) => {
-  res.send('Homepage');
+router.get('/', (req, res) => {
+  res.json('Homepage');
 });
 
 export default router;
