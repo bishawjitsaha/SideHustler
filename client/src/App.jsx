@@ -7,12 +7,15 @@ function App() {
 
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold underline">
-          SideHustler
-        </h1>
-        <SearchPage />
-      </div>
+      <Router>
+        <div>
+          <Routes>
+            <Route path='/' element={<h1> Home page </h1>}></Route>
+            <Route path='/profile' element={<ProfilePage/>}></Route>
+            <Route path='/search' element={<SearchPage/>}></Route>
+          </Routes>
+        </div>
+      </Router>
     </>
   )
 }
