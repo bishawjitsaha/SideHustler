@@ -18,12 +18,14 @@ export async function createUser(userName, firstName, lastName, email, age) {
 		pfp: "",
 		posts: [],
 		bio: "",
-		education: {
+		education: [
+			{
 			school: "",
 			degree: "",
 			major: "",
 			gradYear: "",
-		},
+			}
+		],
 		experience: [
 			{
 				company: "",

@@ -99,7 +99,7 @@ export const validateSkills = (arr) => {
         if (!arr[i].name || typeof arr[i].name !== "string" || arr[i].name.trim().length === 0) {
             throw `Invalid string: ${arr[i].name}`;
         }
-        arr[i] = arr[i].trim();
+        arr[i].name = arr[i].name.trim();
         if (!arr[i].description || typeof arr[i].description !== "string" || arr[i].description.trim().length === 0) {
             throw `Invalid string: ${arr[i].description}`;
         }
@@ -120,15 +120,15 @@ export const checkDate = (date) => {
 
     const monthDays = {1 : 31, 2: 28, 3 : 31, 4 : 30, 5 : 31, 6 : 30, 7 : 31, 8 : 31, 9 : 30, 10 : 31, 11 : 30, 12 : 31}
     const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-    if(!dateRegex.test(date)) throw 'Event date must be a valid date in the format MM/DD/YYYY 1';
+    if(!dateRegex.test(date)) throw 'Date must be a valid date in the format MM/DD/YYYY';
     const dateParts = date.split('/');
     const month = parseInt(dateParts[0]);
     const day = parseInt(dateParts[1]);
-    if(day > monthDays[month] || day < 1) throw 'Event date must be a valid date in the format MM/DD/YYYY 2';
+    if(day > monthDays[month] || day < 1) throw 'Day must be a valid day';
 
     const currentDate = new Date();
     const eventDateObj = new Date(date);
-    if(currentDate > eventDateObj) throw 'Event date must be a valid date in the format MM/DD/YYYY 3';
+    if(currentDate > eventDateObj) throw 'Date must be in the future';
 
     return date;
 }
@@ -168,8 +168,8 @@ export const validateRating = (rating) => {
     if (!rating.average || typeof rating.average !== "number" || rating.average < 0 || rating.average > 5) {
         throw `Invalid number: ${rating.average}`;
     }
-    if (!rating.total || typeof rating.total !== "number" || rating.total < 0 || rating.total > 5) {
-        throw `Invalid number: ${rating.count}`;
+    if (!rating.total || typeof rating.total !== "number" || rating.total < 0) {
+        throw `Invalid number: ${rating.total}`;
     }
     return rating;
 }

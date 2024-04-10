@@ -1,5 +1,7 @@
 import './App.css'
 import SearchPage from './components/SearchPage'
+import ProfilePage from './components/ProfilePage';
+import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
 
 function App() {
 
