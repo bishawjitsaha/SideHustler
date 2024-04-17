@@ -1,5 +1,5 @@
 import { users, posts } from "../config/mongoCollections.js";
-import { ReturnDocument } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 
 export async function createUser(userName, firstName, lastName, email, age) {
@@ -62,11 +62,10 @@ export async function createUser(userName, firstName, lastName, email, age) {
 
 export async function getUserById(id) {
 	id = validate.validateId(id);
-
 	const userCollection = await users();
-	const user = await userCollection.findOne({ _id: id });
+	const user = await userCollection.findOne({ _id: new ObjectId(id) });
 	if (user === null) throw "No user with that id";
-
+	user._id = user._id.toString();
 	return user;
 }
 

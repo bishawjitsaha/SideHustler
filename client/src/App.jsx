@@ -1,13 +1,15 @@
 import './App.css'
-import SearchPage from './components/SearchPage'
-import ProfilePage from './components/ProfilePage';
+import ProfilePage from './pages/ProfilePage';
+import SearchPage from './pages/SearchPage';
 import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
 
   return (
     <>
       <Router>
+        {/* <AuthProvider> */}
         <div>
           <Routes>
             <Route path='/' element={<h1> Home page </h1>}></Route>
@@ -15,6 +17,7 @@ function App() {
             <Route path='/search' element={<SearchPage/>}></Route>
           </Routes>
         </div>
+        {/* </AuthProvider> */}
       </Router>
     </>
   )
