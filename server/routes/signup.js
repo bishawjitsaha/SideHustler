@@ -14,10 +14,6 @@ router
       console.log(e);
       res.status(404).json({ error: e });
     }
-    
-
-
-
   })
 
 
