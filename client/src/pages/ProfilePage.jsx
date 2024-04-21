@@ -1,5 +1,4 @@
 import {React, useState, useEffect} from 'react'
-import { useParams } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import axios from 'axios'
 
@@ -13,9 +12,8 @@ function ProfilePage() {
             setUser(res.data);
         }
         catch (e) {
-            console.log(e);
+            console.error(e);
         }
-        
     }
 
     useEffect(() => {
@@ -24,48 +22,58 @@ function ProfilePage() {
     
 
   return (
-    <div>
+    <div className='flex justify-center'>
         {user && (
             <div>
-                <h1>{user.firstName} {user.lastName}</h1>
-                <p>{user.email}</p>
-                <p>{user.bio}</p>
-                <p>{user.education.school}</p>
-                <p>{user.education.degree}</p>
-                <p>{user.education.major}</p>
-                <p>{user.education.gradYear}</p>
-                <ul>
-                    {user.experience.map((exp) => (
-                        <li>
-                            <p>{exp.company}</p>
-                            <p>{exp.position}</p>
-                            <p>{exp.startDate}</p>
-                            <p>{exp.endDate}</p>
-                        </li>
-                    ))}
-                </ul>
-                <ul>
-                    {user.skills.map((skill) => (
-                        <li>
-                            <p>{skill.name}</p>
-                            <p>{skill.description}</p>
-                        </li>
-                    ))}
-                </ul>
-                <p>{user.rating.average}</p>
-                <p>{user.rating.total}</p>
-                <ul>
-                    {user.reservedTime.map((time) => (
-                        <li>
-                            <p>{time.dateStart}</p>
-                            <p>{time.timeStart}</p>
-                            <p>{time.timeEnd}</p>
-                            <p>{time.dateEnd}</p>
-                        </li>
-                    ))}
-                </ul>
+                <h1 className='font-bold'>{user.firstName} {user.lastName}</h1>
+                <p>Contact: {user.email}</p>
+                <div className='grid grid-cols-2 gap-4'>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Bio</h2>
+                        <p>{user.bio}</p>
+                    </div>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Education</h2>
+                        <p>{user.education.school}</p>
+                        <p>{user.education.degree} in {user.education.major}</p>
+                        <p>Graduated in {user.education.gradYear}</p>
+                    </div>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Experience</h2>
+                        {user.experience.map((exp, index) => (
+                            <div key={index} className='mb-2'>
+                                <p>{exp.company}</p>
+                                <p>{exp.position}</p>
+                                <p>{exp.startDate} - {exp.endDate}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Skills</h2>
+                        {user.skills.map((skill, index) => (
+                            <div key={index} className='mb-2'>
+                                <p className='text-left'>{skill.name}</p>
+                                <p className='text-left ml-5'>{skill.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Rating</h2>
+                        <p>Average: {user.rating.average}</p>
+                        <p>Total: {user.rating.total}</p>
+                    </div>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
+                        {user.reservedTime.map((time, index) => (
+                            <div key={index} className='mb-2'>
+                                <p>{time.dateStart} - {time.dateEnd}</p>
+                                <p>{time.timeStart} - {time.timeEnd}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-        )}
+            )}
     </div>
   )
 }
