@@ -17,6 +17,14 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+.navlink {
+  padding: 10px;
+  background-color: white;
+  border-radius: 3px;
+  /* color: maroon; */
+  text-decoration: none !important;
+  margin-right: 20px;
+}
 
 @keyframes logo-spin {
   from {

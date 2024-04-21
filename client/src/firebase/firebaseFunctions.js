@@ -20,7 +20,8 @@ export async function doCreateUserWithEmailAndPassword(
   const auth = getAuth();
   await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(auth.currentUser, { displayName: displayName });
-  return auth.currentUser;
+  const idToken = await auth.currentUser.getIdToken();
+  return { user: auth.currentUser, idToken: idToken };
 }
 
 export async function doChangePassword(email, oldPassword, newPassword) {
@@ -43,6 +44,7 @@ export async function doSocialSignIn() {
     let auth = getAuth();
     let socialProvider = new GoogleAuthProvider();
     let result = await signInWithPopup(auth, socialProvider);
+    console.log(result);
     return result;
   } catch (error) {
     console.error("error:", error);
