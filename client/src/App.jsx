@@ -13,7 +13,6 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <Router>
           <div>
             <header className="bg-red-500 text-white p-4">
               <h1 className="text-3xl font-bold underline">SideHustler</h1>
@@ -49,7 +48,6 @@ function App() {
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>
-        </Router>
       </AuthProvider>
     </>
   );
