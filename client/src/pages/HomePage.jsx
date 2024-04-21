@@ -1,7 +1,14 @@
-import React from 'react'
+import React from "react";
 
-export default function HomePage() {
+function HomePage() {
   return (
-    <div>Welcome to the HomePage!</div>
-  )
+    <div>
+      <h1 className="text-3xl font-bold underline">SideHustler</h1>
+      <p className="text-lg font-semibold">
+        A database of side hustles - built by hustlers
+      </p>
+    </div>
+  );
 }
+
+export default HomePage;
