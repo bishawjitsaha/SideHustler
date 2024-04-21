@@ -20,7 +20,8 @@ function App() {
                 A database of side hustles - built by hustlers
               </p>
 
-              <nav className="flex justify-center space-x-4">
+              <Navigation/>
+              {/* <nav className="flex justify-center space-x-4">
                 <NavLink to="/" className="text-blue-700 hover:text-blue-800">
                   Home
                 </NavLink>
@@ -36,7 +37,7 @@ function App() {
                 >
                   Posts
                 </NavLink>
-              </nav>
+              </nav> */}
             </header>
             <Routes>
               <Route path="/" element={<HomePage />} />
