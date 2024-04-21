@@ -13,7 +13,6 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <Router>
           <div>
             <header className="bg-red-500 text-white p-4">
               <h1 className="text-3xl font-bold underline">SideHustler</h1>
@@ -21,7 +20,8 @@ function App() {
                 A database of side hustles - built by hustlers
               </p>
 
-              <nav className="flex justify-center space-x-4">
+              <Navigation/>
+              {/* <nav className="flex justify-center space-x-4">
                 <NavLink to="/" className="text-blue-700 hover:text-blue-800">
                   Home
                 </NavLink>
@@ -37,7 +37,7 @@ function App() {
                 >
                   Posts
                 </NavLink>
-              </nav>
+              </nav> */}
             </header>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -50,7 +50,6 @@ function App() {
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>
-        </Router>
       </AuthProvider>
     </>
   );
