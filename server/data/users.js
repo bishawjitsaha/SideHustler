@@ -2,8 +2,8 @@ import { users, posts } from "../config/mongoCollections.js";
 import { ObjectId, ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 
-export async function createUser(userName, firstName, lastName, email, age) {
-	userName = validate.validateUsername(userName, "userName");
+export async function createUser(id,userName, firstName, lastName, email, age) {
+	userName = validate.validateString(userName, "userName");
 	firstName = validate.validateString(firstName, "firstName");
 	lastName = validate.validateString(lastName, "lastName");
 	email = validate.validateEmail(email);
@@ -11,6 +11,8 @@ export async function createUser(userName, firstName, lastName, email, age) {
 
 	const userCollection = await users();
 	const newUser = {
+		_id : id,
+		userName: userName,
 		firstName: firstName,
 		lastName: lastName,
 		email: email,
