@@ -20,37 +20,47 @@ export async function createUser(userName, firstName, lastName, email, age) {
 		posts: [],
 		bio: "",
 		education: {
-			school: "",
-			degree: "",
-			major: "",
-			gradYear: "",
+			// school: "",
+			// degree: "",
+			// major: "",
+			// gradYear: "",
+			school: null,
+			degree: null,
+			major: null,
+			gradYear: null,
 		},
 		experience: [
-			{
-				company: "",
-				position: "",
-				startDate: "",
-				endDate: "",
-			},
+			// {
+			// 	company: "",
+			// 	position: "",
+			// 	startDate: "",
+			// 	endDate: "",
+			// },
 		],
 		skills: [
-			{
-				name: "",
-				description: "",
-			},
+			// {
+			// 	name: "",
+			// 	description: "",
+			// },
 		],
 		rating: {
 			average: null,
 			total: 0,
 		},
 		reservedTime: [
-			{
-				dateStart: "",
-				timeStart: "",
-				timeEnd: "",
-				dateEnd: "",
-			},
+			// {
+				// dateStart: "",
+			// 	timeStart: "",
+			// 	timeEnd: "",
+			// 	dateEnd: "",
+			// },
 		],
+        applications: [
+            // {
+            //     postId: "",
+            //     status: "",
+            // }
+        ]
 	};
 
 	const insertInfo = await userCollection.insertOne(newUser);
@@ -86,8 +96,8 @@ export async function updateRating(id, rating) {
 	const currRating = currUser.rating;
 	const totalRating = currRating.average * currRating.total + rating;
 	const total = currRating.total + 1;
-	const newRating = totalRating / total;
-	return await updateUserById(id, {
+	const newRating = Math.round((totalRating / total) * 100) / 100;
+    return await updateUserById(id, {
 		rating: { average: newRating, total: total },
 	});
 }
@@ -102,7 +112,7 @@ export async function updateReservedTime(id, reservedTime) {
 
 export async function updateUserById(id, updatedUser) {
 	id = validate.validateId(id);
-	const currUser = getUserById(id);
+	const currUser = await getUserById(id);
 	const update = {};
 	if (updatedUser.username)
 		update.username = validate.validateUsername(updatedUser.username);
@@ -154,14 +164,19 @@ export async function updateUserById(id, updatedUser) {
 		const currReservedTime = currUser.reservedTime;
 		update.reservedTime = currReservedTime.concat(newReservedTime);
 	}
+    if(updatedUser.applications){
+        const newApplications = validate.validateApplications(updatedUser.applications);
+        const currApplications = currUser.applications;
+        update.applications = currApplications.concat(newApplications);
+    }
 
 	const userCollection = await users();
 	const updatedInfo = await userCollection.findOneAndUpdate(
 		{ _id: new ObjectId(id) },
 		{ $set: update },
-		{ returnDocument: ReturnDocument.After }
+		{ returnDocument: "after" }
 	);
-	if (!updatedInfo.value) throw "Could not update user " + id;
-
-	return updatedInfo.value;
+	if (!updatedInfo) throw "Could not update user " + id;
+    updatedInfo._id = updatedInfo._id.toString();
+	return updatedInfo;
 }

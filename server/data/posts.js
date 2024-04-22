@@ -115,13 +115,15 @@ export const addApplicant = async (postId, applicantId) => {
 
     if (!updatedPost) throw "Failed to update post";
 
-    // let updatedUser = await userCollection.findOneAndUpdate(
-    //     { _id: new ObjectId(applicantId) },
-    //     { $push: {applications: postId} },
-    //     { returnDocument: "after" }
-    // );
+    const userCollection = await users();
+    let updatedUser = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(applicantId) },
+        { $push: {applications: [{postId: postId, status: "pending"}]} },
+        { returnDocument: "after" }
+    );
 
-    // if (!updatedUser) throw "Failed to update user";
+    if (!updatedUser) throw "Failed to update user";
+
     updatedPost._id = updatedPost._id.toString();
     return updatedPost;
 }
@@ -147,13 +149,13 @@ export const removeApplicant = async (postId, applicantId) => {
     if (!updatedPost) throw "Failed to update post";
     updatedPost._id = updatedPost._id.toString();
 
-    // let updatedUser = await userCollection.findOneAndUpdate(
-    //     { _id: new ObjectId(applicantId) },
-    //     { $pull: {applications: postId} },
-    //     { returnDocument: "after" }
-    // );
+    let updatedUser = await userCollection.findOneAndUpdate(
+        { _id: new ObjectId(applicantId) },
+        { $pull: {applications: {postId: postId}} },
+        { returnDocument: "after" }
+    );
 
-    // if (!updatedUser) throw "Failed to update user";
+    if (!updatedUser) throw "Failed to update user";
     
     return updatedPost;
 }
@@ -173,12 +175,22 @@ export const deletePostById = async (postId, currentUserId) => {
 
     if(post.posterId !== user._id) throw "User does not own this post";
 
-     let updateUser = await userCollection.findOneAndUpdate(
+    for (let i = 0; i < post.applicants.length; i++) {
+       let updatedApp = await userCollection.findOneAndUpdate(
+           { _id: new ObjectId(post.applicants[i]) },
+           { $pull: { applications: { postId: post._id } } },
+           { returnDocument: "after" }
+       );
+       if (!updatedApp) throw "Failed to update User applications";
+    }
+    
+    let updateUser = await userCollection.findOneAndUpdate(
          //removes post from posts[] of that user
          { _id: new ObjectId(user._id) },
          { $pull: { posts: post._id }},
          { returnDocument: "after" }
      );
+
 
      if (!updateUser) throw "Failed to update User";
 
