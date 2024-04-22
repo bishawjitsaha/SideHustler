@@ -3,8 +3,8 @@ import { ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 import { ObjectId } from "mongodb";
 
-export async function createUser(userName, firstName, lastName, email, age) {
-	userName = validate.validateUsername(userName, "userName");
+export async function createUser(id, userName, firstName, lastName, email, age) {
+	userName = validate.validateString(userName, "userName");
 	firstName = validate.validateString(firstName, "firstName");
 	lastName = validate.validateString(lastName, "lastName");
 	email = validate.validateEmail(email);
@@ -12,6 +12,8 @@ export async function createUser(userName, firstName, lastName, email, age) {
 
 	const userCollection = await users();
 	const newUser = {
+		_id : id,
+		userName: userName,
 		firstName: firstName,
 		lastName: lastName,
 		email: email,
@@ -75,7 +77,8 @@ export async function getUserById(id) {
 	id = validate.validateId(id);
 
 	const userCollection = await users();
-	const user = await userCollection.findOne({ _id: new ObjectId(id) });
+	const user = await userCollection.findOne({ _id: id });
+	// const user = await userCollection.findOne({ _id: new ObjectId(id) });
 	if (user === null) throw "No user with that id";
     user._id = user._id.toString();
 	return user;
@@ -172,7 +175,8 @@ export async function updateUserById(id, updatedUser) {
 
 	const userCollection = await users();
 	const updatedInfo = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
+		// { _id: new ObjectId(id) },
+		{ _id: id},
 		{ $set: update },
 		{ returnDocument: "after" }
 	);

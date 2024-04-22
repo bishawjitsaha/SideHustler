@@ -21,79 +21,38 @@ export const validateTaskTime = (taskTime) => {
     if (!taskTime) throw "Task time must be provided";
     if (typeof taskTime !== "object") throw "Task time must be an object";
     if (!taskTime.dateStart) throw "Task start date must be provided";
-    // if (!(taskTime.dateStart instanceof Date))throw "Task start date must be a Date object";
     if (!taskTime.dateEnd) throw "Task end date must be provided";
-    // if (!(taskTime.dateEnd instanceof Date)) throw "Task end date must be a Date object";
 
-    console.log("Start: ", taskTime.dateStart, moment(taskTime.dateStart, 'MM/DD/YYYY', true).isValid());
-    console.log("Start Time", taskTime.timeStart, moment(taskTime.timeStart, 'HH:mm', true).isValid());
-    console.log("End: ", taskTime.dateEnd, moment(taskTime.dateEnd, 'MM/DD/YYYY', true).isValid());
-    console.log("End Time", taskTime.timeEnd, '\n');
-
-
-    let REdate = /(^[0-9]{2}\/[0-9]{2}\/[0-9]{4})/g;
-    if (!REdate.test(taskTime.dateStart)) throw "Invalid Start Date, must be in MM/DD/YYYY format";
-    let REdate2 = /(^[0-9]{2}\/[0-9]{2}\/[0-9]{4})/g;
-    if (!REdate2.test(taskTime.dateEnd)) throw "Invalid End Date, must be in MM/DD/YYYY format";
-
-    let daysPerMonth = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    let StYear = parseInt(taskTime.dateStart.split("/")[2]);
-    let StMonth = parseInt(taskTime.dateStart.split("/")[0]);
-    let StDay = parseInt(taskTime.dateStart.split("/")[1]);
-
-    let EnYear = parseInt(taskTime.dateEnd.split("/")[2]);
-    let EnMonth = parseInt(taskTime.dateEnd.split("/")[0]);
-    let EnDay = parseInt(taskTime.dateEnd.split("/")[1]);
-
-    if (!StMonth ||!StYear || !StDay ||  StMonth < 1 || StMonth > 12 || StDay < 1 ||StDay > daysPerMonth[StMonth]) throw "Invalid Start Date";
-    if (!EnMonth ||!EnYear || !EnDay ||  EnMonth < 1 || EnMonth > 12 || EnDay < 1 ||EnDay > daysPerMonth[EnMonth]) throw "Invalid End Date";
-
-    // The eventDate must be greater than the current date (so only future events can be created).
-    let currDate = new Date();
-    currDate.setUTCHours(currDate.getUTCHours()-4); //Current time EST
-
-
-    // The startTime must be a valid time in 12-hour AM/PM format "11:30 PM":  If it's not in the expected format or not a valid time, the method should throw.
-    // The endTime must be a valid time in 12-hour AM/PM format "11:30 PM":  If it's not in the expected format or not a valid time, the method should throw.
-    let checkTime = (timex) => {
-        let REtime = /^([1-9]|1[0-9])\:[0-9]{2}\s(AM|PM)$/g;
-        if (!REtime.test(timex)) throw `Invalid time format ${timex}`;
-        let hrs = parseInt(timex.split(":")[0]);
-        let mins = parseInt(timex.split(":")[1].slice(0, 2));
-        let am = timex.split(":")[1].slice(3, 5) === "AM" ? true : false;
-
-        if (hrs > 12 || hrs < 1 || mins > 59 || mins < 0)
-            throw `Invalid time ${timex}`;
-        return [hrs, mins, am];
-    };
-    // The startTime cannot be later than the endTime, if it is, the method should throw.
-    // The endTime cannot be earlier than the startTime, if it is, the method should throw.
-    let [shrs, smins, sam] = checkTime(taskTime.timeStart);
-    let [ehrs, emins, eam] = checkTime(taskTime.timeEnd);
-    if (shrs === 12) {
-        if (sam === true) {
-            shrs = 0;
-        }
-    } else if (sam === false) {
-        shrs += 12;
+    taskTime.dateStart = taskTime.dateStart.trim();
+    taskTime.dateEnd = taskTime.dateEnd.trim();
+    taskTime.timeStart = taskTime.timeStart.trim();
+    taskTime.timeEnd = taskTime.timeEnd.trim();
+    
+    if(!moment(taskTime.dateStart, 'MM/DD/YYYY', true).isValid()){
+        throw `Invalid Start Date, ${taskTime.dateStart}, must be in MM/DD/YYYY format`;
     }
-    if (ehrs === 12) {
-        if (eam === true) {
-            ehrs = 0;
-        }
-    } else if (eam === false) {
-        ehrs += 12;
+    if (!moment(taskTime.dateEnd, "MM/DD/YYYY", true).isValid()) {
+        throw `Invalid End Date, ${taskTime.dateEnd}, must be in MM/DD/YYYY format`;
+    }
+    if(!moment(taskTime.timeStart, 'HH:mm', true).isValid()){
+        throw `Invalid Start Time, ${taskTime.timeState}, must be in HH:mm format`;
+    }
+    if (!moment(taskTime.timeEnd, "HH:mm", true).isValid()) {
+        throw `Invalid End Time, ${taskTime.timeEnd}, must be in HH:mm format`;
     }
 
-    let startDate = new Date(StYear, StMonth - 1, StDay);
-    startDate.setUTCHours(shrs, smins);
-    let endDate = new Date(EnYear, EnMonth - 1, EnDay);
-    endDate.setUTCHours(ehrs, emins);
+    const startDateTimeString = `${taskTime.dateStart} ${taskTime.timeStart}`;
+    const startDateTime = moment(startDateTimeString, "MM/DD/YYYY HH:mm");
+    if(startDateTime.isBefore()){
+        throw "Start date must be in the future"
+    }
 
-    // The endTime should be at least 30 minutes later than the startTime, if it's not, the method should throw.
-    if (!(startDate > currDate)) throw "Start date must be in the future";
-    if(endDate - startDate < 1800000) throw `End time: ${endDate} must be at least 30 mins after the start time: ${startDate}`
-    return { dateStart: startDate, dateEnd: endDate, timeStart: taskTime.timeStart, timeEnd: taskTime.timeEnd };
+    const endDateTimeString = `${taskTime.dateEnd} ${taskTime.timeEnd}`;
+    const endDateTime = moment(endDateTimeString, "MM/DD/YYYY HH:mm");
+    if(endDateTime.isBefore(startDateTime)){
+        throw "End date must be after the start date"
+    }
+   return { dateStart: startDateTime.toDate(), dateEnd: endDateTime.toDate(), timeStart: taskTime.timeStart, timeEnd: taskTime.timeEnd };
 }
 
 export const validateTaskPayment = (taskPayment) => {

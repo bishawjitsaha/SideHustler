@@ -27,7 +27,7 @@ export const validateEmail = (str) => {
 	if (!isNaN(str)) throw "Invalid email";
 	const emailRegex = /^[\w\-.]+@[\w\-.]+\.[a-zA-Z]{2,}$/i;
 	if (!emailRegex.test(str))
-		throw "Contact email must be a valid email address";
+		throw `Contact email ${str} must be a valid email address`;
 	return str;
 };
 
@@ -102,7 +102,7 @@ export const validateId = (id) => {
 		throw `Invalid id: ${id}`;
 	}
 	id = id.trim();
-	if (!ObjectId.isValid(id)) throw `Invalid id: ${id}`;
+	// if (!ObjectId.isValid(id)) throw `Invalid id: ${id}`;
 	return id;
 };
 

@@ -1,10 +1,96 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js';
 import * as userData from '../data/users.js';
 import * as postData from '../data/posts.js';
+import { firebase } from "../firebase/serverconfig.js";
+
+const auth = firebase.auth();
+
+let userRecord1;
+let userRecord2;
+let userRecord3;
+let userRecord4;
+
+const createFireBaseUsers = async () => {
+    //First check if the users exist, then return the uids if they exists, using the getUserByEmail(email)
+    try{
+        userRecord1 = await auth.getUserByEmail("johndoe@gmail.com")
+    }catch(e){
+        userRecord1 = await auth.createUser({
+            email: "johndoe@gmail.com",
+            password: "j0hnsPa$$word",
+            displayName: "JohnDoe",
+        });
+        console.log("Created user:", userRecord1.uid);
+    }
+
+    try{
+        userRecord2 = await auth.getUserByEmail("janesmith@hotmail.com")
+    }catch(e){
+        userRecord2 = await auth.createUser({
+            email: "janesmith@hotmail.com",
+            password: "j4n3sPa$$word",
+            displayName: "JaneSmith",
+        });
+        console.log("Created user2:", userRecord2.uid);
+    }
+
+    try{
+        userRecord3 = await auth.getUserByEmail("mikejohnson@yahoo.com")
+    }catch(e){
+        userRecord3 = await auth.createUser({
+            email: "mikejohnson@yahoo.com",
+            password: "m1k3sPa$$word",
+            displayName: "MikeJohnson",
+        });
+        console.log("Created user3:", userRecord3.uid);
+    }
+    try{
+        userRecord4 = await auth.getUserByEmail("sarahwilson@example.com");
+    }catch(e){
+        userRecord4 = await auth.createUser({
+            email: "sarahwilson@example.com",
+            password: "s4r4hsPa$$word",
+            displayName: "SarahWilson",
+        });
+        console.log("Created user4:", userRecord4.uid);
+    }
+    // try {
+    //     userRecord1 = await auth.createUser({
+    //         email: "johndoe@gmail.com",
+    //         password: "j0hnsPa$$word",
+    //         displayName: "JohnDoe",
+    //     });
+    //     console.log("Created user:", userRecord1.uid);
+
+    //     userRecord2 = await auth.createUser({
+    //         email: "janesmith@hotmail.com",
+    //         password: "j4n3sPa$$word",
+    //         displayName: "JaneSmith",
+    //     });
+    //     console.log("Created user2:", userRecord2.uid);
+
+    //     userRecord3 = await auth.createUser({
+    //         email: "mikejohnson@yahoo.com",
+    //         password: "m1k3sPa$$word",
+    //         displayName: "MikeJohnson",
+    //     });
+    //     console.log("Created user3:", userRecord3.uid);
+
+    //     userRecord4 = await auth.createUser({
+    //         email: "sarahwilson@example.com",
+    //         password: "s4r4hsPa$$word",
+    //         displayName: "SarahWilson",
+    //     });
+    //     console.log("Created user4:", userRecord4.uid);
+    // } catch (e) {
+    //     console.error("Error creating user: ", e);
+    // }
+}
 
 const main = async () => {
-  try {
-    // Drop the database
+    try {
+        // Drop the database
+    await createFireBaseUsers();
     const db = await dbConnection();
     await db.dropDatabase();
     console.log('Database dropped successfully!');
@@ -13,6 +99,7 @@ const main = async () => {
 
     // Create dummy users
         const user1 = await userData.createUser(
+            userRecord1.uid,
             "JohnDoe",
             "John",
             "Doe",
@@ -71,6 +158,7 @@ const main = async () => {
 
         // Create user 2
         const user2 = await userData.createUser(
+            userRecord2.uid,
             "JaneSmith",
             "Jane",
             "Smith",
@@ -130,6 +218,7 @@ const main = async () => {
 
         // Create user 3
         const user3 = await userData.createUser(
+            userRecord3.uid,
             "MikeJohnson",
             "Mike",
             "Johnson",
@@ -188,7 +277,9 @@ const main = async () => {
         });
 
         // Create user 4
+        
         const user4 = await userData.createUser(
+            userRecord4.uid,
             "SarahWilson",
             "Sarah",
             "Wilson",
@@ -248,7 +339,7 @@ const main = async () => {
     console.log('Dummy users created successfully!');
 
     // Create dummy posts for tasks or jobs
-    const taskTime1 = { dateStart: '04/15/2024', dateEnd: '04/16/2024', timeStart: '17:00', timeEnd: '10:00' };
+    const taskTime1 = { dateStart: '06/25/2024', dateEnd: '06/26/2024', timeStart: '17:00', timeEnd: '10:00' };
     const post1 = await postData.createPost(
       'Need a babysitter for the weekend',
       'Looking for a responsible babysitter to watch my two children (ages 5 and 8) for the weekend. Job includes preparing meals, supervising playtime, and ensuring their safety.',
@@ -259,7 +350,7 @@ const main = async () => {
       'in-person'
     );
 
-    const taskTime2 = { dateStart: '05/01/2024', dateEnd: '06/30/2024', timeStart: '8:00', timeEnd: '18:00' };
+    const taskTime2 = { dateStart: '05/01/2024', dateEnd: '06/30/2024', timeStart: '08:00', timeEnd: '18:00' };
     const post2 = await postData.createPost(
       'Website development needed',
       'Looking for a skilled web developer to create a website for my small business. The website should be responsive, user-friendly, and include an online store.',
@@ -270,7 +361,7 @@ const main = async () => {
       'remote'
     );
 
-    const taskTime3 = { dateStart: '04/20/2024', dateEnd: '04/20/2024', timeStart: '14:00', timeEnd: '17:00' };
+    const taskTime3 = { dateStart: '08/20/2024', dateEnd: '08/20/2024', timeStart: '14:00', timeEnd: '17:00' };
     const post3 = await postData.createPost(
       'Furniture assembly required',
       'Need someone to assemble a new dining table and chairs that I recently purchased. Must have experience with furniture assembly and necessary tools.',
