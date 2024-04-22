@@ -1,4 +1,3 @@
-// Validate all the data from users.js
 // Validate all the data from users.js\
 
 import { ObjectId } from "mongodb";
