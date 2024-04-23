@@ -65,8 +65,16 @@ export async function createUser(id,userName, firstName, lastName, email, age) {
 export async function getUserById(id) {
 	id = validate.validateId(id);
 	const userCollection = await users();
-	const user = await userCollection.findOne({ _id: new ObjectId(id) });
+	const user = await userCollection.findOne({ _id: id });
 	if (user === null) throw "No user with that id";
+	return user;
+}
+
+export async function getUserByUserName(userName) {
+	userName = validate.validateString(userName, "userName");
+	const userCollection = await users();
+	const user = await userCollection.findOne({ userName: userName });
+	if (user === null) throw "No user with that username";
 	user._id = user._id.toString();
 	return user;
 }

@@ -1,12 +1,12 @@
 // Example of a home.js route file
 import { Router } from 'express';
 const router = Router();
-import { getUserById } from '../data/users.js';
+import { getUserById, getUserByUserName } from '../data/users.js';
 
-router.route('/')
+router.route('/:username')
     .get(async(req, res) => {
         try{
-          const user = await getUserById("6617209bcb26c3a41f09866f");
+          const user = await getUserByUserName(`${req.params.username}`);
             return res.status(200).json(
               user
             )

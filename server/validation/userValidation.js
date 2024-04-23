@@ -86,7 +86,7 @@ export const validateId = (id) => {
         throw `Invalid id: ${id}`;
     }
     id = id.trim();
-    if (!ObjectId.isValid(id)) throw `Invalid id: ${id}`;
+    // if (!ObjectId.isValid(id)) throw `Invalid id: ${id}`;
     return id;
 }
 
