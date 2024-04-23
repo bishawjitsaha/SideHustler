@@ -4,10 +4,10 @@ import HomePage from './pages/HomePage.jsx';
 import SignUpPage from './pages/SignUpPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
-import { NavLink, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext.jsx';
-
 import Navigation from './components/Navigation.jsx';
+import CompleteSignUp from './components/CompleteSignUp.jsx';
 
 function App() {
 
@@ -25,6 +25,7 @@ function App() {
             <Route path='/signup' element={<SignUpPage />}/>
             <Route path='/signin' element={<SignInPage />}/>
             <Route path='/forgot' element={<ForgotPasswordPage />}/>
+            <Route path='/completesignup' element={<CompleteSignUp />}/>
           </Routes>
           
         </div>

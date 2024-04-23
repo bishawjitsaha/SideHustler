@@ -3,7 +3,7 @@ import { ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 
 export async function createUser(id,userName, firstName, lastName, email, age) {
-	userName = validate.validateString(userName, "userName");
+	userName = validate.validateUsername(userName, "userName");
 	firstName = validate.validateString(firstName, "firstName");
 	lastName = validate.validateString(lastName, "lastName");
 	email = validate.validateEmail(email);

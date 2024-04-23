@@ -7,9 +7,9 @@ import axios from 'axios';
 function SignUpPage(props) {
   const {currentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    const {displayName, email, passwordOne, passwordTwo, firstName, lastName, age} = e.target.elements;
+  const handleSignUp = async (event) => {
+    event.preventDefault();
+    const {displayName, email, passwordOne, passwordTwo, firstName, lastName, age} = event.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch('Passwords do not match');
       return false;
@@ -20,11 +20,8 @@ function SignUpPage(props) {
         passwordOne.value,
         displayName.value
       );
-      console.log(user);
       axios.post('http://localhost:3000/signup', {
-        uid: user.user.uid,
         userName: displayName.value,
-        email: email.value,
         firstName: firstName.value,
         lastName: lastName.value,
         age: parseInt(age.value)
@@ -33,8 +30,8 @@ function SignUpPage(props) {
           Authorization: `Bearer ${user.idToken}`
         }
       });
-    } catch (error) {
-      alert(error);
+    } catch (e) {
+      alert(e);
     }
   };
 
@@ -60,6 +57,7 @@ function SignUpPage(props) {
               autoFocus={true}
             />
           </label>
+          
           <div className='form-group'>
           <label>
             First Name:
