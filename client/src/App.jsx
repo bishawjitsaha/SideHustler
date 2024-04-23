@@ -5,9 +5,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 import SignUpPage from './pages/SignUpPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
+import { Route, Routes } from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext.jsx';
-
 import Navigation from './components/Navigation.jsx';
+import CompleteSignUp from './components/CompleteSignUp.jsx';
 
 function App() {
   return (
