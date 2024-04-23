@@ -7,8 +7,10 @@ import SignInPage from './pages/SignInPage.jsx';
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Manage from "./components/Manage.jsx";
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
+import { Route, Routes } from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext.jsx';
 import Navigation from './components/Navigation.jsx';
+import CompleteSignUp from './components/CompleteSignUp.jsx';
 
 function App() {
   return (

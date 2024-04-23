@@ -11,6 +11,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from "firebase/auth";
+import axios from "axios";
 
 export async function doCreateUserWithEmailAndPassword(
   email,
@@ -40,16 +41,17 @@ export async function doSignInWithEmailAndPassword(email, password) {
 }
 
 export async function doSocialSignIn() {
-  try {
     let auth = getAuth();
+    let flag = false;
     let socialProvider = new GoogleAuthProvider();
     let result = await signInWithPopup(auth, socialProvider);
-    console.log(result);
-    return result;
-  } catch (error) {
-    console.error("error:", error);
-    throw error;
-  }
+    let idToken = await auth.currentUser.getIdToken();
+    if (result._tokenResponse.isNewUser) {
+      flag = true;
+      console.log(`New user detected, flag set to: ${flag}`);
+    }
+    return {result: result, flag: flag, idToken: idToken};
+
 }
 
 export async function doPasswordReset(email) {

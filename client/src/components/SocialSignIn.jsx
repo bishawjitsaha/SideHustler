@@ -1,14 +1,15 @@
 import React from 'react';
 import {doSocialSignIn} from '../firebase/firebaseFunctions';
+import { useNavigate } from 'react-router-dom';
 
 const SocialSignIn = (props) => {
-  const eventType = (type) =>{
-
-  }
-
+  let navigate = useNavigate();
   const socialSignOn = async () => {
     try {
-      await doSocialSignIn();
+      let result = await doSocialSignIn();
+      if(result.flag){
+        navigate("/completesignup" , { state: { idToken: result.idToken } });
+      }
     } catch (error) {
       alert(error);
     }
