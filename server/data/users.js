@@ -1,5 +1,4 @@
 import { users, posts } from "../config/mongoCollections.js";
-import { ObjectId, ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 import { ObjectId } from "mongodb";
 
@@ -124,8 +123,8 @@ export async function updateUserById(id, updatedUser) {
 	id = validate.validateId(id);
 	const currUser = await getUserById(id);
 	const update = {};
-	if (updatedUser.username)
-		update.username = validate.validateUsername(updatedUser.username);
+	if (updatedUser.userName)
+		update.username = validate.validateUsername(updatedUser.userName);
 	if (updatedUser.firstName)
 		update.firstName = validate.validateString(updatedUser.firstName);
 	if (updatedUser.lastName)

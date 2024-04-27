@@ -11,6 +11,15 @@ export const validateUsername = (str) => {
 	return str;
 };
 
+export const validateName = (str) => {
+	if (!str || typeof str !== "string" || str.trim().length === 0) {
+		throw `Invalid string: ${str}`;
+	}
+	str.trim();
+	if (!/^[a-zA-Z]+$/.test(str)) throw "String must be alphabetic";
+	return str;
+};
+
 export const validateString = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
 		throw `Invalid string: ${str}`;
@@ -155,19 +164,13 @@ export const checkDate = (date) => {
 		11: 30,
 		12: 31,
 	};
-	const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+	const dateRegex = /^([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
 	if (!dateRegex.test(date))
-		throw "Date must be a valid date in the format MM/DD/YYYY 1";
-	const dateParts = date.split("/");
-	const month = parseInt(dateParts[0]);
-	const day = parseInt(dateParts[1]);
-	if (day > monthDays[month] || day < 1)
-		throw "Date must be a valid date in the format MM/DD/YYYY 2";
-
-	// const currentDate = new Date();
-	// const eventDateObj = new Date(date);
-	// if (currentDate > eventDateObj)
-	// 	throw "Event date must be a valid date in the format MM/DD/YYYY 3";
+		throw new Error('Invalid date format should be MM/DD/YYYY or M/D/YYYY or M/DD/YYYY or MM/D/YYYY');
+	const [month, day, year] = date.split('/').map(Number);
+	if(month > 12 || month < 1) throw new Error('Invalid month');
+	if(day < 1 || day > monthDays[month]) throw new Error('Invalid day');
+	date = new Date(month + '/' + day + '/' + year).toLocaleDateString();
 
 	return date;
 };
