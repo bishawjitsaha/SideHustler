@@ -14,7 +14,10 @@ function ProfilePage() {
     const { currentUser } = useContext(AuthContext);
     const { username } = useParams();
     const [showInfoModal, setShowInfoModal] = useState(false);
-    const [showAddModal, setShowAddModal] = useState(false);
+    const [showAddBioModal, setShowAddBioModal] = useState(false);
+    const [showAddEducationModal, setShowAddEducationModal] = useState(false);
+    const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
+    const [showAddSkillsModal, setShowAddSkillsModal] = useState(false);
 
     const fetchData = async () => {
         try{
@@ -36,13 +39,27 @@ function ProfilePage() {
         setShowInfoModal(true);
       };
 
-    const handleOpenAddModal = () => {
-        setShowAddModal(true);
-      };
+    const handleOpenBioModal = () => {
+        setShowAddBioModal(true);
+    };
+
+    const handleOpenEducationModal = () => {
+        setShowAddEducationModal(true);
+    };
+
+    const handleOpenExperienceModal = () => {
+        setShowAddExperienceModal(true);
+    };
+
+    const handleOpenSkillsModal = () => {
+        setShowAddSkillsModal(true);
+    };
 
     const handleCloseModals = () => {
         setShowInfoModal(false);
-        setShowAddModal(false);
+        setShowAddEducationModal(false);
+        setShowAddExperienceModal(false);
+        setShowAddSkillsModal(false);
     };
 
   return (
@@ -58,12 +75,10 @@ function ProfilePage() {
                         <h2 className='text-2xl font-semibold'>Bio</h2>
                         {user.bio && <p>{user.bio}</p>}
                         {!user.bio ? (
-                            <button onClick={() => handleOpenAddModal()}>Add Bio</button>
+                            <button onClick={() => handleOpenBioModal()}>Add Bio</button>
                         ) : (
                             null
                         )}
-                        
-
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Education</h2>
@@ -71,11 +86,10 @@ function ProfilePage() {
                         {user.education.degree && user.education.major && <p>{user.education.degree} in {user.education.major}</p>}
                         {user.education.gradYear && <p>Graduated in {user.education.gradYear}</p>}
                         {!user.education.school || !user.education.degree || !user.education.gradYear || !user.education.major ? (
-                            <button onClick={() => handleOpenAddModal()}>Add Education</button>
+                            <button onClick={() => handleOpenEducationModal()}>Add Education</button>
                         ) : (
                             null
                         )}
-                        
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Experience</h2>
@@ -86,7 +100,7 @@ function ProfilePage() {
                                 {exp.startDate && exp.endDate && <p>{exp.startDate} - {exp.endDate}</p>}
                             </div>
                         ))}
-                        <button onClick={() => handleOpenAddModal()}>Add Experience</button>
+                        <button onClick={() => handleOpenExperienceModal()}>Add Experience</button>
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Skills</h2>
@@ -96,7 +110,7 @@ function ProfilePage() {
                                 {skill.description && <p className='text-left ml-5'>{skill.description}</p>}
                             </div>
                         ))}
-                        <button onClick={() => handleOpenAddModal()}>Add Skill</button>
+                        <button onClick={() => handleOpenSkillsModal()}>Add Skill</button>
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Rating</h2>
@@ -113,43 +127,45 @@ function ProfilePage() {
                         ))}
                     </div>
                 </div>
+                <div id='modal-container'>
+                {showAddBioModal && (
+                <AddBioModal 
+                    isOpen={showAddBioModal} 
+                    user = {user}
+                    handleClose={handleCloseModals} />
+                )}
+
+                {showAddEducationModal && (
+                <AddEducationModal 
+                    isOpen={showAddEducationModal} 
+                    user = {user}
+                    handleClose={handleCloseModals} />
+                )}
+
+                {showAddExperienceModal && (
+                <AddExperienceModal 
+                    isOpen={showAddExperienceModal} 
+                    user = {user}
+                    handleClose={handleCloseModals} />
+                )}
+
+                {showAddSkillsModal && (
+                <AddSkillsModal 
+                    isOpen={showAddSkillsModal} 
+                    user = {user}
+                    handleClose={handleCloseModals} />
+                )}
+
+                {showInfoModal && 
+                <EditInfoModal 
+                    isOpen={showInfoModal}
+                    user = {user}
+                    handleClose={handleCloseModals}
+                />}
+                </div>
+
             </div>
             )}
-
-        {/* {showAddModal && (
-          <AddBioModal 
-            isOpen={showAddModal} 
-            user = {user}
-            handleClose={handleCloseModals} />
-        )} */}
-
-        {/* {showAddModal && (
-          <AddEducationModal 
-            isOpen={showAddModal} 
-            user = {user}
-            handleClose={handleCloseModals} />
-        )} */}
-
-        {/* {showAddModal && (
-          <AddExperienceModal 
-            isOpen={showAddModal} 
-            user = {user}
-            handleClose={handleCloseModals} />
-        )} */}
-
-        {showAddModal && (
-          <AddSkillsModal 
-            isOpen={showAddModal} 
-            user = {user}
-            handleClose={handleCloseModals} />
-        )}
-
-        {showInfoModal && 
-          <EditInfoModal 
-            isOpen={showInfoModal}
-            user = {user}
-            handleClose={handleCloseModals}
-           />}
     </div>
   )
 }

@@ -57,28 +57,32 @@ router.route('/:username')
                   }
               }
             : {}),
-            experience: user.experience && user.experience.length === 0
-            ? [{
-                company: company || '',
-                position: position || '',
-                startDate: startDate || '',
-                endDate: endDate || ''
+            experience: user.experience && user.experience.length > 0
+              ? user.experience.map((exp, index) => {
+                  return {
+                      company: company || exp.company,
+                      position: position || exp.position,
+                      startDate: startDate || exp.startDate,
+                      endDate: endDate || exp.endDate
+                  }
+                })
+              : [{
+                  company: company,
+                  position: position,
+                  startDate: startDate,
+                  endDate: endDate
+                }],
+          skills: user.skills && user.skills.length > 0
+            ? user.skills.map((skill, index) => {
+                return {
+                    name: name || skill.name,
+                    description: description || skill.description
+                }
+              })
+            : [{
+                name: name,
+                description: description
               }]
-            : user.experience.map(exp => ({
-                company: company || exp.company,
-                position: position || exp.position,
-                startDate: startDate || exp.startDate,
-                endDate: endDate || exp.endDate
-              })),
-          skills: user.skills && user.skills.length === 0
-            ? [{
-                name: name || '',
-                description: description || ''
-              }]
-            : user.skills.map(skill => ({
-                name: name || skill.name,
-                description: description || skill.description
-              }))
         }
 
         const id = user._id;
