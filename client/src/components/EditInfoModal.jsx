@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -23,8 +22,8 @@ function EditInfoModal({isOpen, user, handleClose}) {
   const [updatedUser, setUpdatedUser] = useState({...user});
   const [errorMessages, setErrorMessages] = useState('');
   const [isError, setIsError] = useState(false);
-
-  const navigate = useNavigate();
+  const [companySelected, setCompanySelected] = useState('');
+  const [skillSelected, setSkillSelected] = useState('');
 
   const handleCloseEditModal = () => {
     setShowEditModal(false);
@@ -35,13 +34,30 @@ function EditInfoModal({isOpen, user, handleClose}) {
     setUpdatedUser({...updatedUser, [e.target.name]: e.target.value});
   }
 
+  const handleCompanyChange = (e) => {
+    setCompanySelected(e.target.value);
+  }
+
+  const handleSkillChange = (e) => {
+    setSkillSelected(e.target.value);
+  }
+
   const handleErrors = (e) => {
     setErrorMessages(e);
   }
 
   const handleSubmit = async (e) => {
-    await axios.post(`http://localhost:3000/user/${user.userName}`, updatedUser)
-    navigate(`/user/${user.userName}`);
+    try{
+      const dataToSend = {
+        ...updatedUser,
+        companyList: companySelected
+      }
+      await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
+    }
+    catch(e){
+      setIsError(true);
+      handleErrors(e);
+    }
   }
 
   return (
@@ -156,19 +172,21 @@ function EditInfoModal({isOpen, user, handleClose}) {
                   placeholder='Graduation Year'
                   onChange={handleChange} />
               </div>
-              {/* <div>
+              <div>
                   <p>Experience</p>
-                  <label htmlFor="company">Company: </label>
+                  <label htmlFor="companyList">Company: </label>
                   <select 
-                      id='company' 
-                      name='company'
-                      onChange={handleChange}
+                      id='companyList' 
+                      name='companyList'
+                      value={companySelected}
+                      onChange={handleCompanyChange}
                   >
+                      <option value="none">Select A Company To Edit</option>
                       {updatedUser.experience.map((exp, index) => (
                           <option key={index} value={exp.company}>{exp.company}</option>
                       ))}
                   </select>
-              </div> */}
+              </div>
               <div>
                   <label htmlFor="company"> Company Name: </label>
                   <input 
@@ -209,19 +227,21 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       onChange={handleChange} 
                   />
               </div>
-              {/* <div>
-                  <p>Skill</p>
-                  <label htmlFor="skills">Skills: </label>
+              <div>
+                  <p>Skills</p>
+                  <label htmlFor="skillsList">Skills: </label>
                   <select 
-                      id='skills' 
-                      name='skills'
-                      onChange={handleChange}
+                      id='skillsList' 
+                      name='skillsList'
+                      value={skillSelected}
+                      onChange={handleSkillChange}
                   >
+                      <option value="none">Select A Skill To Edit</option>
                       {updatedUser.skills.map((skill, index) => (
                           <option key={index} value={skill.name}>{skill.name}</option>
                       ))}
                   </select>
-              </div> */}
+              </div>
               <div>
                   <label htmlFor="skillName"> Skill Name: </label>
                   <input 
