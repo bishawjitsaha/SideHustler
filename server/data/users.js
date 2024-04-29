@@ -152,18 +152,33 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.bio) update.bio = validate.validateBio(updatedUser.bio);
 	if (updatedUser.education)
 		update.education = validate.validateEducation(updatedUser.education);
-	if (updatedUser.experience) {
-		const newExperience = validate.validateExperience(
-			updatedUser.experience
-		);
-		const currExperience = currUser.experience;
-		update.experience = currExperience.concat(newExperience);
+	if (updatedUser.experience && updatedUser.experience.length > 0) {
+		const newExperience = validate.validateExperience(updatedUser.experience);
+		if (currUser.experience && currUser.experience.length > 0) {
+			update.experience = newExperience.map(newExp => {
+				const matchingExp = currUser.experience.find(currExp => currExp.company === newExp.company);
+				return matchingExp ? matchingExp : newExp;
+			});
+		} else {
+			update.experience = newExperience;
+		}
+	} else {
+		update.experience = [];
 	}
-	if (updatedUser.skills) {
+	if (updatedUser.skills && updatedUser.skills.length > 0) {
 		const newSkills = validate.validateSkills(updatedUser.skills);
-		const currSkills = currUser.skills;
-		update.skills = currSkills.concat(newSkills);
+		if(currUser.skills && currUser.skills.length > 0){
+			update.skills = newSkills.map(newSkill => {
+				const matchingSkill = currUser.skills.find(currSkill => currSkill.name === newSkill.name);
+				return matchingSkill ? matchingSkill : newSkill;
+			});
+		} else {
+			update.skills = newSkills;
+		}
+	} else {
+		update.skills = [];
 	}
+	
 	if (updatedUser.rating)
 		update.rating = validate.validateRating(updatedUser.rating);
 	if (updatedUser.reservedTime) {
