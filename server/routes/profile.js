@@ -91,59 +91,34 @@ router.route('/:username')
                 endDate: endDate
               }]
             : [],
-          skills: user.skills && user.skills.length > 0
+          skills: user.skills && user.skills.length > 0 // if user has skills
             ? [
                 ...user.skills.map((skill) => {
-                  if (skillsList === skill.name) {
-                    return {
+                  if (skillsList === skill.name) { // Check if the skillsList matches the skill name
+                    return { // Update the matching skill object
                       ...skill,
                       name: name || skill.name,
                       description: description || skill.description
                     };
-                  } else {
+                  } else { // Return the skill object as is
                     return skill;
                   }
                 }),
-                ...(!user.skills.some(skill => skill.name === skillsList) && name && description
+                ...(!user.skills.some(skill => skill.name === skillsList) && name && description // Add a new skill if skillsList doesn't match any existing skill
                   ? [{
                       name: name,
                       description: description
                     }]
                   : [])
               ]
-            : (name && description && user.skills.length === 0)
+            : (name && description && user.skills.length === 0) // if user has no skills
             ? [{
                 name: name,
                 description: description
               }]
-            : []
+            : [] // if user has no skills and no new skills are provided
         }
 
-        if(companyList && company) {
-          updatedFields.experience = user.experience.map((exp, index) => {
-            if(companyList === exp.company) {
-              return {
-                ...exp,
-                company: company,
-                position: position || exp.position,
-                startDate: startDate || exp.startDate,
-                endDate: endDate || exp.endDate
-              }
-            }
-            else {
-              return exp
-            }
-          })
-        }
-
-        if(skillsList) {
-          updatedFields.skills = user.skills.map((skill, index) => {
-            return {
-              name: skillsList === skill.name ? name : skill.name,
-              description: skillsList === skill.name ? description : skill.description
-            }
-          })
-        }
 
         if(bio === '') {
           updatedFields.bio = null;

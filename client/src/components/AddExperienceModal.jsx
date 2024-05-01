@@ -37,6 +37,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
     
     const handleSubmit = async (e) => {
         await axios.post(`http://localhost:3000/user/${user.userName}`, updatedUser)
+        window.location.reload();
     }
 
     return (

@@ -50,9 +50,11 @@ function EditInfoModal({isOpen, user, handleClose}) {
     try{
       const dataToSend = {
         ...updatedUser,
-        companyList: companySelected
+        companyList: companySelected,
+        skillsList: skillSelected
       }
       await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
+      window.location.reload();
     }
     catch(e){
       setIsError(true);
