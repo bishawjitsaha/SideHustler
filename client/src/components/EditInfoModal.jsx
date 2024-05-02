@@ -89,13 +89,13 @@ function EditInfoModal({isOpen, user, handleClose}) {
             
             >
               <div>
-                <label htmlFor="displayName">Username: </label>
+                <label htmlFor="username">Username: </label>
                 <input 
                   type="text" 
                   id='userName' 
                   name='userName' 
                   placeholder='Username'
-                  value={updatedUser.displayName} 
+                  value={updatedUser.userName} 
                   onChange={handleChange} />
               </div>
               <div>

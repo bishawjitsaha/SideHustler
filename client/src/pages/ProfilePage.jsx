@@ -74,7 +74,7 @@ function ProfilePage() {
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Bio</h2>
                         {user.bio && <p>{user.bio}</p>}
-                        {!user.bio ? (
+                        {(currentUser.displayName && currentUser.displayName === username) && !user.bio ? (
                             <button onClick={() => handleOpenBioModal()}>Add Bio</button>
                         ) : (
                             null
@@ -85,7 +85,8 @@ function ProfilePage() {
                         {user.education.school && <p>{user.education.school}</p>}
                         {user.education.degree && user.education.major && <p>{user.education.degree} in {user.education.major}</p>}
                         {user.education.gradYear && <p>Graduated in {user.education.gradYear}</p>}
-                        {!user.education.school || !user.education.degree || !user.education.gradYear || !user.education.major ? (
+                        {(currentUser.displayName && currentUser.displayName === username) && 
+                            (!user.education.school || !user.education.degree || !user.education.gradYear || !user.education.major) ? (
                             <button onClick={() => handleOpenEducationModal()}>Add Education</button>
                         ) : (
                             null
@@ -100,7 +101,8 @@ function ProfilePage() {
                                 {exp.startDate && exp.endDate && <p>{exp.startDate} - {exp.endDate}</p>}
                             </div>
                         ))}
-                        <button onClick={() => handleOpenExperienceModal()}>Add Experience</button>
+                        {currentUser.displayName && currentUser.displayName === username && 
+                            <button onClick={() => handleOpenInfoModal()}>Add Experience</button>}
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Skills</h2>
@@ -110,7 +112,8 @@ function ProfilePage() {
                                 {skill.description && <p className='text-left ml-5'>{skill.description}</p>}
                             </div>
                         ))}
-                        <button onClick={() => handleOpenSkillsModal()}>Add Skill</button>
+                        {currentUser.displayName && currentUser.displayName === username && 
+                            <button onClick={() => handleOpenInfoModal()}>Add Skill</button>}
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Rating</h2>
@@ -126,6 +129,14 @@ function ProfilePage() {
                             </div>
                         ))}
                     </div>
+                    {/* <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Posts</h2>
+                        {user.posts.map((post, index) => (
+                            <div key={index} className='mb-2'>
+                                {post}
+                            </div>
+                        ))}
+                    </div> */}
                 </div>
                 <div id='modal-container'>
                 {showAddBioModal && (
