@@ -57,6 +57,7 @@ function ProfilePage() {
 
     const handleCloseModals = () => {
         setShowInfoModal(false);
+        setShowAddBioModal(false);
         setShowAddEducationModal(false);
         setShowAddExperienceModal(false);
         setShowAddSkillsModal(false);
@@ -102,7 +103,7 @@ function ProfilePage() {
                             </div>
                         ))}
                         {currentUser.displayName && currentUser.displayName === username && 
-                            <button onClick={() => handleOpenInfoModal()}>Add Experience</button>}
+                            <button onClick={() => handleOpenExperienceModal()}>Add Experience</button>}
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Skills</h2>
@@ -113,7 +114,7 @@ function ProfilePage() {
                             </div>
                         ))}
                         {currentUser.displayName && currentUser.displayName === username && 
-                            <button onClick={() => handleOpenInfoModal()}>Add Skill</button>}
+                            <button onClick={() => handleOpenSkillsModal()}>Add Skill</button>}
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Rating</h2>
@@ -122,57 +123,58 @@ function ProfilePage() {
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
-                        {user.reservedTime.map((time, index) => (
+                        {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
                             <div key={index} className='mb-2'>
                                 {time.dateStart && time.dateEnd && <p>{time.dateStart} - {time.dateEnd}</p>}
                                 {time.timeStart && time.timeEnd && <p>{time.timeStart} - {time.timeEnd}</p>}
                             </div>
-                        ))}
+                        )) : <p>No Other Jobs Scheduled</p>}
                     </div>
-                    {/* <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Posts</h2>
-                        {user.posts.map((post, index) => (
+                        {user.posts.length > 0 ? user.posts.map((post, index) => (
                             <div key={index} className='mb-2'>
                                 {post}
                             </div>
-                        ))}
-                    </div> */}
+                        )) : <p>No Posts</p>}
+                    </div>
+                    
                 </div>
                 <div id='modal-container'>
-                {showAddBioModal && (
-                <AddBioModal 
-                    isOpen={showAddBioModal} 
-                    user = {user}
-                    handleClose={handleCloseModals} />
-                )}
+                    {showAddBioModal && (
+                    <AddBioModal 
+                        isOpen={showAddBioModal} 
+                        user = {user}
+                        handleClose={handleCloseModals} />
+                    )}
 
-                {showAddEducationModal && (
-                <AddEducationModal 
-                    isOpen={showAddEducationModal} 
-                    user = {user}
-                    handleClose={handleCloseModals} />
-                )}
+                    {showAddEducationModal && (
+                    <AddEducationModal 
+                        isOpen={showAddEducationModal} 
+                        user = {user}
+                        handleClose={handleCloseModals} />
+                    )}
 
-                {showAddExperienceModal && (
-                <AddExperienceModal 
-                    isOpen={showAddExperienceModal} 
-                    user = {user}
-                    handleClose={handleCloseModals} />
-                )}
+                    {showAddExperienceModal && (
+                    <AddExperienceModal 
+                        isOpen={showAddExperienceModal} 
+                        user = {user}
+                        handleClose={handleCloseModals} />
+                    )}
 
-                {showAddSkillsModal && (
-                <AddSkillsModal 
-                    isOpen={showAddSkillsModal} 
-                    user = {user}
-                    handleClose={handleCloseModals} />
-                )}
+                    {showAddSkillsModal && (
+                    <AddSkillsModal 
+                        isOpen={showAddSkillsModal} 
+                        user = {user}
+                        handleClose={handleCloseModals} />
+                    )}
 
-                {showInfoModal && 
-                <EditInfoModal 
-                    isOpen={showInfoModal}
-                    user = {user}
-                    handleClose={handleCloseModals}
-                />}
+                    {showInfoModal && 
+                    <EditInfoModal 
+                        isOpen={showInfoModal}
+                        user = {user}
+                        handleClose={handleCloseModals}
+                    />}
                 </div>
 
             </div>
