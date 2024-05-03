@@ -27,7 +27,7 @@ export const validateEmail = (str) => {
 	if (!isNaN(str)) throw "Invalid email";
 	const emailRegex = /^[\w\-.]+@[\w\-.]+\.[a-zA-Z]{2,}$/i;
 	if (!emailRegex.test(str))
-		throw "Contact email must be a valid email address";
+		throw `Contact email ${str} must be a valid email address`;
 	return str;
 };
 
@@ -87,8 +87,11 @@ export const validateEducation = (obj) => {
 		throw `Invalid string: ${obj.major}`;
 	}
 	obj.major.trim();
-	if (!obj.gradYear || typeof obj.gradYear !== "number" || obj.gradYear < 0) {
-		throw `Invalid number: ${obj.gradYear}`;
+	// if (!obj.gradYear || typeof obj.gradYear !== "number" || obj.gradYear < 0) {
+	// 	throw `Invalid number: ${obj.gradYear}`;
+	// }
+	if (!obj.gradYear || typeof obj.gradYear !== "string" || obj.gradYear.trim().length === 0){
+		throw `Invalid string: ${obj.gradYear}`;
 	}
 
 	return obj;
@@ -99,7 +102,7 @@ export const validateId = (id) => {
 		throw `Invalid id: ${id}`;
 	}
 	id = id.trim();
-	if (!ObjectId.isValid(id)) throw `Invalid id: ${id}`;
+	// if (!ObjectId.isValid(id)) throw `Invalid id: ${id}`;
 	return id;
 };
 
@@ -116,7 +119,7 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string: ${arr[i].name}`;
 		}
-		arr[i] = arr[i].trim();
+		arr[i].name = arr[i].name.trim();
 		if (
 			!arr[i].description ||
 			typeof arr[i].description !== "string" ||
@@ -124,7 +127,7 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string: ${arr[i].description}`;
 		}
-		arr[i].description.trim();
+		arr[i].description = arr[i].description.trim();
 	}
 	return arr;
 };
@@ -154,17 +157,17 @@ export const checkDate = (date) => {
 	};
 	const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
 	if (!dateRegex.test(date))
-		throw "Event date must be a valid date in the format MM/DD/YYYY 1";
+		throw "Date must be a valid date in the format MM/DD/YYYY 1";
 	const dateParts = date.split("/");
 	const month = parseInt(dateParts[0]);
 	const day = parseInt(dateParts[1]);
 	if (day > monthDays[month] || day < 1)
-		throw "Event date must be a valid date in the format MM/DD/YYYY 2";
+		throw "Date must be a valid date in the format MM/DD/YYYY 2";
 
-	const currentDate = new Date();
-	const eventDateObj = new Date(date);
-	if (currentDate > eventDateObj)
-		throw "Event date must be a valid date in the format MM/DD/YYYY 3";
+	// const currentDate = new Date();
+	// const eventDateObj = new Date(date);
+	// if (currentDate > eventDateObj)
+	// 	throw "Event date must be a valid date in the format MM/DD/YYYY 3";
 
 	return date;
 };
@@ -228,10 +231,9 @@ export const validateRating = (rating) => {
 	if (
 		!rating.total ||
 		typeof rating.total !== "number" ||
-		rating.total < 0 ||
-		rating.total > 5
+		rating.total < 0
 	) {
-		throw `Invalid number: ${rating.count}`;
+		throw `Invalid number: ${rating.total}`;
 	}
 	return rating;
 };
@@ -259,9 +261,10 @@ export const validatereservedTime = (arr) => {
 			throw `Invalid string: ${arr[i].timeStart}`;
 		}
 		arr[i].timeStart.trim();
-		const timeRegex = /^([0-5][0-9]|59):[0-5][0-9]$/;
+		// const timeRegex = /\b((1[0-2])|([1-9])):(0[0-9]|[1-5][0-9]) [AP]M\b/i;
+        const timeRegex = /^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/;
 		if (!timeRegex.test(arr[i].timeStart))
-			throw "Event time must be a valid time in the format HH:MM";
+			throw `Start time ${arr[i].timeStart} must be a valid time in the format HH:MM`;
 
 		if (
 			!arr[i].timeEnd ||
@@ -271,8 +274,9 @@ export const validatereservedTime = (arr) => {
 			throw `Invalid string: ${arr[i].timeEnd}`;
 		}
 		arr[i].timeEnd.trim();
-		if (!timeRegex.test(arr[i].timeEnd))
-			throw "Event time must be a valid time in the format HH:MM";
+        const timeRegex2 = /^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/;
+		if (!timeRegex2.test(arr[i].timeEnd))
+			throw "End time must be a valid time in the format HH:MM";
 
 		if (
 			!arr[i].dateEnd ||
@@ -286,3 +290,32 @@ export const validatereservedTime = (arr) => {
 	}
 	return arr;
 };
+
+export const validateApplications = (arr) => {
+    if (!arr || !Array.isArray(arr)) {
+        throw `Invalid array: ${arr}`;
+    }
+    for (let i = 0; i < arr.length; i++) {
+        if (typeof arr[i] !== "object") throw `Invalid object: ${arr[i]}`;
+        if (
+            !arr[i].postId ||
+            typeof arr[i].postId !== "string" ||
+            arr[i].postId.trim().length === 0
+        ) {
+            throw `Invalid string: ${arr[i].postId}`;
+        }
+        arr[i].postId.trim();
+        if (
+            !arr[i].status ||
+            typeof arr[i].status !== "string" ||
+            arr[i].status.trim().length === 0
+        ) {
+            throw `Invalid string: ${arr[i].status}`;
+        }
+        arr[i].status.trim().toLowerCase();
+        if(arr[i].status !== "pending" || arr[i].status !== "accepted" || arr[i].status !== "rejected"){
+            throw `Invalid status: ${arr[i].status}`;
+        }
+    }
+    return arr;
+}
