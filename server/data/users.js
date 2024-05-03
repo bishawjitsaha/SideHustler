@@ -1,5 +1,4 @@
 import { users, posts } from "../config/mongoCollections.js";
-import { ReturnDocument } from "mongodb";
 import * as validate from "../validation/userValidation.js";
 import { ObjectId } from "mongodb";
 
@@ -75,12 +74,17 @@ export async function createUser(id,userName, firstName, lastName, email, age) {
 
 export async function getUserById(id) {
 	id = validate.validateId(id);
-
 	const userCollection = await users();
 	const user = await userCollection.findOne({ _id: id });
-	// const user = await userCollection.findOne({ _id: new ObjectId(id) });
 	if (user === null) throw "No user with that id";
-    user._id = user._id.toString();
+	return user;
+}
+
+export async function getUserByUserName(userName) {
+	userName = validate.validateString(userName, "userName");
+	const userCollection = await users();
+	const user = await userCollection.findOne({ userName: userName });
+	if (user === null) throw "No user with that username";
 	return user;
 }
 
@@ -117,8 +121,8 @@ export async function updateUserById(id, updatedUser) {
 	id = validate.validateId(id);
 	const currUser = await getUserById(id);
 	const update = {};
-	if (updatedUser.username)
-		update.username = validate.validateUsername(updatedUser.username);
+	if (updatedUser.userName)
+		update.username = validate.validateUsername(updatedUser.userName);
 	if (updatedUser.firstName)
 		update.firstName = validate.validateString(updatedUser.firstName);
 	if (updatedUser.lastName)
@@ -146,18 +150,33 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.bio) update.bio = validate.validateBio(updatedUser.bio);
 	if (updatedUser.education)
 		update.education = validate.validateEducation(updatedUser.education);
-	if (updatedUser.experience) {
-		const newExperience = validate.validateExperience(
-			updatedUser.experience
-		);
-		const currExperience = currUser.experience;
-		update.experience = currExperience.concat(newExperience);
+	if (updatedUser.experience && updatedUser.experience.length > 0) {
+		const newExperience = validate.validateExperience(updatedUser.experience);
+		if (currUser.experience && currUser.experience.length > 0) {
+			update.experience = newExperience.map(newExp => {
+				const matchingExp = currUser.experience.find(currExp => currExp.company === newExp.company);
+				return matchingExp ? matchingExp : newExp;
+			});
+		} else {
+			update.experience = newExperience;
+		}
+	} else {
+		update.experience = [];
 	}
-	if (updatedUser.skills) {
+	if (updatedUser.skills && updatedUser.skills.length > 0) {
 		const newSkills = validate.validateSkills(updatedUser.skills);
-		const currSkills = currUser.skills;
-		update.skills = currSkills.concat(newSkills);
+		if(currUser.skills && currUser.skills.length > 0){
+			update.skills = newSkills.map(newSkill => {
+				const matchingSkill = currUser.skills.find(currSkill => currSkill.name === newSkill.name);
+				return matchingSkill ? matchingSkill : newSkill;
+			});
+		} else {
+			update.skills = newSkills;
+		}
+	} else {
+		update.skills = [];
 	}
+	
 	if (updatedUser.rating)
 		update.rating = validate.validateRating(updatedUser.rating);
 	if (updatedUser.reservedTime) {
