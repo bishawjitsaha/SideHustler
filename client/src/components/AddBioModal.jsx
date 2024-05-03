@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import { validateBio } from '../validation/userValidation';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -36,8 +37,18 @@ function AddBioModal({isOpen, user, handleClose}){
     }
     
     const handleSubmit = async (e) => {
-        await axios.post(`http://localhost:3000/user/${user.userName}`, updatedUser)
-        window.location.reload();
+        e.preventDefault();
+        try{
+            const validatedBio = validateBio(updatedUser.bio);
+            await axios.post(`http://localhost:3000/user/${user.userName}`, {bio: validatedBio})
+            alert('Bio Added');
+            handleClose();
+            window.location.reload();
+        }
+        catch (e) {
+            handleErrors(e);
+            setIsError(true);
+        }
     }
 
     return (
@@ -50,19 +61,7 @@ function AddBioModal({isOpen, user, handleClose}){
                 <h2>Add Bio</h2>
                 <form 
                     id='addBioForm'
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        try{
-                            setShowAddModal(false);
-                            alert('Bio Added');
-                            handleSubmit();
-                            handleClose();
-                        }
-                        catch (e) {
-                            handleErrors(e);
-                            setIsError(true);
-                        }
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     <div>
                         <label htmlFor='bio'>Bio: </label>
@@ -74,6 +73,8 @@ function AddBioModal({isOpen, user, handleClose}){
                             onChange={handleChange}
                         />
                     </div>
+                    
+                    {isError && <p>{errorMessages}</p>}
                     <button type='submit'>Add Bio</button>
                 </form>
                 <button onClick={handleCloseAddModal}>Close</button>

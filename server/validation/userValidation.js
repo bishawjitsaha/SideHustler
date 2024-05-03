@@ -48,7 +48,7 @@ export const validateAge = (age) => {
 	return age;
 };
 
-export const validateBio = (str) => {
+export const validateBio = (str) => { //add regex
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
 		throw `Invalid string: ${str}`;
 	}
@@ -68,7 +68,7 @@ export const validatePosts = (arr) => {
 	return arr;
 };
 
-export const validateEducation = (obj) => {
+export const validateEducation = (obj) => { //add regex
 	if (!obj || typeof obj !== "object") {
 		throw `Invalid object: ${obj}`;
 	}
@@ -87,21 +87,23 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string: ${obj.degree}`;
 	}
-	obj.major.trim();
+	obj.degree.trim();
 	if (
 		!obj.major ||
 		typeof obj.major !== "string" ||
-		obj.major.trim().length === 0
+		obj.major.trim().length === 0 
 	) {
 		throw `Invalid string: ${obj.major}`;
 	}
 	obj.major.trim();
-	// if (!obj.gradYear || typeof obj.gradYear !== "number" || obj.gradYear < 0) {
-	// 	throw `Invalid number: ${obj.gradYear}`;
-	// }
-	if (!obj.gradYear || typeof obj.gradYear !== "string" || obj.gradYear.trim().length === 0){
+	
+	if (!obj.gradYear || 
+		typeof obj.gradYear !== "string" || 
+		obj.gradYear.trim().length === 0 || 
+		isNaN(obj.gradYear)){
 		throw `Invalid string: ${obj.gradYear}`;
 	}
+	obj.gradYear.trim();
 
 	return obj;
 };

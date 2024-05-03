@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import { validateEducation } from '../validation/userValidation';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -36,8 +37,25 @@ function AddEducationModal({isOpen, user, handleClose}){
     }
     
     const handleSubmit = async (e) => {
-        await axios.post(`http://localhost:3000/user/${user.userName}`, updatedUser)
-        window.location.reload();
+        e.preventDefault();
+        try{
+            const validatedEducation = validateEducation(updatedUser);
+            const educationPayload = {
+                school: validatedEducation.school,
+                degree: validatedEducation.degree,
+                major: validatedEducation.major,
+                gradYear: validatedEducation.gradYear
+            };
+            await axios.post(`http://localhost:3000/user/${user.userName}`, educationPayload)
+            alert('Education Added');
+            handleClose();
+            window.location.reload();
+        }
+        catch (e) {
+            console.log("Error: ", e)
+            handleErrors(e);
+            setIsError(true);
+        }
     }
 
     return (
@@ -50,19 +68,7 @@ function AddEducationModal({isOpen, user, handleClose}){
                 <h2>Add Bio</h2>
                 <form 
                     id='addEducationForm'
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        try{
-                            setShowAddModal(false);
-                            alert('Education Added');
-                            handleSubmit();
-                            handleClose();
-                        }
-                        catch (e) {
-                            handleErrors(e);
-                            setIsError(true);
-                        }
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     <div>
                         <label htmlFor='school'>School: </label>
@@ -104,6 +110,7 @@ function AddEducationModal({isOpen, user, handleClose}){
                             onChange={handleChange}
                         />
                     </div>
+                    {isError && <p>{errorMessages}</p>}
                     <button type='submit'>Add Education</button>
                 </form>
                 <button onClick={handleCloseAddModal}>Close</button>

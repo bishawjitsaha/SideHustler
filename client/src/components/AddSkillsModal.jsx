@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import { validateSkills } from '../validation/userValidation';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -36,8 +37,24 @@ function AddSkillsModal({isOpen, user, handleClose}){
     }
     
     const handleSubmit = async (e) => {
-        await axios.post(`http://localhost:3000/user/${user.userName}`, updatedUser)
-        window.location.reload();
+        e.preventDefault();
+        try{
+            const validatedSkills = validateSkills([{
+                name: updatedUser.name,
+                description: updatedUser.description
+            }]);
+            const skillsPayload = {
+                name: validatedSkills[0].name,
+                description: validatedSkills[0].description
+            };
+            await axios.post(`http://localhost:3000/user/${user.userName}`, skillsPayload);
+            alert('Skill added successfully');
+            handleClose();
+            window.location.reload();
+        } catch (e) {
+            handleErrors(e);
+            setIsError(true);
+        }
     }
 
     return (
@@ -50,19 +67,7 @@ function AddSkillsModal({isOpen, user, handleClose}){
                 <h2>Add Skill</h2>
                 <form 
                     id='addSkillForm'
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        try{
-                            setShowAddModal(false);
-                            alert('Skill Added');
-                            handleSubmit();
-                            handleClose();
-                        }
-                        catch (e) {
-                            handleErrors(e);
-                            setIsError(true);
-                        }
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     <div>
                         <label htmlFor='name'>Name: </label>
@@ -82,6 +87,7 @@ function AddSkillsModal({isOpen, user, handleClose}){
                             onChange={handleChange}
                         />
                     </div>
+                    {isError && <p>{errorMessages}</p>}
                     <button type='submit'>Add Skill</button>
                 </form>
                 <button onClick={handleCloseAddModal}>Close</button>

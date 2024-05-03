@@ -264,7 +264,7 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       onChange={handleChange} 
                   />
               </div>
-              
+              {isError && <p>{errorMessages}</p>}
               <button type='submit'>Submit</button>
           </form>
           <button onClick={handleCloseEditModal}>Close</button>

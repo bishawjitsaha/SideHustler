@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import { validateExperience } from '../validation/userValidation';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -36,8 +37,29 @@ function AddExperienceModal({isOpen, user, handleClose}){
     }
     
     const handleSubmit = async (e) => {
-        await axios.post(`http://localhost:3000/user/${user.userName}`, updatedUser)
-        window.location.reload();
+        e.preventDefault();
+        try{
+            const validatedExperience = validateExperience([{
+                company: updatedUser.company,
+                position: updatedUser.position,
+                startDate: updatedUser.startDate,
+                endDate: updatedUser.endDate
+            
+            }]);
+            const experiencePayload = {
+                company: validatedExperience[0].company,
+                position: validatedExperience[0].position,
+                startDate: validatedExperience[0].startDate,
+                endDate: validatedExperience[0].endDate
+            };
+            await axios.post(`http://localhost:3000/user/${user.userName}`, experiencePayload);
+            alert('Experience added successfully');
+            handleClose();
+            window.location.reload();
+        } catch (e) {
+            handleErrors(e);
+            setIsError(true);
+        }
     }
 
     return (
@@ -50,19 +72,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                 <h2>Add Experience</h2>
                 <form 
                     id='addExperienceForm'
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        try{
-                            setShowAddModal(false);
-                            alert('Experience Added');
-                            handleSubmit();
-                            handleClose();
-                        }
-                        catch (e) {
-                            handleErrors(e);
-                            setIsError(true);
-                        }
-                    }}
+                    onSubmit={handleSubmit}
                 >
                     <div>
                         <label htmlFor='company'>Company: </label>
@@ -100,6 +110,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             onChange={handleChange}
                         />
                     </div>
+                    {isError && <div>{errorMessages}</div>}
                     <button type='submit'>Add Experience</button>
                 </form>
                 <button onClick={handleCloseAddModal}>Close</button>
