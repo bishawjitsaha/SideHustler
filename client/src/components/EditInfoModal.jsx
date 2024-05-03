@@ -47,13 +47,17 @@ function EditInfoModal({isOpen, user, handleClose}) {
   }
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try{
+      
       const dataToSend = {
         ...updatedUser,
         companyList: companySelected,
-        skillsList: skillSelected
+        skillsList: skillSelected,
       }
       await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
+      alert('Info Updated');
+      handleClose();
       window.location.reload();
     }
     catch(e){
@@ -73,20 +77,7 @@ function EditInfoModal({isOpen, user, handleClose}) {
           <h2>Edit Info</h2>
           <form 
             id='editInfoForm'
-            onSubmit={(e) => {
-              e.preventDefault();
-              try{
-                setShowEditModal(false);
-                alert('Info Updated');
-                handleSubmit();
-                handleClose();
-              }
-              catch(e){
-                setIsError(true);
-                handleErrors(e);
-              }
-            }}
-            
+            onSubmit={handleSubmit}
             >
               <div>
                 <label htmlFor="username">Username: </label>

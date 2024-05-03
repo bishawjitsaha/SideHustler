@@ -47,7 +47,7 @@ router.route('/:username')
           lastName: lastName || user.lastName,
           email: email || user.email,
           bio: bio || user.bio,
-          ...(school || user.education.school || degree || user.education.degree || major || user.education.major || gradYear || user.education.gradYear
+          ...(school || user.education.school || degree || user.education.degree || major || user.education.major || gradYear || user.education.gradYear // if any education field is provided
             ? {
                   education: {
                       school: school || user.education.school,
