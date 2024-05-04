@@ -8,7 +8,7 @@ const SocialSignIn = (props) => {
     try {
       let result = await doSocialSignIn();
       if(result.flag){
-        navigate("/completesignup" , { state: { idToken: result.idToken } });
+        navigate("/complete-signup" , { state: { idToken: result.idToken } });
       }
     } catch (error) {
       alert(error);

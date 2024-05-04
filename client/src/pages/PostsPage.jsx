@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Post } from "../components";
+import { Post, AddPost } from "../components";
 
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     setPosts([
@@ -51,11 +60,21 @@ const PostsPage = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
-      {posts.map((post) => (
-        <Post key={post._id} post={post} />
-      ))}
-    </div>
+    <>
+      <button
+        onClick={handleOpenModal}
+        className="bg-blue-500 text-white p-2 rounded-lg"
+      >
+        New Post
+      </button>
+
+      {isModalOpen && <AddPost isOpen={isModalOpen} handleClose={handleCloseModal} />}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
+        {posts.map((post) => (
+          <Post key={post._id} post={post} />
+        ))}
+      </div>
+    </>
   );
 };
 

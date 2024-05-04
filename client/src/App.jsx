@@ -15,30 +15,12 @@ function App() {
     <>
       <AuthProvider>
           <div>
-            <header className="bg-red-500 text-white p-4">
+            <header className="bg-teal-500 text-white p-4">
               <h1 className="text-3xl font-bold underline">SideHustler</h1>
               <p className="text-lg font-semibold">
                 A database of side hustles - built by hustlers
               </p>
-
               <Navigation/>
-              {/* <nav className="flex justify-center space-x-4">
-                <NavLink to="/" className="text-blue-700 hover:text-blue-800">
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/search"
-                  className="text-blue-700 hover:text-blue-800"
-                >
-                  Search
-                </NavLink>
-                <NavLink
-                  to="/posts"
-                  className="text-blue-700 hover:text-blue-800"
-                >
-                  Posts
-                </NavLink>
-              </nav> */}
             </header>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -48,6 +30,7 @@ function App() {
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
+              <Route path='/complete-signup' element={<CompleteSignUp />}/>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>
