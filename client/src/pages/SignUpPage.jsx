@@ -2,7 +2,6 @@ import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/firebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
-import SocialSignIn from '../components/SocialSignIn';
 import axios from 'axios';
 function SignUpPage(props) {
   const {currentUser} = useContext(AuthContext);
@@ -150,8 +149,6 @@ function SignUpPage(props) {
         </button>
       </form>
       <br />
-      <SocialSignIn
-        type="signup" />
     </div>
   );
 }
