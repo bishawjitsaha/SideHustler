@@ -82,18 +82,17 @@ export async function getUserById(id) {
 export async function doesUserExist(userName){
 	userName = validate.validateString(userName, "userName");
 	const userCollection = await users();
-	const user = await userCollection.findOne({ userName: userName });
+	const user = await userCollection.findOne({ "userName": { "$regex": `^${userName}$`, "$options": "i" } });
 	if (!user){ // if the user does not exist return false
 		return false;
 	}
-
 	return true;
 }
 
 export async function getUserByUserName(userName) {
 	userName = validate.validateString(userName, "userName");
 	const userCollection = await users();
-	const user = await userCollection.findOne({ userName: userName });
+	const user = await userCollection.findOne({ "userName": { "$regex": `^${userName}$`, "$options": "i" } });
 	if (user === null) throw "No user with that username";
 	return user;
 }
