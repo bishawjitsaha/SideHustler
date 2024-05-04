@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext.jsx';
 import Navigation from './components/Navigation.jsx';
 import CompleteSignUp from './components/CompleteSignUp.jsx';
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
               <Route path='/complete-signup' element={<CompleteSignUp />}/>
+              <Route path='/not-found' element={<NotFoundPage/>}/>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>

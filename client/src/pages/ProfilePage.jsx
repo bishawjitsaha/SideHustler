@@ -1,6 +1,6 @@
 import {React, useState, useEffect, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { AddBioModal, AddEducationModal, AddExperienceModal, AddSkillsModal, EditInfoModal } from '../components'
 
@@ -14,6 +14,7 @@ function ProfilePage() {
     const [showAddEducationModal, setShowAddEducationModal] = useState(false);
     const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
     const [showAddSkillsModal, setShowAddSkillsModal] = useState(false);
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         try{
@@ -22,6 +23,7 @@ function ProfilePage() {
         }
         catch (e) {
             console.error(e);
+            navigate('/not-found');
         }
     }
 
@@ -117,6 +119,7 @@ function ProfilePage() {
                         {user.rating.average && <p>Average: {user.rating.average}</p>}
                         {user.rating.total && <p>Total: {user.rating.total}</p>}
                     </div>
+                    {(currentUser.displayName && currentUser.displayName === username) && 
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
                         {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
@@ -126,6 +129,7 @@ function ProfilePage() {
                             </div>
                         )) : <p>No Other Jobs Scheduled</p>}
                     </div>
+                    }
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Posts</h2>
                         {user.posts.length > 0 ? user.posts.map((post, index) => (
