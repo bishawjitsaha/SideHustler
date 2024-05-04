@@ -79,6 +79,16 @@ export async function getUserById(id) {
 	if (user === null) throw "No user with that id";
 	return user;
 }
+export async function doesUserExist(userName){
+	userName = validate.validateString(userName, "userName");
+	const userCollection = await users();
+	const user = await userCollection.findOne({ userName: userName });
+	if (!user){ // if the user does not exist return false
+		return false;
+	}
+
+	return true;
+}
 
 export async function getUserByUserName(userName) {
 	userName = validate.validateString(userName, "userName");
