@@ -13,6 +13,16 @@ function SignUpPage(props) {
       setPwMatch('Passwords do not match');
       return false;
     }
+    try{
+      let {data} = await axios.get(`http://localhost:3000/api/verifyUser/${displayName.value}`)
+      console.log(data.isUserNameUnique);
+      if(data.isUserNameUnique === false){
+        alert("That username already exists");
+        return false;
+      }
+    } catch (e){
+      console.log(e);
+    }
     try {
       let user = await doCreateUserWithEmailAndPassword(
         email.value,

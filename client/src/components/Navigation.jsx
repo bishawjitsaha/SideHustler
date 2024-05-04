@@ -40,6 +40,9 @@ const NavigationNonAuth = () => {
       <NavLink className="navlink" to="/signin">
         Sign-in
       </NavLink>
+      {/* <NavLink className ="navlink" to={`/user/${currentUser.displayName}`}>
+        Profile
+      </NavLink> */}
     </nav>
   );
 };
