@@ -2,11 +2,7 @@ import {React, useState, useEffect, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import EditInfoModal from '../components/EditInfoModal'
-import AddBioModal from '../components/AddBioModal'
-import AddEducationModal from '../components/AddEducationModal'
-import AddExperienceModal from '../components/AddExperienceModal'
-import AddSkillsModal from '../components/AddSkillsModal'
+import { AddBioModal, AddEducationModal, AddExperienceModal, AddSkillsModal, EditInfoModal } from '../components'
 
 function ProfilePage() {
 

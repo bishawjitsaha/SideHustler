@@ -16,12 +16,11 @@ function App() {
     <>
       <AuthProvider>
           <div>
-            <header className="bg-red-500 text-white p-4">
+            <header className="bg-teal-500 text-white p-4">
               <h1 className="text-3xl font-bold underline">SideHustler</h1>
               <p className="text-lg font-semibold">
                 A database of side hustles - built by hustlers
               </p>
-
               <Navigation/>
             </header>
             <Routes>
@@ -32,6 +31,7 @@ function App() {
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
+              <Route path='/complete-signup' element={<CompleteSignUp />}/>
               <Route path='/not-found' element={<NotFoundPage/>}/>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
