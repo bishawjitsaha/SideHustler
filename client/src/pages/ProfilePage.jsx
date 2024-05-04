@@ -121,6 +121,7 @@ function ProfilePage() {
                         {user.rating.average && <p>Average: {user.rating.average}</p>}
                         {user.rating.total && <p>Total: {user.rating.total}</p>}
                     </div>
+                    {(currentUser.displayName && currentUser.displayName === username) && 
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
                         {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
@@ -130,6 +131,7 @@ function ProfilePage() {
                             </div>
                         )) : <p>No Other Jobs Scheduled</p>}
                     </div>
+                    }
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Posts</h2>
                         {user.posts.length > 0 ? user.posts.map((post, index) => (

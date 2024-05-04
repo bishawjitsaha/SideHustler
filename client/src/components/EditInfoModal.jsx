@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import * as validate from '../validation/userValidation.js';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -49,12 +50,63 @@ function EditInfoModal({isOpen, user, handleClose}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      
+
+      if(updatedUser.userName) {
+        validate.validateUsername(updatedUser.userName);
+      }
+      if(updatedUser.firstName) {
+        validate.validateName(updatedUser.firstName);
+      }
+      if(updatedUser.lastName) {
+        validate.validateName(updatedUser.lastName);
+      }
+      if(updatedUser.bio) {
+        validate.validateBio(updatedUser.bio);
+      }
+      if(updatedUser.school || 
+        updatedUser.degree || 
+        updatedUser.major || 
+        updatedUser.gradYear) {
+        validate.validateEducation({
+          school: updatedUser.school || user.education.school,
+          degree: updatedUser.degree || user.education.degree,
+          major: updatedUser.major || user.education.major,
+          gradYear: updatedUser.gradYear || user.education.gradYear
+        });
+      }
+
+      if((updatedUser.experience && updatedUser.experience.length > 0 && companyList) && 
+      (updatedUser.company || updatedUser.position || updatedUser.startDate || updatedUser.endDate)) {
+        updatedUser.experience.map((exp) => {
+          if(companySelected === exp.company) {
+            validate.validateExperience([{
+              company: updatedUser.company || exp.company,
+              position: updatedUser.position || exp.position,
+              startDate: updatedUser.startDate || exp.startDate,
+              endDate: updatedUser.endDate || exp.endDate
+            }]);
+          }
+        });
+      }
+
+      if((updatedUser.skills && updatedUser.skills.length > 0 && skillsList) && 
+      (updatedUser.name || updatedUser.description)) {
+        updatedUser.skills.map((skill) => {
+          if(skillSelected === skill.name) {
+            validate.validateSkills([{
+              name: updatedUser.name || skill.name,
+              description: updatedUser.description || skill.description
+            }]);
+          }
+        });
+      }
+
       const dataToSend = {
         ...updatedUser,
         companyList: companySelected,
         skillsList: skillSelected,
       }
+
       await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
       alert('Info Updated');
       handleClose();
