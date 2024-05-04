@@ -75,8 +75,12 @@ function EditInfoModal({isOpen, user, handleClose}) {
         });
       }
 
-      if((updatedUser.experience && updatedUser.experience.length > 0 && companyList) && 
+      if((updatedUser.experience && updatedUser.experience.length > 0) && 
       (updatedUser.company || updatedUser.position || updatedUser.startDate || updatedUser.endDate)) {
+        if(!companySelected || companySelected === 'none') {
+          throw 'Please select a company to edit';
+        }
+
         updatedUser.experience.map((exp) => {
           if(companySelected === exp.company) {
             validate.validateExperience([{
@@ -89,8 +93,11 @@ function EditInfoModal({isOpen, user, handleClose}) {
         });
       }
 
-      if((updatedUser.skills && updatedUser.skills.length > 0 && skillsList) && 
+      if((updatedUser.skills && updatedUser.skills.length > 0) && 
       (updatedUser.name || updatedUser.description)) {
+        if(!skillSelected || skillSelected === 'none') {
+          throw 'Please select a skill to edit';
+        }
         updatedUser.skills.map((skill) => {
           if(skillSelected === skill.name) {
             validate.validateSkills([{
