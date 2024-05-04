@@ -107,7 +107,7 @@ export const validateEducation = (obj) => {
 		typeof obj.gradYear !== "string" || 
 		obj.gradYear.trim().length === 0 || 
 		isNaN(obj.gradYear)){
-		throw `Invalid string for Grad Year: ${obj.gradYear}`;
+		throw `Invalid year for Grad Year: ${obj.gradYear}`;
 	}
 	obj.gradYear.trim();
 

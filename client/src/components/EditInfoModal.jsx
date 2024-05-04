@@ -162,16 +162,6 @@ function EditInfoModal({isOpen, user, handleClose}) {
                   onChange={handleChange} />
               </div>
               <div>
-                <label htmlFor="email">Email: </label>
-                <input 
-                  type="text" 
-                  id='email' 
-                  name='email' 
-                  placeholder='Email'
-                  value={updatedUser.email} 
-                  onChange={handleChange} />
-              </div>
-              <div>
                 <label htmlFor="bio">Bio: </label>
                 <input 
                   type="text" 

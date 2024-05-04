@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext.jsx';
 import Navigation from './components/Navigation.jsx';
 import CompleteSignUp from './components/CompleteSignUp.jsx';
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
   return (
@@ -22,23 +23,6 @@ function App() {
               </p>
 
               <Navigation/>
-              {/* <nav className="flex justify-center space-x-4">
-                <NavLink to="/" className="text-blue-700 hover:text-blue-800">
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/search"
-                  className="text-blue-700 hover:text-blue-800"
-                >
-                  Search
-                </NavLink>
-                <NavLink
-                  to="/posts"
-                  className="text-blue-700 hover:text-blue-800"
-                >
-                  Posts
-                </NavLink>
-              </nav> */}
             </header>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -48,6 +32,7 @@ function App() {
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
+              <Route path='/not-found' element={<NotFoundPage/>}/>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>

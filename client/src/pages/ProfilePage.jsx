@@ -1,6 +1,6 @@
 import {React, useState, useEffect, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import EditInfoModal from '../components/EditInfoModal'
 import AddBioModal from '../components/AddBioModal'
@@ -18,6 +18,7 @@ function ProfilePage() {
     const [showAddEducationModal, setShowAddEducationModal] = useState(false);
     const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
     const [showAddSkillsModal, setShowAddSkillsModal] = useState(false);
+    const navigate = useNavigate();
 
     const fetchData = async () => {
         try{
@@ -26,6 +27,7 @@ function ProfilePage() {
         }
         catch (e) {
             console.error(e);
+            navigate('/not-found');
         }
     }
 
