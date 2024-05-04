@@ -1,9 +1,9 @@
 import "./App.css";
 import { HomePage, SearchPage, PostsPage } from "./pages";
-import { Routes, Route, NavLink } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import SignUpPage from './pages/SignUpPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
+import ProfilePage from "./pages/ProfilePage.jsx";
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import { Route, Routes } from 'react-router-dom'
 import {AuthProvider} from './context/AuthContext.jsx';
@@ -44,6 +44,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/posts" element={<PostsPage />} />
+              <Route path="/user/:username" element={<ProfilePage/>}/>
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
