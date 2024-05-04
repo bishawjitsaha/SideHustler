@@ -31,7 +31,7 @@ function ProfilePage() {
         if(currentUser){
             fetchData();
         }
-    }, [currentUser])
+    }, [currentUser,username])
 
     const handleOpenInfoModal = () => {
         setShowInfoModal(true);
