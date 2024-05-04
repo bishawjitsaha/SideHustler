@@ -16,10 +16,10 @@ const NavigationAuth = () => {
         <NavLink className="navlink" to="/">
           Home
         </NavLink>
-        <NavLink to="/search" className="text-blue-700 hover:text-blue-800">
+        <NavLink to="/search" className="navlink">
           Search
         </NavLink>
-        <NavLink to="/posts" className="text-blue-700 hover:text-blue-800">
+        <NavLink to="/posts" className="navlink">
           Posts
         </NavLink>
       </nav>
