@@ -53,6 +53,15 @@ export const getPostById = async (id) => {
     return post;
 }
 
+export const getAllPosts = async () => {
+    const postCollection = await posts();
+    const allPosts = await postCollection.find({}).toArray();
+    allPosts.forEach(post => {
+        post._id = post._id.toString();
+    });
+    return allPosts;
+}
+
 export const updatePostById = async (id, updatedPost) => {
     // title, description, taskTime, taskPayment, userId, photos, workType
     id = validId(id);
@@ -122,7 +131,6 @@ export const addApplicant = async (postId, applicantId) => {
 
     const userCollection = await users();
     let updatedUser = await userCollection.findOneAndUpdate(
-        // { _id: new ObjectId(applicantId) },
         { _id: applicantId },
         { $push: {applications: {postId: postId, status: "pending"}} },
         { returnDocument: "after" }
@@ -160,7 +168,6 @@ export const removeApplicant = async (postId, applicantId) => {
     updatedPost._id = updatedPost._id.toString();
 
     let updatedUser = await userCollection.findOneAndUpdate(
-        // { _id: new ObjectId(applicantId) },
         { _id: applicantId },
         { $pull: { applications: {postId: updatedPost._id}}},
         { returnDocument: "after" }
@@ -188,7 +195,6 @@ export const deletePostById = async (postId, currentUserId) => {
 
     for (let i = 0; i < post.applicants.length; i++) {
        let updatedApp = await userCollection.findOneAndUpdate(
-        //    { _id: new ObjectId(post.applicants[i]) },
            { _id: post.applicants[i] },
            { $pull: { applications: { postId: post._id } } },
            { returnDocument: "after" }
@@ -198,7 +204,6 @@ export const deletePostById = async (postId, currentUserId) => {
     
     let updateUser = await userCollection.findOneAndUpdate(
          //removes post from posts[] of that user
-        //  { _id: new ObjectId(user._id) },
          { _id: user._id},
          { $pull: { posts: post._id }},
          { returnDocument: "after" }
