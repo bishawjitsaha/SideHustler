@@ -1,5 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const mongoConfig = {
-  serverUrl:
-    "mongodb+srv://sidehustler:sidehustler@cluster0.wg96gad.mongodb.net/?retryWrites=true&w=majority",
+  serverUrl: process.env.MONGO_URL,
   database: "SideHustlerDB",
 };
