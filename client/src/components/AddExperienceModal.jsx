@@ -69,7 +69,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                 isOpen={showAddModal}
                 style={customStyles}
                 contentLabel="Add Experience">
-                <h2>Add Experience</h2>
+                <h2 className='text-center text-lg font-semibold'>Add Experience</h2>
                 <form 
                     id='addExperienceForm'
                     onSubmit={handleSubmit}
@@ -81,6 +81,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             name='company'
                             placeholder='Enter Company Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
@@ -90,6 +91,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             name='position'
                             placeholder='Enter Position Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
@@ -99,6 +101,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             name='startDate'
                             placeholder='Enter Start Date Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
@@ -108,12 +111,21 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             name='endDate'
                             placeholder='Enter End Date Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
-                    {isError && <div>{errorMessages}</div>}
-                    <button type='submit'>Add Experience</button>
+                    {isError && <div className='text-red-600 flex justify-center'>{errorMessages}</div>}
+                <div className='flex justify-end items-end flex-grow'>
+                    <button 
+                        type='submit'
+                        className='my-4'>
+                            Add Experience</button>
+                    <button 
+                        onClick={handleCloseAddModal}
+                        className='my-4 ml-auto'>
+                            Close</button>
+                </div>
                 </form>
-                <button onClick={handleCloseAddModal}>Close</button>
             </ReactModal>
         </div>
     )

@@ -64,7 +64,7 @@ function AddSkillsModal({isOpen, user, handleClose}){
                 isOpen={showAddModal}
                 style={customStyles}
                 contentLabel="Add Skill">
-                <h2>Add Skill</h2>
+                <h2 className='text-center text-lg font-semibold'>Add Skill</h2>
                 <form 
                     id='addSkillForm'
                     onSubmit={handleSubmit}
@@ -76,6 +76,7 @@ function AddSkillsModal({isOpen, user, handleClose}){
                             name='name'
                             placeholder='Enter Skill Name Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
@@ -85,12 +86,23 @@ function AddSkillsModal({isOpen, user, handleClose}){
                             name='description'
                             placeholder='Enter Skill Description Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
-                    {isError && <p>{errorMessages}</p>}
-                    <button type='submit'>Add Skill</button>
+
+                    {isError && <div className='text-red-600 flex justify-center'>{errorMessages}</div>}
+
+                    <div className='flex justify-end items-end flex-grow'>
+                        <button 
+                            type='submit'
+                            className='my-4'>
+                                Add Skill</button>
+                        <button 
+                            onClick={handleCloseAddModal}
+                            className='my-4 ml-auto'>
+                                Close</button>
+                    </div>
                 </form>
-                <button onClick={handleCloseAddModal}>Close</button>
             </ReactModal>
         </div>
     )

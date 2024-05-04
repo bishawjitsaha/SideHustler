@@ -112,7 +112,7 @@ export const validateEducation = (obj) => {
 	obj.gradYear.trim();
 
 	if (parseInt(obj.gradYear) < 1930 || parseInt(obj.gradYear) > 2030)
-		throw `Grad Year should be between 1930 and 2025: ${obj.gradYear}`;
+		throw `Grad Year should be between 1930 and 2030: ${obj.gradYear}`;
 
 	return obj;
 };

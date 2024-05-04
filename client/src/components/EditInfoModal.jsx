@@ -131,14 +131,16 @@ function EditInfoModal({isOpen, user, handleClose}) {
         name = 'editModal'
         isOpen={showEditModal}
         style={customStyles}
-        contentLabel="Edit Info">
+        contentLabel="Edit Info"
+        >
 
-          <h2>Edit Info</h2>
+          <h2 className='text-center text-lg font-semibold'>Edit Info</h2>
           <form 
             id='editInfoForm'
             onSubmit={handleSubmit}
             >
-              <div>
+            <div className='flex'>
+              <div className='mr-4'>
                 <label htmlFor="username">Username: </label>
                 <input 
                   type="text" 
@@ -146,9 +148,10 @@ function EditInfoModal({isOpen, user, handleClose}) {
                   name='userName' 
                   placeholder='Username'
                   value={updatedUser.userName} 
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' />
               </div>
-              <div>
+              <div className='mr-4'>
                 <label htmlFor="firstName">First Name: </label>
                 <input 
                   type="text" 
@@ -156,9 +159,10 @@ function EditInfoModal({isOpen, user, handleClose}) {
                   name='firstName' 
                   placeholder='First Name'
                   value={updatedUser.firstName} 
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' />
               </div>
-              <div>
+              <div className='mr-4'>
                 <label htmlFor="lastName">Last Name: </label>
                 <input 
                   type="text" 
@@ -166,8 +170,10 @@ function EditInfoModal({isOpen, user, handleClose}) {
                   name='lastName' 
                   placeholder='Last Name'
                   value={updatedUser.lastName} 
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' />
               </div>
+            </div>
               <div>
                 <label htmlFor="bio">Bio: </label>
                 <input 
@@ -176,52 +182,59 @@ function EditInfoModal({isOpen, user, handleClose}) {
                   name='bio' 
                   placeholder='Bio'
                   value={updatedUser.bio} 
-                  onChange={handleChange} />
+                  onChange={handleChange} 
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'/>
               </div>
-              <div>
+            <div className='flex'>
+              <div className='mr-4'>
                 <label htmlFor="school">School: </label>
                 <input 
                   type="text" 
                   id='school' 
                   name='school' 
                   placeholder='School'
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' />
               </div>
-              <div>
+              <div className='mr-4'>
                 <label htmlFor="degree">Degree: </label>
                 <input 
                   type="text" 
                   id='degree' 
                   name='degree' 
                   placeholder='Degree'
-                  onChange={handleChange} />
+                  onChange={handleChange} 
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'/>
               </div>
-              <div>
+              <div className='mr-4'>
                 <label htmlFor="major">Major: </label>
                 <input 
                   type="text" 
                   id='major' 
                   name='major' 
                   placeholder='Major'
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' />
               </div>
-              <div>
+              <div className='mr-4'>
                 <label htmlFor="gradYear">Graduation Year: </label>
                 <input 
                   type="text" 
                   id='gradYear' 
                   name='gradYear' 
                   placeholder='Graduation Year'
-                  onChange={handleChange} />
+                  onChange={handleChange}
+                  className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' />
               </div>
+            </div>
               <div>
-                  <p>Experience</p>
                   <label htmlFor="companyList">Company: </label>
                   <select 
                       id='companyList' 
                       name='companyList'
                       value={companySelected}
                       onChange={handleCompanyChange}
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                   >
                       <option value="none">Select A Company To Edit</option>
                       {updatedUser.experience.map((exp, index) => (
@@ -229,17 +242,19 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       ))}
                   </select>
               </div>
-              <div>
+            <div className='flex'>
+              <div className='mr-4'>
                   <label htmlFor="company"> Company Name: </label>
                   <input 
                       type="text" 
                       id='company' 
                       name='company' 
                       placeholder='Company Name'
-                      onChange={handleChange} 
+                      onChange={handleChange}
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50' 
                   />
               </div>
-              <div>
+              <div className='mr-4'>
                   <label htmlFor="position">Position: </label>
                   <input 
                       type="text" 
@@ -247,9 +262,10 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       name='position' 
                       placeholder='Position'
                       onChange={handleChange} 
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                   />
               </div>
-              <div>
+              <div className='mr-4'>
                   <label htmlFor="startDate">Start Date: </label>
                   <input 
                       type="text" 
@@ -257,9 +273,10 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       name='startDate' 
                       placeholder='Start Date'
                       onChange={handleChange} 
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                   />
               </div>
-              <div>
+              <div className='mr-4'>
                   <label htmlFor="endDate">End Date: </label>
                   <input 
                       type="text" 
@@ -267,16 +284,18 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       name='endDate' 
                       placeholder='End Date'
                       onChange={handleChange} 
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                   />
               </div>
+            </div>
               <div>
-                  <p>Skills</p>
                   <label htmlFor="skillsList">Skills: </label>
                   <select 
                       id='skillsList' 
                       name='skillsList'
                       value={skillSelected}
                       onChange={handleSkillChange}
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                   >
                       <option value="none">Select A Skill To Edit</option>
                       {updatedUser.skills.map((skill, index) => (
@@ -284,7 +303,8 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       ))}
                   </select>
               </div>
-              <div>
+            <div className='flex'>
+              <div className='mr-4'>
                   <label htmlFor="skillName"> Skill Name: </label>
                   <input 
                       type="text" 
@@ -292,9 +312,10 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       name='name' 
                       placeholder='Skill Name'
                       onChange={handleChange} 
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                   />
               </div>
-              <div>
+              <div className='mr-4'>
                   <label htmlFor="skillDescription"> Skill Description: </label>
                   <input 
                       type="text" 
@@ -302,12 +323,22 @@ function EditInfoModal({isOpen, user, handleClose}) {
                       name='description' 
                       placeholder='Skill Description'
                       onChange={handleChange} 
+                      className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 '
                   />
               </div>
-              {isError && <p>{errorMessages}</p>}
-              <button type='submit'>Submit</button>
+            </div>
+              {isError && <p className='text-red-600 flex justify-center'>{errorMessages}</p>}
+            <div className='flex justify-end items-end flex-grow'>
+              <button 
+                type='submit'
+                className='my-4'>
+                  Submit</button>
+              <button 
+                onClick={handleCloseEditModal}
+                className='my-4 ml-auto'>
+                  Close</button>
+            </div>
           </form>
-          <button onClick={handleCloseEditModal}>Close</button>
       </ReactModal>
     </div>
   )
