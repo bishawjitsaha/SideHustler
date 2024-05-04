@@ -48,6 +48,7 @@ function App() {
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
+              <Route path='/complete-signup' element={<CompleteSignUp />}/>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>
