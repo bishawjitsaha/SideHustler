@@ -28,6 +28,20 @@ export const validateTaskTime = (taskTime) => {
     taskTime.timeStart = taskTime.timeStart.trim();
     taskTime.timeEnd = taskTime.timeEnd.trim();
     
+
+    // Check if Moment.js successfully parsed the date and if it's valid
+    if((moment(taskTime.dateStart, 'YYYY-MM-DD', true).isValid())) {
+        taskTime.dateStart = moment(taskTime.dateStart, "YYYY-MM-DD", true).format("MM/DD/YYYY");
+    } else {
+        throw "Invalid start date format";
+    }
+    
+    if(moment(taskTime.dateEnd, 'YYYY-MM-DD', true).isValid()) {
+        taskTime.dateEnd = moment(taskTime.dateEnd, 'YYYY-MM-DD', true).format("MM/DD/YYYY");
+    } else {
+        throw "Invalid end date format";
+    }
+
     if(!moment(taskTime.dateStart, 'MM/DD/YYYY', true).isValid()){
         throw `Invalid Start Date, ${taskTime.dateStart}, must be in MM/DD/YYYY format`;
     }

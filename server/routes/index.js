@@ -17,7 +17,7 @@ const constructorMethod = (app) => {
     app.use('/api', apiRoute)
 
     app.use('*', (req, res) => {
-    res.sendStatus(404);
+        res.sendStatus(404);
     });
 };
 
