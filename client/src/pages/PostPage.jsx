@@ -116,7 +116,7 @@ const PostPage = () => {
               <h2>Applicants:</h2>
               <ul>
                 {post.applicants.map((applicant) => (
-                  <li key={applicant._id}>
+                  <li key={applicant}>
                     {/* {applicant.name} - {applicant.email} */}
                     {applicant}
                     <button onClick={() => handleChooseApplicant(applicant)}>
