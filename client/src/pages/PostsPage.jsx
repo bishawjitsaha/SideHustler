@@ -18,7 +18,6 @@ const PostsPage = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("http://localhost:3000/posts/all");
-        console.log(response);
         const data = await response.data;
         setPosts(data.posts);
       } catch (error) {
