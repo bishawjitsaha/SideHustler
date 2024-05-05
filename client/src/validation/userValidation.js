@@ -139,9 +139,9 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string for name of skill: ${arr[i].name}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].name)) throw "Skill name must be alphabetic";
-
 		arr[i].name = arr[i].name.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+
 		if (
 			!arr[i].description ||
 			typeof arr[i].description !== "string" ||
@@ -149,9 +149,9 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string for description of skill: ${arr[i].description}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
-
 		arr[i].description = arr[i].description.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+
 	}
 	return arr;
 };
@@ -162,30 +162,6 @@ export const checkDate = (date) => {
 	date = date.trim();
 	if (date.length === 0)
 		throw `Error: date cannot be an empty string or string with just spaces`;
-	if (!isNaN(date))
-		throw `Error: date is not a valid value for as it only contains digits`;
-
-	const monthDays = {
-		1: 31,
-		2: 28,
-		3: 31,
-		4: 30,
-		5: 31,
-		6: 30,
-		7: 31,
-		8: 31,
-		9: 30,
-		10: 31,
-		11: 30,
-		12: 31,
-	};
-	const dateRegex = /^([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
-	if (!dateRegex.test(date))
-		throw new Error('Invalid date format should be MM/DD/YYYY or M/D/YYYY or M/DD/YYYY or MM/D/YYYY');
-	const [month, day, year] = date.split('/').map(Number);
-	if(month > 12 || month < 1) throw new Error('Invalid month');
-	if(day < 1 || day > monthDays[month]) throw new Error('Invalid day');
-	date = new Date(month + '/' + day + '/' + year).toLocaleDateString();
 
 	return date;
 };
@@ -203,9 +179,9 @@ export const validateExperience = (arr) => {
 		) {
 			throw `Invalid string for company: ${arr[i].company}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].company)) throw "Company must be alphabetic";
-
 		arr[i].company.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].company)) throw "Company must be alphabetic";
+
 		if (
 			!arr[i].position ||
 			typeof arr[i].position !== "string" ||
@@ -213,9 +189,9 @@ export const validateExperience = (arr) => {
 		) {
 			throw `Invalid string for position: ${arr[i].position}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].position)) throw "Position must be alphabetic";
-
 		arr[i].position.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].position)) throw "Position must be alphabetic";
+
 		if (
 			!arr[i].startDate ||
 			typeof arr[i].startDate !== "string" ||

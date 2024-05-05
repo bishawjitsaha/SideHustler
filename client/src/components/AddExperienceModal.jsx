@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-function AddExperienceModal({isOpen, user, handleClose}){
+function AddExperienceModal({isOpen, user, handleClose, addExperience}){
     const [showAddModal, setShowAddModal] = useState(isOpen);
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
@@ -52,12 +52,13 @@ function AddExperienceModal({isOpen, user, handleClose}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
-            await axios.post(`http://localhost:3000/user/${user.userName}`, experiencePayload);
+            const res =  await axios.post(`http://localhost:3000/user/${user.userName}`, experiencePayload);
+            const addedExperience = res.data.experience;
             alert('Experience added successfully');
             handleClose();
-            window.location.reload();
+            addExperience(addedExperience);
         } catch (e) {
-            handleErrors(e);
+            handleErrors(e.response.data.message);
             setIsError(true);
         }
     }
@@ -69,7 +70,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                 isOpen={showAddModal}
                 style={customStyles}
                 contentLabel="Add Experience">
-                <h2>Add Experience</h2>
+                <h2 className='text-center text-lg font-semibold'>Add Experience</h2>
                 <form 
                     id='addExperienceForm'
                     onSubmit={handleSubmit}
@@ -81,6 +82,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             name='company'
                             placeholder='Enter Company Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
@@ -90,30 +92,41 @@ function AddExperienceModal({isOpen, user, handleClose}){
                             name='position'
                             placeholder='Enter Position Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
                         <label htmlFor='startDate'>Start Date: </label>
                         <input 
-                            type='text'
+                            type='date'
                             name='startDate'
                             placeholder='Enter Start Date Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
                     <div>
                         <label htmlFor='endDate'>End Date: </label>
                         <input 
-                            type='text'
+                            type='date'
                             name='endDate'
                             placeholder='Enter End Date Here'
                             onChange={handleChange}
+                            className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
                     </div>
-                    {isError && <div>{errorMessages}</div>}
-                    <button type='submit'>Add Experience</button>
+                    {isError && <div className='text-red-600 flex justify-center'>{errorMessages}</div>}
+                <div className='flex justify-end items-end flex-grow'>
+                    <button 
+                        onClick={handleCloseAddModal}
+                        className='my-4'>
+                            Close</button>
+                    <button 
+                        type='submit'
+                        className='my-4 ml-auto'>
+                            Add Experience</button>
+                </div>
                 </form>
-                <button onClick={handleCloseAddModal}>Close</button>
             </ReactModal>
         </div>
     )

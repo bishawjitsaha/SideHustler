@@ -128,7 +128,7 @@ router.route('/:username')
         return res.status(200).json(updatedUser);
       }
       catch (e) {
-        res.status(400).json({message: e.message})
+        res.status(400).json({message: e})
       }
     })
 
