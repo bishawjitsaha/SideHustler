@@ -79,6 +79,8 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string for school: ${obj.school}`;
 	}
+	if (!/^[a-zA-Z]+$/.test(obj.school)) throw "School must be alphabetic";
+
 	obj.school.trim();
 	if (
 		!obj.degree ||
@@ -87,6 +89,8 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string for degree: ${obj.degree}`;
 	}
+	if (!/^[a-zA-Z]+$/.test(obj.degree)) throw "Degree must be alphabetic";
+
 	obj.degree.trim();
 	if (
 		!obj.major ||
@@ -95,15 +99,20 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string for major: ${obj.major}`;
 	}
+	if (!/^[a-zA-Z]+$/.test(obj.major)) throw "Major must be alphabetic";
+
 	obj.major.trim();
 	
 	if (!obj.gradYear || 
 		typeof obj.gradYear !== "string" || 
 		obj.gradYear.trim().length === 0 || 
 		isNaN(obj.gradYear)){
-		throw `Invalid string for Grad Year: ${obj.gradYear}`;
+		throw `Invalid year for Grad Year: ${obj.gradYear}`;
 	}
 	obj.gradYear.trim();
+
+	if (parseInt(obj.gradYear) < 1930 || parseInt(obj.gradYear) > 2030)
+		throw `Grad Year should be between 1930 and 2030: ${obj.gradYear}`;
 
 	return obj;
 };
@@ -130,6 +139,8 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string for name of skill: ${arr[i].name}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].name)) throw "Skill name must be alphabetic";
+
 		arr[i].name = arr[i].name.trim();
 		if (
 			!arr[i].description ||
@@ -138,6 +149,8 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string for description of skill: ${arr[i].description}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+
 		arr[i].description = arr[i].description.trim();
 	}
 	return arr;
@@ -190,6 +203,8 @@ export const validateExperience = (arr) => {
 		) {
 			throw `Invalid string for company: ${arr[i].company}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].company)) throw "Company must be alphabetic";
+
 		arr[i].company.trim();
 		if (
 			!arr[i].position ||
@@ -198,6 +213,8 @@ export const validateExperience = (arr) => {
 		) {
 			throw `Invalid string for position: ${arr[i].position}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].position)) throw "Position must be alphabetic";
+
 		arr[i].position.trim();
 		if (
 			!arr[i].startDate ||

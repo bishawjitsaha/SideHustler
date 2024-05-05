@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 export const validateUsername = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
-		throw `Invalid string: ${str}`;
+		throw `Invalid string for username: ${str}`;
 	}
 	str.trim();
 	if (!/^[a-zA-Z0-9]+$/.test(str)) throw "String must be alphanumeric";
@@ -13,7 +13,7 @@ export const validateUsername = (str) => {
 
 export const validateName = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
-		throw `Invalid string: ${str}`;
+		throw `Invalid string for name: ${str}`;
 	}
 	str.trim();
 	if (!/^[a-zA-Z]+$/.test(str)) throw "String must be alphabetic";
@@ -30,7 +30,7 @@ export const validateString = (str) => {
 
 export const validateEmail = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
-		throw `Invalid string: ${str}`;
+		throw `Invalid string for email: ${str}`;
 	}
 	str.trim();
 	if (!isNaN(str)) throw "Invalid email";
@@ -48,9 +48,9 @@ export const validateAge = (age) => {
 	return age;
 };
 
-export const validateBio = (str) => { //add regex
+export const validateBio = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
-		throw `Invalid string: ${str}`;
+		throw `Invalid string for bio: ${str}`;
 	}
 	str.trim();
 	if (str.length < 15 || str.length > 250)
@@ -68,7 +68,7 @@ export const validatePosts = (arr) => {
 	return arr;
 };
 
-export const validateEducation = (obj) => { //add regex
+export const validateEducation = (obj) => {
 	if (!obj || typeof obj !== "object") {
 		throw `Invalid object: ${obj}`;
 	}
@@ -77,33 +77,43 @@ export const validateEducation = (obj) => { //add regex
 		typeof obj.school !== "string" ||
 		obj.school.trim().length === 0
 	) {
-		throw `Invalid string: ${obj.school}`;
+		throw `Invalid string for school: ${obj.school}`;
 	}
+	if (!/^[a-zA-Z]+$/.test(obj.school)) throw "School must be alphabetic";
+
 	obj.school.trim();
 	if (
 		!obj.degree ||
 		typeof obj.degree !== "string" ||
 		obj.degree.trim().length === 0
 	) {
-		throw `Invalid string: ${obj.degree}`;
+		throw `Invalid string for degree: ${obj.degree}`;
 	}
+	if (!/^[a-zA-Z]+$/.test(obj.degree)) throw "Degree must be alphabetic";
+
 	obj.degree.trim();
 	if (
 		!obj.major ||
 		typeof obj.major !== "string" ||
-		obj.major.trim().length === 0 
+		obj.major.trim().length === 0
 	) {
-		throw `Invalid string: ${obj.major}`;
+		throw `Invalid string for major: ${obj.major}`;
 	}
+	if (!/^[a-zA-Z]+$/.test(obj.major)) throw "Major must be alphabetic";
+
 	obj.major.trim();
 	
 	if (!obj.gradYear || 
 		typeof obj.gradYear !== "string" || 
 		obj.gradYear.trim().length === 0 || 
 		isNaN(obj.gradYear)){
-		throw `Invalid string: ${obj.gradYear}`;
+		throw `Invalid string for Grad Year: ${obj.gradYear}`;
 	}
 	obj.gradYear.trim();
+
+	if (parseInt(obj.gradYear) < 1930 || parseInt(obj.gradYear) > 2030)
+		throw `Grad Year should be between 1930 and 2030: ${obj.gradYear}`;
+
 
 	return obj;
 };
@@ -128,16 +138,20 @@ export const validateSkills = (arr) => {
 			typeof arr[i].name !== "string" ||
 			arr[i].name.trim().length === 0
 		) {
-			throw `Invalid string: ${arr[i].name}`;
+			throw `Invalid string for name of skill: ${arr[i].name}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].name)) throw "Skill name must be alphabetic";
+
 		arr[i].name = arr[i].name.trim();
 		if (
 			!arr[i].description ||
 			typeof arr[i].description !== "string" ||
 			arr[i].description.trim().length === 0
 		) {
-			throw `Invalid string: ${arr[i].description}`;
+			throw `Invalid string for description of skill: ${arr[i].description}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+
 		arr[i].description = arr[i].description.trim();
 	}
 	return arr;
@@ -148,9 +162,9 @@ export const checkDate = (date) => {
 	if (typeof date !== "string") throw `Error: must be a string!`;
 	date = date.trim();
 	if (date.length === 0)
-		throw `Error: cannot be an empty string or string with just spaces`;
+		throw `Error: date cannot be an empty string or string with just spaces`;
 	if (!isNaN(date))
-		throw `Error: is not a valid value for as it only contains digits`;
+		throw `Error: date is not a valid value for as it only contains digits`;
 
 	const monthDays = {
 		1: 31,
@@ -188,23 +202,27 @@ export const validateExperience = (arr) => {
 			typeof arr[i].company !== "string" ||
 			arr[i].company.trim().length === 0
 		) {
-			throw `Invalid string: ${arr[i].company}`;
+			throw `Invalid string for company: ${arr[i].company}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].company)) throw "Company must be alphabetic";
+
 		arr[i].company.trim();
 		if (
 			!arr[i].position ||
 			typeof arr[i].position !== "string" ||
 			arr[i].position.trim().length === 0
 		) {
-			throw `Invalid string: ${arr[i].position}`;
+			throw `Invalid string for position: ${arr[i].position}`;
 		}
+		if (!/^[a-zA-Z]+$/.test(arr[i].position)) throw "Position must be alphabetic";
+
 		arr[i].position.trim();
 		if (
 			!arr[i].startDate ||
 			typeof arr[i].startDate !== "string" ||
 			arr[i].startDate.trim().length === 0
 		) {
-			throw `Invalid string: ${arr[i].startDate}`;
+			throw `Invalid string for Start Date: ${arr[i].startDate}`;
 		}
 		arr[i].startDate.trim();
 		arr[i].startDate = checkDate(arr[i].startDate);
@@ -213,7 +231,7 @@ export const validateExperience = (arr) => {
 			typeof arr[i].endDate !== "string" ||
 			arr[i].endDate.trim().length === 0
 		) {
-			throw `Invalid string: ${arr[i].endDate}`;
+			throw `Invalid string for End Date: ${arr[i].endDate}`;
 		}
 		arr[i].endDate.trim();
 		arr[i].endDate = checkDate(arr[i].endDate);

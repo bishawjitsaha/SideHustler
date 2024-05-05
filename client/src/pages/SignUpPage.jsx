@@ -2,7 +2,6 @@ import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/firebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
-import {SocialSignIn} from '../components';
 import axios from 'axios';
 function SignUpPage(props) {
   const {currentUser} = useContext(AuthContext);
@@ -13,6 +12,16 @@ function SignUpPage(props) {
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch('Passwords do not match');
       return false;
+    }
+    try{
+      let {data} = await axios.get(`http://localhost:3000/api/verifyUser/${displayName.value}`)
+      console.log(data.isUserNameUnique);
+      if(data.isUserNameUnique === false){
+        alert("That username already exists");
+        return false;
+      }
+    } catch (e){
+      console.log(e);
     }
     try {
       let user = await doCreateUserWithEmailAndPassword(
@@ -150,8 +159,6 @@ function SignUpPage(props) {
         </button>
       </form>
       <br />
-      <SocialSignIn
-        type="signup" />
     </div>
   );
 }

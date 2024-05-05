@@ -2,12 +2,12 @@
 import { Router } from 'express';
 const router = Router();
 import { getUserByUserName, updateUserById } from '../data/users.js';
-import { validateUsername, validateName, validateEmail, validateAge, validateBio, validateExperience, validateEducation, validateSkills } from '../validation/userValidation.js';
 
 router.route('/:username')
     .get(async(req, res) => {
         try{
           const user = await getUserByUserName(`${req.params.username}`);
+          if(!user) return res.status(404).json({message: 'User not found'});
             return res.status(200).json(
               user
             )
@@ -19,13 +19,12 @@ router.route('/:username')
     .post(async (req, res) => {
       try{
         const user = await getUserByUserName(req.params.username);
-        if(!user) return res.status(404).json({message: 'User not found'});
+        if(!user) return res.status(404).json({message: 'User not found'});        
 
         const { 
           userName, 
           firstName, 
           lastName, 
-          email, 
           bio,
           school,
           degree,
@@ -45,7 +44,6 @@ router.route('/:username')
           userName: userName || user.userName,
           firstName: firstName || user.firstName,
           lastName: lastName || user.lastName,
-          email: email || user.email,
           bio: bio || user.bio,
           ...(school || user.education.school || degree || user.education.degree || major || user.education.major || gradYear || user.education.gradYear // if any education field is provided
             ? {
