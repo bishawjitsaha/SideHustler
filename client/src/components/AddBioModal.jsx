@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-function AddBioModal({isOpen, user, handleClose}){
+function AddBioModal({isOpen, user, handleClose, addBio}){
     const [showAddModal, setShowAddModal] = useState(isOpen);
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
@@ -40,10 +40,11 @@ function AddBioModal({isOpen, user, handleClose}){
         e.preventDefault();
         try{
             const validatedBio = validateBio(updatedUser.bio);
-            await axios.post(`http://localhost:3000/user/${user.userName}`, {bio: validatedBio})
+            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, {bio: validatedBio})
+            const addedBio = res.data.bio;
             alert('Bio Added');
             handleClose();
-            window.location.reload();
+            addBio(addedBio);
         }
         catch (e) {
             handleErrors(e);

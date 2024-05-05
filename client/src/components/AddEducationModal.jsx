@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-function AddEducationModal({isOpen, user, handleClose}){
+function AddEducationModal({isOpen, user, handleClose, addEducation}){
     const [showAddModal, setShowAddModal] = useState(isOpen);
     const [updatedUser, setUpdatedUser] = useState({...user.education});
     const [errorMessages, setErrorMessages] = useState('');
@@ -46,13 +46,13 @@ function AddEducationModal({isOpen, user, handleClose}){
                 major: validatedEducation.major,
                 gradYear: validatedEducation.gradYear
             };
-            await axios.post(`http://localhost:3000/user/${user.userName}`, educationPayload)
+            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, educationPayload)
+            const addedEducation = res.data.education;
             alert('Education Added');
             handleClose();
-            window.location.reload();
+            addEducation(addedEducation);
         }
         catch (e) {
-            console.log("Error: ", e)
             handleErrors(e);
             setIsError(true);
         }

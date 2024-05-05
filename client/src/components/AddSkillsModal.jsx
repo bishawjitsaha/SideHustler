@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-function AddSkillsModal({isOpen, user, handleClose}){
+function AddSkillsModal({isOpen, user, handleClose, addSkills}){
     const [showAddModal, setShowAddModal] = useState(isOpen);
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
@@ -47,10 +47,11 @@ function AddSkillsModal({isOpen, user, handleClose}){
                 name: validatedSkills[0].name,
                 description: validatedSkills[0].description
             };
-            await axios.post(`http://localhost:3000/user/${user.userName}`, skillsPayload);
+            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, skillsPayload);
+            const addedSkills = res.data.skills;
             alert('Skill added successfully');
             handleClose();
-            window.location.reload();
+            addSkills(addedSkills);
         } catch (e) {
             handleErrors(e);
             setIsError(true);

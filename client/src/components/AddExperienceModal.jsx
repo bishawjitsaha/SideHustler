@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-function AddExperienceModal({isOpen, user, handleClose}){
+function AddExperienceModal({isOpen, user, handleClose, addExperience}){
     const [showAddModal, setShowAddModal] = useState(isOpen);
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
@@ -52,12 +52,13 @@ function AddExperienceModal({isOpen, user, handleClose}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
-            await axios.post(`http://localhost:3000/user/${user.userName}`, experiencePayload);
+            const res =  await axios.post(`http://localhost:3000/user/${user.userName}`, experiencePayload);
+            const addedExperience = res.data.experience;
             alert('Experience added successfully');
             handleClose();
-            window.location.reload();
+            addExperience(addedExperience);
         } catch (e) {
-            handleErrors(e);
+            handleErrors(e.response.data.message);
             setIsError(true);
         }
     }

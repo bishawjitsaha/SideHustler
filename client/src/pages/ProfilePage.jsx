@@ -14,12 +14,21 @@ function ProfilePage() {
     const [showAddEducationModal, setShowAddEducationModal] = useState(false);
     const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
     const [showAddSkillsModal, setShowAddSkillsModal] = useState(false);
+    const [bio, setBio] = useState('');
+    const [education, setEducation] = useState({});
+    const [experience, setExperience] = useState([]);
+    const [skills, setSkills] = useState([]);
+
     const navigate = useNavigate();
 
     const fetchData = async () => {
         try{
             const res = await axios.get(`http://localhost:3000/user/${username}`);
             setUser(res.data);
+            setBio(res.data.bio);
+            setEducation(res.data.education);
+            setExperience(res.data.experience);
+            setSkills(res.data.skills);
         }
         catch (e) {
             console.error(e);
@@ -31,7 +40,7 @@ function ProfilePage() {
         if(currentUser){
             fetchData();
         }
-    }, [currentUser,username])
+    }, [currentUser,username, bio, education, experience, skills])
 
     const handleOpenInfoModal = () => {
         setShowInfoModal(true);
@@ -61,6 +70,22 @@ function ProfilePage() {
         setShowAddSkillsModal(false);
     };
 
+    const addBio = (newBio) => {
+        setBio(newBio);
+    }
+
+    const addEducation = (newEducation) => {
+        setEducation(newEducation);
+    }
+
+    const addExperience = (newExperience) => {
+        setExperience(newExperience);
+    }
+
+    const addSkills = (newSkill) => {
+        setSkills(newSkill);
+    }
+
   return (
     <div className='flex justify-center'>
         {user && (
@@ -72,7 +97,7 @@ function ProfilePage() {
                 <div className='grid grid-cols-2 gap-4'>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Bio</h2>
-                        {user.bio && <p>{user.bio}</p>}
+                        {user.bio && <p>{bio}</p>}
                         {(currentUser.displayName && currentUser.displayName === username) && !user.bio ? (
                             <button onClick={() => handleOpenBioModal()}>Add Bio</button>
                         ) : (
@@ -81,11 +106,11 @@ function ProfilePage() {
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Education</h2>
-                        {user.education.school && <p>{user.education.school}</p>}
-                        {user.education.degree && user.education.major && <p>{user.education.degree} in {user.education.major}</p>}
-                        {user.education.gradYear && <p>Graduated in {user.education.gradYear}</p>}
+                        {education.school && <p>{education.school}</p>}
+                        {education.degree && education.major && <p>{education.degree} in {education.major}</p>}
+                        {education.gradYear && <p>Graduated in {education.gradYear}</p>}
                         {(currentUser.displayName && currentUser.displayName === username) && 
-                            (!user.education.school || !user.education.degree || !user.education.gradYear || !user.education.major) ? (
+                            (!education.school || !education.degree || !education.gradYear || !education.major) ? (
                             <button onClick={() => handleOpenEducationModal()}>Add Education</button>
                         ) : (
                             null
@@ -93,7 +118,7 @@ function ProfilePage() {
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Experience</h2>
-                        {user.experience.map((exp, index) => (
+                        {experience.map((exp, index) => (
                             <div key={index} className='mb-2'>
                                 {exp.company && <p>{exp.company}</p>}
                                 {exp.position && <p>{exp.position}</p>}
@@ -105,7 +130,7 @@ function ProfilePage() {
                     </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Skills</h2>
-                        {user.skills.map((skill, index) => (
+                        {skills.map((skill, index) => (
                             <div key={index} className='mb-2'>
                                 {skill.name && <p className='text-left'>{skill.name}</p>}
                                 {skill.description && <p className='text-left ml-5'>{skill.description}</p>}
@@ -145,28 +170,32 @@ function ProfilePage() {
                     <AddBioModal 
                         isOpen={showAddBioModal} 
                         user = {user}
-                        handleClose={handleCloseModals} />
+                        handleClose={handleCloseModals}
+                        addBio={addBio} />
                     )}
 
                     {showAddEducationModal && (
                     <AddEducationModal 
                         isOpen={showAddEducationModal} 
                         user = {user}
-                        handleClose={handleCloseModals} />
+                        handleClose={handleCloseModals}
+                        addEducation={addEducation} />
                     )}
 
                     {showAddExperienceModal && (
                     <AddExperienceModal 
                         isOpen={showAddExperienceModal} 
                         user = {user}
-                        handleClose={handleCloseModals} />
+                        handleClose={handleCloseModals}
+                        addExperience={addExperience} />
                     )}
 
                     {showAddSkillsModal && (
                     <AddSkillsModal 
                         isOpen={showAddSkillsModal} 
                         user = {user}
-                        handleClose={handleCloseModals} />
+                        handleClose={handleCloseModals} 
+                        addSkills={addSkills}/>
                     )}
 
                     {showInfoModal && 
@@ -174,6 +203,10 @@ function ProfilePage() {
                         isOpen={showInfoModal}
                         user = {user}
                         handleClose={handleCloseModals}
+                        addBio={addBio}
+                        addEducation={addEducation}
+                        addExperience={addExperience}
+                        addSkills={addSkills}
                     />}
                 </div>
 

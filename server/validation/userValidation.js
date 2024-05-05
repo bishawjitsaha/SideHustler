@@ -1,6 +1,7 @@
 // Validate all the data from users.js\
 
 import { ObjectId } from "mongodb";
+import moment from "moment";
 
 export const validateUsername = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
@@ -140,9 +141,9 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string for name of skill: ${arr[i].name}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].name)) throw "Skill name must be alphabetic";
-
 		arr[i].name = arr[i].name.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+
 		if (
 			!arr[i].description ||
 			typeof arr[i].description !== "string" ||
@@ -150,21 +151,45 @@ export const validateSkills = (arr) => {
 		) {
 			throw `Invalid string for description of skill: ${arr[i].description}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
-
 		arr[i].description = arr[i].description.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+
 	}
 	return arr;
 };
 
-export const checkDate = (date) => {
-	if (date === undefined) throw `Error!`;
-	if (typeof date !== "string") throw `Error: must be a string!`;
-	date = date.trim();
-	if (date.length === 0)
-		throw `Error: date cannot be an empty string or string with just spaces`;
+export const checkDate = (start, end) => {
+	if (start === undefined) throw `Error!`;
+	if (end === undefined) throw `Error!`;
 
-	return date;
+	if((moment(start, 'YYYY-MM-DD', true).isValid())) {
+        start = moment(start, "YYYY-MM-DD", true).format("MM-DD-YYYY");
+    } else {
+        throw "Invalid start date format";
+    }
+    
+    if(moment(end, 'YYYY-MM-DD', true).isValid()) {
+        end = moment(end, 'YYYY-MM-DD', true).format("MM-DD-YYYY");
+    } else {
+        throw "Invalid end date format";
+    }
+
+	if(!moment(start, 'MM-DD-YYYY', true).isValid()){
+        throw `Invalid Date, ${date}, must be in MM/DD/YYYY format`;
+    }
+
+	if(!moment(end, 'MM-DD-YYYY', true).isValid()){
+		throw `Invalid Date, ${date}, must be in MM/DD/YYYY format`;
+	}
+
+    const startDate = moment(start, "MM-DD-YYYY");
+	const endDate = moment(end, "MM-DD-YYYY");
+	if(startDate.isAfter(endDate)){
+		throw "Start date must be before end date";
+	}
+
+	return {startDate, endDate};
+
 };
 
 export const validateExperience = (arr) => {
@@ -180,9 +205,9 @@ export const validateExperience = (arr) => {
 		) {
 			throw `Invalid string for company: ${arr[i].company}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].company)) throw "Company must be alphabetic";
-
 		arr[i].company.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].company)) throw "Company must be alphabetic";
+
 		if (
 			!arr[i].position ||
 			typeof arr[i].position !== "string" ||
@@ -190,9 +215,9 @@ export const validateExperience = (arr) => {
 		) {
 			throw `Invalid string for position: ${arr[i].position}`;
 		}
-		if (!/^[a-zA-Z]+$/.test(arr[i].position)) throw "Position must be alphabetic";
-
 		arr[i].position.trim();
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].position)) throw "Position must be alphabetic";
+
 		if (
 			!arr[i].startDate ||
 			typeof arr[i].startDate !== "string" ||
@@ -201,7 +226,6 @@ export const validateExperience = (arr) => {
 			throw `Invalid string for Start Date: ${arr[i].startDate}`;
 		}
 		arr[i].startDate.trim();
-		arr[i].startDate = checkDate(arr[i].startDate);
 		if (
 			!arr[i].endDate ||
 			typeof arr[i].endDate !== "string" ||
@@ -210,7 +234,12 @@ export const validateExperience = (arr) => {
 			throw `Invalid string for End Date: ${arr[i].endDate}`;
 		}
 		arr[i].endDate.trim();
-		arr[i].endDate = checkDate(arr[i].endDate);
+
+		const {startDate, endDate} = checkDate(arr[i].startDate, arr[i].endDate);
+
+		arr[i].startDate = startDate.format("YYYY-MM-DD");
+		arr[i].endDate = endDate.format("YYYY-MM-DD");
+		
 	}
 	return arr;
 };

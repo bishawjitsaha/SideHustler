@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-function EditInfoModal({isOpen, user, handleClose}) {
+function EditInfoModal({isOpen, user, handleClose, addBio, addEducation, addExperience, addSkills}) {
   const [showEditModal, setShowEditModal] = useState(isOpen);
   const [updatedUser, setUpdatedUser] = useState({...user});
   const [errorMessages, setErrorMessages] = useState('');
@@ -114,10 +114,17 @@ function EditInfoModal({isOpen, user, handleClose}) {
         skillsList: skillSelected,
       }
 
-      await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
+      const res = await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
+      const editedBio = res.data.bio;
+      const editedEducation = res.data.education;
+      const editedExperience = res.data.experience;
+      const editedSkills = res.data.skills;
       alert('Info Updated');
       handleClose();
-      window.location.reload();
+      addBio(editedBio);
+      addEducation(editedEducation);
+      addExperience(editedExperience);
+      addSkills(editedSkills);
     }
     catch(e){
       setIsError(true);
