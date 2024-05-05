@@ -1,4 +1,5 @@
 export { default as Post } from "./Post";
+export { default as User } from "./User";
 export { default as SearchBar } from "./SearchBar";
 export { default as SearchPostsFilters } from "./SearchPostsFilters";
 export { default as SearchResult } from "./SearchResult";
@@ -11,4 +12,3 @@ export { default as EditInfoModal } from "./EditInfoModal";
 export { default as Navigation } from "./Navigation";
 export { default as PrivateRoute } from "./PrivateRoute";
 export { default as SignOut } from "./SignOut";
-export { default as SocialSignIn } from "./SocialSignIn";
