@@ -97,7 +97,7 @@ function ProfilePage() {
                             <div key={index} className='mb-2'>
                                 {exp.company && <p>{exp.company}</p>}
                                 {exp.position && <p>{exp.position}</p>}
-                                {exp.startDate && exp.endDate && <p>{exp.startDate} - {exp.endDate}</p>}
+                                {exp.startDate && exp.endDate && <p>{exp.startDate} to {exp.endDate}</p>}
                             </div>
                         ))}
                         {currentUser.displayName && currentUser.displayName === username && 

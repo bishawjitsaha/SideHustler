@@ -268,7 +268,7 @@ function EditInfoModal({isOpen, user, handleClose}) {
               <div className='mr-4'>
                   <label htmlFor="startDate">Start Date: </label>
                   <input 
-                      type="text" 
+                      type="date" 
                       id='startDate' 
                       name='startDate' 
                       placeholder='Start Date'
@@ -279,7 +279,7 @@ function EditInfoModal({isOpen, user, handleClose}) {
               <div className='mr-4'>
                   <label htmlFor="endDate">End Date: </label>
                   <input 
-                      type="text" 
+                      type="date" 
                       id='endDate' 
                       name='endDate' 
                       placeholder='End Date'
