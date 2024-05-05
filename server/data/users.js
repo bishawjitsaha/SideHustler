@@ -21,47 +21,19 @@ export async function createUser(id,userName, firstName, lastName, email, age) {
 		posts: [],
 		bio: "",
 		education: {
-			// school: "",
-			// degree: "",
-			// major: "",
-			// gradYear: "",
 			school: null,
 			degree: null,
 			major: null,
 			gradYear: null,
 		},
-		experience: [
-			// {
-			// 	company: "",
-			// 	position: "",
-			// 	startDate: "",
-			// 	endDate: "",
-			// },
-		],
-		skills: [
-			// {
-			// 	name: "",
-			// 	description: "",
-			// },
-		],
+		experience: [],
+		skills: [],
 		rating: {
 			average: null,
 			total: 0,
 		},
-		reservedTime: [
-			// {
-				// dateStart: "",
-			// 	timeStart: "",
-			// 	timeEnd: "",
-			// 	dateEnd: "",
-			// },
-		],
-        applications: [
-            // {
-            //     postId: "",
-            //     status: "",
-            // }
-        ]
+		reservedTime: [],
+        applications: []
 	};
 
 	const insertInfo = await userCollection.insertOne(newUser);

@@ -37,7 +37,8 @@ router.route("/create").post(async (req, res) => {
       req.body.taskPayment,
       req.body.posterId,
       req.body.photos,
-      req.body.workType
+      req.body.workType,
+      req.body.tags,
     );
     return res.status(200).json({ post: newPost });
   } catch (e) {
