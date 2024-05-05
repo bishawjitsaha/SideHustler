@@ -25,6 +25,18 @@ export async function doCreateUserWithEmailAndPassword(
   return { user: auth.currentUser, idToken: idToken };
 }
 
+export async function doUpdateUserDisplayName(newDisplayName){
+  const auth = getAuth();
+  const user = auth.currentUser
+  if(user){
+    await updateProfile(user, {displayName: newDisplayName});
+    return newDisplayName;
+  }
+  else {
+    throw new Error("No user is logged in!");
+  }
+}
+
 export async function doChangePassword(email, oldPassword, newPassword) {
   const auth = getAuth();
   let credential = EmailAuthProvider.credential(email, oldPassword);
@@ -38,20 +50,6 @@ export async function doChangePassword(email, oldPassword, newPassword) {
 export async function doSignInWithEmailAndPassword(email, password) {
   let auth = getAuth();
   await signInWithEmailAndPassword(auth, email, password);
-}
-
-export async function doSocialSignIn() {
-    let auth = getAuth();
-    let flag = false;
-    let socialProvider = new GoogleAuthProvider();
-    let result = await signInWithPopup(auth, socialProvider);
-    let idToken = await auth.currentUser.getIdToken();
-    if (result._tokenResponse.isNewUser) {
-      flag = true;
-      console.log(`New user detected, flag set to: ${flag}`);
-    }
-    return {result: result, flag: flag, idToken: idToken};
-
 }
 
 export async function doPasswordReset(email) {

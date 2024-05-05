@@ -19,7 +19,7 @@ const customStyles = {
   }
 };
 
-const AddPost = ({ isOpen, handleClose }) => {
+const AddPost = ({ isOpen, handleClose, addPost }) => {
   const [showAddModal, setShowAddModal] = useState(isOpen);
   const [newPost, setNewPost] = useState({
     title: '',
@@ -28,7 +28,6 @@ const AddPost = ({ isOpen, handleClose }) => {
     dateEnd:'',
     timeStart:'',
     timeEnd:'',
-    // taskTime: { dateStart:'', dateEnd:'', timeStart:'', timeEnd:''},
     taskPayment: null,
     workType: 'remote'
   });
@@ -39,6 +38,11 @@ const AddPost = ({ isOpen, handleClose }) => {
     setErrorMessages(errorMessage);
     setIsError(true);
   };
+
+  const handleClearErrors = () => {
+    setErrorMessages('');
+    setIsError(false);
+  }
 
   const handleCloseAddModal = () => {
     setShowAddModal(false);
@@ -51,11 +55,12 @@ const AddPost = ({ isOpen, handleClose }) => {
   };
 
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser.uid);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    handleClearErrors();
     try {
         if(!currentUser) throw "No user logged in. Please log in to add a post."
+        if(/^[0-9]{0,12}([.][0-9]{2,2})?$/.test(newPost.taskPayment) === false) throw "Invalid payment amount."
         let postObj = {
             title: newPost.title,
             description: newPost.description,
@@ -65,17 +70,21 @@ const AddPost = ({ isOpen, handleClose }) => {
             photos:[],
             posterId: currentUser.uid,
         };
-        console.log("USER: ")
-        console.log(postObj)
       const response = await axios.post('http://localhost:3000/posts/create', postObj);
-      if (response.status === 201) {
-        alert('Post Added Successfully');
-        handleClose();
-        window.location.reload();
+
+      addPost(response.data.post)
+      if (response.status === 200) {
+            alert('Post Added Successfully');
+            handleCloseAddModal();
       }
     } catch (error) {
-        console.log(error.response.data.error);
-        handleErrors(error.response.data.error);
+        if(error.response){
+            // console.log(error.response.data.error);
+            handleErrors(error.response.data.error);
+        }else{
+            // console.log(error);
+            handleErrors(error);
+        }
     }
   };
 

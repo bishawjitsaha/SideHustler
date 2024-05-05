@@ -34,7 +34,6 @@ export const createPost = async (title, description, taskTime, taskPayment, post
     if (!post) throw "Could not find post with that id";
 
     let newUser = await userCollection.findOneAndUpdate(
-        // {_id: new ObjectId(posterId)},
         {_id: posterId},
         {$push: {posts: newId}},
         {returnDocument: "after"}
