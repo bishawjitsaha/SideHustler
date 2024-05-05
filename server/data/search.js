@@ -1,4 +1,4 @@
-import { users, posts } from '../config/mongoCollections';
+import { users, posts } from '../config/mongoCollections.js';
 let checkString = (string) => {
     string = string.trim()
     if(typeof string !== 'string' || string === ''){
