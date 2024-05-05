@@ -3,6 +3,15 @@ import {validatePost, validId, validateTitle, validateDescription, validateTaskT
 import {getUserById} from './users.js';
 import {ObjectId} from 'mongodb';
 
+export const getAllPosts = async () => {
+    const postCollection = await posts();
+    const allPosts = await postCollection.find({}).toArray();
+    allPosts.forEach(post => {
+        post._id = post._id.toString();
+    });
+    return allPosts;
+}
+
 export const createPost = async (title, description, taskTime, taskPayment, posterId, photos, workType) => {
     let validData = validatePost(title, description, taskTime, taskPayment, workType);
 
