@@ -29,7 +29,6 @@ router.route("/:id").get(async (req, res) => {
 
 router.route("/create").post(async (req, res) => {
   try {
-    // export const createPost = async (title, description, taskTime, taskPayment, posterId, photos, workType) => {
     let newPost = await postFunctions.createPost(
       req.body.title,
       req.body.description,
@@ -72,10 +71,13 @@ router.route("/update-status/:id").put(async (req, res) => {
   }
 });
 
-router.route(verifyToken, "/applicant-add/:id").put(async (req, res) => {
+router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
   try {
+    console.log('hello')
     const uid = req.uid;
+    console.log(req.params.id, uid)
     let updatedPost = await postFunctions.addApplicant(req.params.id, uid);
+    console.log(updatedPost)
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
@@ -83,11 +85,14 @@ router.route(verifyToken, "/applicant-add/:id").put(async (req, res) => {
   }
 });
 
-router.route("/applicant-remove/:id").put(async (req, res) => {
+router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
   try {
+    console.log('remove')
+    const uid = req.uid;
+    console.log(req.params.id, uid)
     let updatedPost = await postFunctions.removeApplicant(
       req.params.id,
-      req.body.applicantId
+      uid
     );
     return res.status(200).json({ post: updatedPost });
   } catch (e) {

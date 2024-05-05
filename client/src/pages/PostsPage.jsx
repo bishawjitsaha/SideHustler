@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Post, AddPost } from "../components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PostsPage = () => {
   const [posts, setPosts] = useState(null);
@@ -26,16 +27,16 @@ const PostsPage = () => {
     };
 
     fetchPosts();
-
   }, []);
 
-    useEffect(() => {
-      console.log("Post State: ", posts)
+  useEffect(() => {
+    console.log("Post State: ", posts);
   }, [posts]);
 
-    const addPost = async (newPost) => {
-        setPosts([...posts, newPost]);
-    }
+  const addPost = async (newPost) => {
+    setPosts([...posts, newPost]);
+  };
+
   return (
     <>
       <button
@@ -45,11 +46,21 @@ const PostsPage = () => {
         New Post
       </button>
 
-      {isModalOpen && <AddPost isOpen={isModalOpen} handleClose={handleCloseModal} addPost={addPost} />}
+      {isModalOpen && (
+        <AddPost
+          isOpen={isModalOpen}
+          handleClose={handleCloseModal}
+          addPost={addPost}
+        />
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
-        {posts && posts.map((post) => (
-          <Post key={post._id} post={post} />
-        ))}
+        {posts &&
+          posts.map((post) => (
+            <Link key={post._id} to={`/post/${post._id}`}>
+              <Post post={post} />
+            </Link>
+          ))}
       </div>
     </>
   );

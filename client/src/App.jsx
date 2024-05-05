@@ -1,5 +1,5 @@
 import "./App.css";
-import { HomePage, SearchPage, PostsPage } from "./pages";
+import { HomePage, SearchPage, PostsPage, PostPage } from "./pages";
 import { Routes, Route, NavLink } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import SignUpPage from './pages/SignUpPage.jsx';
@@ -8,7 +8,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import {AuthProvider} from './context/AuthContext.jsx';
 import Navigation from './components/Navigation.jsx';
-import NotFoundPage from "./pages/NotFoundPage.jsx";
+import NotFoundPage from './pages/NotFoundPage.jsx';
 
 function App() {
   return (
@@ -26,6 +26,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/posts" element={<PostsPage />} />
+              <Route path="/post/:id" element={<PostPage />} />
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
