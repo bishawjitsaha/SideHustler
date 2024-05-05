@@ -3,7 +3,7 @@ import { Post, AddPost } from "../components";
 import axios from "axios";
 
 const PostsPage = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -29,6 +29,13 @@ const PostsPage = () => {
 
   }, []);
 
+    useEffect(() => {
+      console.log("Post State: ", posts)
+  }, [posts]);
+
+    const addPost = async (newPost) => {
+        setPosts([...posts, newPost]);
+    }
   return (
     <>
       <button
@@ -38,9 +45,9 @@ const PostsPage = () => {
         New Post
       </button>
 
-      {isModalOpen && <AddPost isOpen={isModalOpen} handleClose={handleCloseModal} />}
+      {isModalOpen && <AddPost isOpen={isModalOpen} handleClose={handleCloseModal} addPost={addPost} />}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
-        {posts.map((post) => (
+        {posts && posts.map((post) => (
           <Post key={post._id} post={post} />
         ))}
       </div>
