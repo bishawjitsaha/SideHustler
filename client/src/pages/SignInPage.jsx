@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import SocialSignIn from '../components/SocialSignIn.jsx';
+import { SocialSignIn } from '../components';
 import {Navigate, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
 import {

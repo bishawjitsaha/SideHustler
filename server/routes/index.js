@@ -1,5 +1,5 @@
 import homeRoute from './home.js';
-import profileRoute from './profile.js';
+import userRoute from './user.js';
 import signupRoute from './signup.js';
 import postRoute from './posts.js';
 
@@ -8,7 +8,7 @@ const constructorMethod = (app) => {
         res.redirect('/home'); 
     });
     app.use('/home', homeRoute);
-    app.use ('/profile', profileRoute)
+    app.use ('/user', userRoute)
     app.use('/signup', signupRoute )
     app.use('/posts', postRoute)
 

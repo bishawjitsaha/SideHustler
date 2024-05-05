@@ -1,15 +1,6 @@
 import React from "react";
 
 const   Post = ({ post }) => {
-    // let 
-    /*
-    taskTime
-: 
-dateEnd: "2024-06-30T22:00:00.000Z"
-dateStart: "2024-05-01T12:00:00.000Z"
-timeEnd: "18:00"
-timeStart: "08:00"
-    */
   return (
         <div className="bg-blue-400 shadow-md rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">{post.title}</h2>

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "seed": "node ./tasks/seed.js"
   },
   "repository": {
@@ -20,13 +20,20 @@
   },
   "homepage": "https://github.com/bishawjitsaha/SideHustler#readme",
   "dependencies": {
+    "axios": "^1.6.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "moment": "^2.30.1",
     "firebase-admin": "^12.0.0",
+    "fs": "^0.0.1-security",
+    "moment": "^2.30.1",
     "mongodb": "^6.5.0",
+    "socket.io": "^4.7.5",
     "uuid": "^9.0.1",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "xss": "^1.0.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
