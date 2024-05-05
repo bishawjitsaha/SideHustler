@@ -1,6 +1,8 @@
 import homeRoute from './home.js';
 import userRoute from './user.js';
 import signupRoute from './signup.js';
+import searchRoute from './search.js';
+import postsRoute from './posts.js';
 import apiRoute from './api.js';
 
 const constructorMethod = (app) => {
@@ -10,10 +12,12 @@ const constructorMethod = (app) => {
     app.use('/home', homeRoute);
     app.use ('/user', userRoute)
     app.use('/signup', signupRoute )
+    app.use('/search', searchRoute)
+    app.use('/posts', postsRoute)
     app.use('/api', apiRoute)
 
     app.use('*', (req, res) => {
-    res.sendStatus(404);
+        res.sendStatus(404);
     });
 };
 

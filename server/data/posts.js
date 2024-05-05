@@ -3,7 +3,7 @@ import {validatePost, validId, validateTitle, validateDescription, validateTaskT
 import {getUserById} from './users.js';
 import {ObjectId} from 'mongodb';
 
-export const createPost = async (title, description, taskTime, taskPayment, posterId, photos, workType) => {
+export const createPost = async (title, description, taskTime, taskPayment, posterId, photos, workType, tags) => {
     let validData = validatePost(title, description, taskTime, taskPayment, workType);
 
 
@@ -16,7 +16,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
     const newPost = {
         title: validData.title,
         description: validData.description,
-        tags: [], //array of tags, todo
+        tags: tags, //array of tags, todo
         taskTime: validData.taskTime,
         taskPayment: validData.taskPayment,
         posterId: posterId,
@@ -24,6 +24,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
         workType: validData.workType, // "remote" or "in-person"
         applicants: [],
         status: "open", //Status : Open, Closed, In Progress, Completed
+        selectedApplicant: null,
         dateCreated: new Date(),
     };
 
@@ -34,7 +35,6 @@ export const createPost = async (title, description, taskTime, taskPayment, post
     if (!post) throw "Could not find post with that id";
 
     let newUser = await userCollection.findOneAndUpdate(
-        // {_id: new ObjectId(posterId)},
         {_id: posterId},
         {$push: {posts: newId}},
         {returnDocument: "after"}
@@ -51,6 +51,15 @@ export const getPostById = async (id) => {
     if (!post) throw "Post not found";
     post._id = post._id.toString();
     return post;
+}
+
+export const getAllPosts = async () => {
+    const postCollection = await posts();
+    const allPosts = await postCollection.find({}).toArray();
+    allPosts.forEach(post => {
+        post._id = post._id.toString();
+    });
+    return allPosts;
 }
 
 export const updatePostById = async (id, updatedPost) => {
@@ -122,7 +131,6 @@ export const addApplicant = async (postId, applicantId) => {
 
     const userCollection = await users();
     let updatedUser = await userCollection.findOneAndUpdate(
-        // { _id: new ObjectId(applicantId) },
         { _id: applicantId },
         { $push: {applications: {postId: postId, status: "pending"}} },
         { returnDocument: "after" }
@@ -159,8 +167,17 @@ export const removeApplicant = async (postId, applicantId) => {
     if (!updatedPost) throw "Failed to update post";
     updatedPost._id = updatedPost._id.toString();
 
+    if(post.selectedApplicant === applicantId){
+        updatedPost = await postCollection.findOneAndUpdate(
+            { _id: new ObjectId(postId) },
+            { $set: {selectedApplicant: null} },
+            { returnDocument: "after" }
+        );
+        if (!updatedPost) throw "Failed to update post";
+        updatedPost._id = updatedPost._id.toString();
+    }
+
     let updatedUser = await userCollection.findOneAndUpdate(
-        // { _id: new ObjectId(applicantId) },
         { _id: applicantId },
         { $pull: { applications: {postId: updatedPost._id}}},
         { returnDocument: "after" }
@@ -188,7 +205,6 @@ export const deletePostById = async (postId, currentUserId) => {
 
     for (let i = 0; i < post.applicants.length; i++) {
        let updatedApp = await userCollection.findOneAndUpdate(
-        //    { _id: new ObjectId(post.applicants[i]) },
            { _id: post.applicants[i] },
            { $pull: { applications: { postId: post._id } } },
            { returnDocument: "after" }
@@ -198,7 +214,6 @@ export const deletePostById = async (postId, currentUserId) => {
     
     let updateUser = await userCollection.findOneAndUpdate(
          //removes post from posts[] of that user
-        //  { _id: new ObjectId(user._id) },
          { _id: user._id},
          { $pull: { posts: post._id }},
          { returnDocument: "after" }
