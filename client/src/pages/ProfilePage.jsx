@@ -18,6 +18,7 @@ function ProfilePage() {
     const [education, setEducation] = useState({});
     const [experience, setExperience] = useState([]);
     const [skills, setSkills] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     const navigate = useNavigate();
 
@@ -29,6 +30,7 @@ function ProfilePage() {
             setEducation(res.data.education);
             setExperience(res.data.experience);
             setSkills(res.data.skills);
+            setPosts(res.data.posts);
         }
         catch (e) {
             console.error(e);
@@ -157,9 +159,10 @@ function ProfilePage() {
                     }
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Posts</h2>
-                        {user.posts.length > 0 ? user.posts.map((post, index) => (
+                        {posts.length > 0 ? posts.map((post, index) => (
                             <div key={index} className='mb-2'>
-                                {post}
+                                {post.title && <p className='text-left'>{post.title}</p>}
+                                {post.description && <p className='text-left ml-5'>{post.description}</p>}
                             </div>
                         )) : <p>No Posts</p>}
                     </div>

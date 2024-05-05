@@ -2,15 +2,18 @@
 import { Router } from 'express';
 const router = Router();
 import { getUserByUserName, updateUserById } from '../data/users.js';
+import { getPostsByUsername } from '../data/posts.js';
 
 router.route('/:username')
     .get(async(req, res) => {
         try{
           const user = await getUserByUserName(`${req.params.username}`);
           if(!user) return res.status(404).json({message: 'User not found'});
+          const posts = await getPostsByUsername(`${req.params.username}`);
+          if(!posts) return res.status(404).json({message: 'Posts not found'});
+          user.posts = posts;
             return res.status(200).json(
-              user
-            )
+              user            )
         }
         catch (err) {
             res.status(400).json({message: err.message})
