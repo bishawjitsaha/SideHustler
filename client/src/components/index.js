@@ -1,4 +1,5 @@
 export { default as Post } from "./Post";
+export { default as User } from "./User";
 export { default as SearchBar } from "./SearchBar";
 export { default as SearchPostsFilters } from "./SearchPostsFilters";
 export { default as SearchResult } from "./SearchResult";
