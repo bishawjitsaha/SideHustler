@@ -9,11 +9,11 @@ const   Post = ({ post }) => {
 
             <div className="flex justify-between text-gray-600">
                 <p>Start Date: {new Date(post.taskTime.dateStart).toLocaleString("en-US", { year: 'numeric', month: '2-digit', day: '2-digit' })} </p>
-                <p>Work Type: {post.workType.charAt(0).toUpperCase() + post.workType.slice(1)}</p>
+                <p>Status: {post.status}</p>
             </div>
             <div className="flex justify-between text-gray-600">
-                <p>Status: {post.status}</p>
-                <p>Payment: ${post.taskPayment}</p>
+                <p>Work Type: {post.workType.charAt(0).toUpperCase() + post.workType.slice(1)}</p>
+                <p>Payment: ${post.taskPayment.toFixed(2)}</p>
             </div>
       </div>
   );

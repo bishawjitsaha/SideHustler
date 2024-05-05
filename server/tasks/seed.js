@@ -341,46 +341,50 @@ const main = async () => {
     // Create dummy posts for tasks or jobs
     const taskTime1 = { dateStart: '06/25/2024', dateEnd: '06/26/2024', timeStart: '17:00', timeEnd: '10:00' };
     const post1 = await postData.createPost(
-      'Need a babysitter for the weekend',
-      'Looking for a responsible babysitter to watch my two children (ages 5 and 8) for the weekend. Job includes preparing meals, supervising playtime, and ensuring their safety.',
-      taskTime1,
-      100,
-      user1._id,
-      [], // Empty array for photos
-      'in-person'
+        "Need a babysitter for the weekend",
+        "Looking for a responsible babysitter to watch my two children (ages 5 and 8) for the weekend. Job includes preparing meals, supervising playtime, and ensuring their safety.",
+        taskTime1,
+        100,
+        user1._id,
+        [], // Empty array for photos
+        "in-person",
+        ["Indoors", "Childcare"]
     );
 
     const taskTime2 = { dateStart: '05/01/2024', dateEnd: '06/30/2024', timeStart: '08:00', timeEnd: '18:00' };
     const post2 = await postData.createPost(
-      'Website development needed',
-      'Looking for a skilled web developer to create a website for my small business. The website should be responsive, user-friendly, and include an online store.',
-      taskTime2,
-      2500,
-      user2._id,
-      [], // Empty array for photos
-      'remote'
+        "Website development needed",
+        "Looking for a skilled web developer to create a website for my small business. The website should be responsive, user-friendly, and include an online store.",
+        taskTime2,
+        2500,
+        user2._id,
+        [], // Empty array for photos
+        "remote",
+        ["Design", "IT Support"]
     );
 
     const taskTime3 = { dateStart: '08/20/2024', dateEnd: '08/20/2024', timeStart: '14:00', timeEnd: '17:00' };
     const post3 = await postData.createPost(
-      'Furniture assembly required',
-      'Need someone to assemble a new dining table and chairs that I recently purchased. Must have experience with furniture assembly and necessary tools.',
-      taskTime3,
-      75,
-      user3._id,
-      [], // Empty array for photos
-      'in-person'
+        "Furniture assembly required",
+        "Need someone to assemble a new dining table and chairs that I recently purchased. Must have experience with furniture assembly and necessary tools.",
+        taskTime3,
+        75,
+        user3._id,
+        [], // Empty array for photos
+        "in-person",
+        ["Assembly", "Indoors", "Handywork"]
     );
 
     const taskTime4 = { dateStart: '05/10/2024', dateEnd: '06/15/2024', timeStart: '16:00', timeEnd: '18:00' };
     const post4 = await postData.createPost(
-      'Seeking a math tutor for high school student',
-      'Looking for a math tutor to help my high school student prepare for upcoming exams. Tutoring sessions should cover algebra, geometry, and trigonometry.',
-      taskTime4,
-      30,
-      user4._id,
-      [], // Empty array for photos
-      'remote'
+        "Seeking a math tutor for high school student",
+        "Looking for a math tutor to help my high school student prepare for upcoming exams. Tutoring sessions should cover algebra, geometry, and trigonometry.",
+        taskTime4,
+        30,
+        user4._id,
+        [], // Empty array for photos
+        "remote",
+        ["Tutoring"]
     );
     console.log('Dummy posts created successfully!');
 

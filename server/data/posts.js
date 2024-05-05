@@ -3,7 +3,7 @@ import {validatePost, validId, validateTitle, validateDescription, validateTaskT
 import {getUserById} from './users.js';
 import {ObjectId} from 'mongodb';
 
-export const createPost = async (title, description, taskTime, taskPayment, posterId, photos, workType) => {
+export const createPost = async (title, description, taskTime, taskPayment, posterId, photos, workType, tags) => {
     let validData = validatePost(title, description, taskTime, taskPayment, workType);
 
 
@@ -16,7 +16,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
     const newPost = {
         title: validData.title,
         description: validData.description,
-        tags: [], //array of tags, todo
+        tags: tags, //array of tags, todo
         taskTime: validData.taskTime,
         taskPayment: validData.taskPayment,
         posterId: posterId,
@@ -24,6 +24,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
         workType: validData.workType, // "remote" or "in-person"
         applicants: [],
         status: "open", //Status : Open, Closed, In Progress, Completed
+        selectedApplicant: null,
         dateCreated: new Date(),
     };
 
@@ -165,6 +166,16 @@ export const removeApplicant = async (postId, applicantId) => {
 
     if (!updatedPost) throw "Failed to update post";
     updatedPost._id = updatedPost._id.toString();
+
+    if(post.selectedApplicant === applicantId){
+        updatedPost = await postCollection.findOneAndUpdate(
+            { _id: new ObjectId(postId) },
+            { $set: {selectedApplicant: null} },
+            { returnDocument: "after" }
+        );
+        if (!updatedPost) throw "Failed to update post";
+        updatedPost._id = updatedPost._id.toString();
+    }
 
     let updatedUser = await userCollection.findOneAndUpdate(
         { _id: applicantId },
