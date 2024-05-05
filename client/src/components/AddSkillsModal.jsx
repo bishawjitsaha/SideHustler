@@ -94,13 +94,13 @@ function AddSkillsModal({isOpen, user, handleClose}){
 
                     <div className='flex justify-end items-end flex-grow'>
                         <button 
-                            type='submit'
-                            className='my-4'>
-                                Add Skill</button>
-                        <button 
                             onClick={handleCloseAddModal}
-                            className='my-4 ml-auto'>
+                            className='my-4'>
                                 Close</button>
+                        <button 
+                            type='submit'
+                            className='my-4 ml-auto'>
+                                Add Skill</button>
                     </div>
                 </form>
             </ReactModal>

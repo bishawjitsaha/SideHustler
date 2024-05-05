@@ -97,7 +97,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                     <div>
                         <label htmlFor='startDate'>Start Date: </label>
                         <input 
-                            type='text'
+                            type='date'
                             name='startDate'
                             placeholder='Enter Start Date Here'
                             onChange={handleChange}
@@ -107,7 +107,7 @@ function AddExperienceModal({isOpen, user, handleClose}){
                     <div>
                         <label htmlFor='endDate'>End Date: </label>
                         <input 
-                            type='text'
+                            type='date'
                             name='endDate'
                             placeholder='Enter End Date Here'
                             onChange={handleChange}
@@ -117,13 +117,13 @@ function AddExperienceModal({isOpen, user, handleClose}){
                     {isError && <div className='text-red-600 flex justify-center'>{errorMessages}</div>}
                 <div className='flex justify-end items-end flex-grow'>
                     <button 
-                        type='submit'
-                        className='my-4'>
-                            Add Experience</button>
-                    <button 
                         onClick={handleCloseAddModal}
-                        className='my-4 ml-auto'>
+                        className='my-4'>
                             Close</button>
+                    <button 
+                        type='submit'
+                        className='my-4 ml-auto'>
+                            Add Experience</button>
                 </div>
                 </form>
             </ReactModal>

@@ -330,13 +330,13 @@ function EditInfoModal({isOpen, user, handleClose}) {
               {isError && <p className='text-red-600 flex justify-center'>{errorMessages}</p>}
             <div className='flex justify-end items-end flex-grow'>
               <button 
-                type='submit'
-                className='my-4'>
-                  Submit</button>
-              <button 
                 onClick={handleCloseEditModal}
-                className='my-4 ml-auto'>
+                className='my-4'>
                   Close</button>
+              <button 
+                type='submit'
+                className='my-4 ml-auto'>
+                  Submit</button>
             </div>
           </form>
       </ReactModal>

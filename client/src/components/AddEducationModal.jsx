@@ -64,8 +64,8 @@ function AddEducationModal({isOpen, user, handleClose}){
                 name = 'addModal'
                 isOpen={showAddModal}
                 style={customStyles}
-                contentLabel="Add Bio">
-                <h2 className='text-center text-lg font-semibold'>Add Bio</h2>
+                contentLabel="Add Education">
+                <h2 className='text-center text-lg font-semibold'>Add Education</h2>
                 <form 
                     id='addEducationForm'
                     onSubmit={handleSubmit}
@@ -118,13 +118,13 @@ function AddEducationModal({isOpen, user, handleClose}){
 
                     <div className='flex justify-end items-end flex-grow'>
                         <button 
-                            type='submit'
-                            className='my-4'>
-                                Add Education</button>
-                        <button 
                             onClick={handleCloseAddModal}
-                            className='my-4 ml-auto'>
+                            className='my-4'>
                                 Close</button>
+                        <button 
+                            type='submit'
+                            className='my-4 ml-auto'>
+                                Add Education</button>
                     </div>
                 </form>
             </ReactModal>
