@@ -27,11 +27,9 @@ export async function doCreateUserWithEmailAndPassword(
 
 export async function doUpdateUserDisplayName(newDisplayName){
   const auth = getAuth();
-  console.log('here', auth.currentUser)
   const user = auth.currentUser
   if(user){
     await updateProfile(user, {displayName: newDisplayName});
-    console.log('here2', auth.currentUser)
     return newDisplayName;
   }
   else {
@@ -42,7 +40,6 @@ export async function doUpdateUserDisplayName(newDisplayName){
 export async function doChangePassword(email, oldPassword, newPassword) {
   const auth = getAuth();
   let credential = EmailAuthProvider.credential(email, oldPassword);
-  console.log(credential);
   await reauthenticateWithCredential(auth.currentUser, credential);
 
   await updatePassword(auth.currentUser, newPassword);
