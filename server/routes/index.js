@@ -4,6 +4,8 @@ import signupRoute from './signup.js';
 import searchRoute from './search.js';
 import postsRoute from './posts.js';
 import apiRoute from './api.js';
+import imageRoute from './image.js';
+import notificationRoute from './notifications.js';
 
 const constructorMethod = (app) => {
     app.get('/', (req, res) => {
@@ -15,6 +17,8 @@ const constructorMethod = (app) => {
     app.use('/search', searchRoute)
     app.use('/posts', postsRoute)
     app.use('/api', apiRoute)
+    app.use('/image', imageRoute)
+    app.use('/notifications', notificationRoute)
 
     app.use('*', (req, res) => {
         res.sendStatus(404);

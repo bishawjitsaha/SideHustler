@@ -1,7 +1,6 @@
-// Example of a home.js route file
 import { Router } from 'express';
-const router = Router();
 import { getUserByUserName, updateUserById } from '../data/users.js';
+const router = Router();
 
 router.route('/:username')
     .get(async(req, res) => {

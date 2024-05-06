@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { ref, getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from 'uuid';
+import axios from 'axios';
 
-// You need a const [imageUrl, setImageUrl] = useState(""); in parent component
-
-const AddImage = ({ setImageUrl }) => {
+const AddImage = ({ username, type }) => {
     const [image, setImage] = useState(null);
 
     const handleChange = (e) => {
@@ -12,13 +9,32 @@ const AddImage = ({ setImageUrl }) => {
         setImage(file);
     };
 
-    const handleUpload = async () => {
-        const storage = getStorage();
-        const storageRef = ref(storage, `images/${image.name + v4()}`);
-        await uploadBytes(storageRef, image);
-        const url = await getDownloadURL(storageRef);
-        setImageUrl(url);
-    };
+    const handleUpload = async (e) => {
+        e.preventDefault();
+        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+        if (image && allowedTypes.includes(image.type.toLowerCase())) {
+            const formData = new FormData();
+            formData.append("file", image);
+            formData.append("username", username);
+            let route = "";
+            if (type === "pfp") {
+                route = "image/pfpUpload";
+            }
+            else {
+                route = "image/postImgUpload";
+            }
+            await axios.post(`http://localhost:3000/${route}`, formData)
+                .then((res) => {
+                    console.log("Image uploaded");
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        else {
+            console.log("Invalid file type");
+        }
+    }
 
     return (
         <div className="add-image">
