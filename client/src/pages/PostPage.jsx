@@ -11,6 +11,8 @@ const PostPage = () => {
   const [isApplicant, setIsApplicant] = useState(false);
   const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
+  const [chosenApplicant, setChosenApplicant] = useState(null);
+  const [isChosen, setIsChosen] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -86,11 +88,18 @@ const PostPage = () => {
   };
 
   const handleChooseApplicant = async (applicantId) => {
-    console.log(`Chose applicant with ID: ${applicantId}`);
-    // TODO : Implement choosing an applicant ON THE SERVER
+    try{
+      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
+      setChosenApplicant(res.data.post.selectedApplicant);
+      alert("Successfully chose applicant!");
+      setIsChosen(true);
+    }
+    catch (error) {
+      console.error("Error choosing applicant:", error.message);
+      alert("Failed to choose applicant. Please try again.");
+    }
+    
   };
-
-  console.log("Post:", post);
 
   return (
     <div>
@@ -117,11 +126,10 @@ const PostPage = () => {
               <ul>
                 {post.applicants.map((applicant) => (
                   <li key={applicant}>
-                    {/* {applicant.name} - {applicant.email} */}
-                    {applicant}
-                    <button onClick={() => handleChooseApplicant(applicant)}>
+                    {applicant.firstName} {applicant.lastName}
+                    {!{isChosen} && <button onClick={() => handleChooseApplicant(applicant._id)}>
                       Choose Applicant
-                    </button>
+                    </button>}
                   </li>
                 ))}
               </ul>

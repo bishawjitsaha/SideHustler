@@ -18,9 +18,23 @@ router.route("/all").get(async (req, res) => {
 router.route("/:id").get(async (req, res) => {
   try {
     let post = await postFunctions.getPostById(req.params.id);
+    let applicants = await postFunctions.getApplicants(req.params.id);
+    post.applicants = applicants;
     if (post) {
       return res.status(200).json({ post: post });
     }
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ error: e });
+  }
+})
+.put(async (req, res) => {
+  try {
+    let updatedPost = await postFunctions.updatePostById(
+      req.params.id,
+      req.body
+    );
+    return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
