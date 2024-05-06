@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/firebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
+import SocialSignIn from '../components/SocialSignIn';
 import axios from 'axios';
 function SignUpPage(props) {
   const {currentUser} = useContext(AuthContext);
@@ -14,7 +15,7 @@ function SignUpPage(props) {
       return false;
     }
     try{
-      let {data} = await axios.get(`http://localhost:3000/api/verifyUser/${displayName.value}`)
+      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${displayName.value}`)
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
@@ -29,11 +30,12 @@ function SignUpPage(props) {
         passwordOne.value,
         displayName.value
       );
-      axios.post('http://localhost:3000/signup', {
+      await axios.post('http://localhost:3000/signup', {
         userName: displayName.value,
         firstName: firstName.value,
         lastName: lastName.value,
-        age: parseInt(age.value)
+        age: parseInt(age.value),
+        isSocialSignUp: false
       }, {
         headers: {
           Authorization: `Bearer ${user.idToken}`
@@ -157,8 +159,10 @@ function SignUpPage(props) {
         >
           Sign Up
         </button>
+        
       </form>
       <br />
+      <SocialSignIn/>
     </div>
   );
 }

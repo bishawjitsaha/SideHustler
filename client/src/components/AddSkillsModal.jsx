@@ -47,7 +47,7 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
                 name: validatedSkills[0].name,
                 description: validatedSkills[0].description
             };
-            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, skillsPayload);
+            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, skillsPayload);
             const addedSkills = res.data.skills;
             alert('Skill added successfully');
             handleClose();
