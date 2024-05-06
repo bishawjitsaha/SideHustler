@@ -104,7 +104,8 @@ const main = async () => {
             "John",
             "Doe",
             "johndoe@gmail.com",
-            32
+            32,
+            false
         );
 
         // Update user 1 with additional fields
@@ -163,7 +164,8 @@ const main = async () => {
             "Jane",
             "Smith",
             "janesmith@hotmail.com",
-            28
+            28,
+            false
         );
 
         // Update user 2 with additional fields
@@ -223,7 +225,8 @@ const main = async () => {
             "Mike",
             "Johnson",
             "mikejohnson@yahoo.com",
-            41
+            41,
+            false
         );
 
         // Update user 3 with additional fields
@@ -284,7 +287,8 @@ const main = async () => {
             "Sarah",
             "Wilson",
             "sarahwilson@example.com",
-            25
+            25,
+            false
         );
 
         // Update user 4 with additional fields

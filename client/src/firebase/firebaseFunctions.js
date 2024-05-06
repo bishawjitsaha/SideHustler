@@ -40,11 +40,23 @@ export async function doUpdateUserDisplayName(newDisplayName){
 export async function doChangePassword(email, oldPassword, newPassword) {
   const auth = getAuth();
   let credential = EmailAuthProvider.credential(email, oldPassword);
-  console.log(credential);
   await reauthenticateWithCredential(auth.currentUser, credential);
 
   await updatePassword(auth.currentUser, newPassword);
   await doSignOut();
+}
+
+export async function doSocialSignIn() {
+  let auth = getAuth();
+  let newUser = false;
+  let socialProvider = new GoogleAuthProvider();
+  let result = await signInWithPopup(auth, socialProvider);
+  let idToken = await auth.currentUser.getIdToken();
+  if (result._tokenResponse.isNewUser) {
+    newUser = true;
+    console.log(`New user detected, flag set to: ${newUser}`);
+  }
+  return {result: result, newUser: newUser, idToken: idToken };
 }
 
 export async function doSignInWithEmailAndPassword(email, password) {
