@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {Navigate, useNavigate} from 'react-router-dom';
 import {AuthContext} from '../context/AuthContext';
+import SocialSignIn from '../components/SocialSignIn.jsx';
 import {
   doSignInWithEmailAndPassword
 } from '../firebase/firebaseFunctions.js';
@@ -75,6 +76,7 @@ import {
           </form>
   
           <br />
+          <SocialSignIn/>
         </div>
       </div>
     );

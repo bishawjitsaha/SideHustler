@@ -1,14 +1,15 @@
 import "./App.css";
 import { HomePage, SearchPage, PostsPage, PostPage } from "./pages";
 import { Routes, Route, NavLink } from "react-router-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import SignUpPage from './pages/SignUpPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import ProfilePage from "./pages/ProfilePage.jsx";
 import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import {AuthProvider} from './context/AuthContext.jsx';
 import Navigation from './components/Navigation.jsx';
-import NotFoundPage from './pages/NotFoundPage.jsx';
+import NotFoundPage from "./pages/NotFoundPage.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
+import GettingStarted from "./components/GettingStarted.jsx"
 
 function App() {
   return (
@@ -24,15 +25,15 @@ function App() {
             </header>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/posts" element={<PostsPage />} />
+              <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
+              <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
               <Route path="/post/:id" element={<PostPage />} />
               <Route path='/signup' element={<SignUpPage />}/>
               <Route path='/signin' element={<SignInPage />}/>
               <Route path='/forgot' element={<ForgotPasswordPage />}/>
               <Route path='/not-found' element={<NotFoundPage/>}/>
               <Route path='/user/:username' element={<ProfilePage/>}/>
-              {/* <Route path='/complete-signup' element={<CompleteSignUp/>}/> */}
+              <Route path='/getting-started' element={ <GettingStarted/>}/>
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </div>

@@ -114,7 +114,7 @@ function EditInfoModal({isOpen, user, handleClose, addBio, addEducation, addExpe
         skillsList: skillSelected,
       }
 
-      const res = await axios.post(`http://localhost:3000/user/${user.userName}`, dataToSend)
+      const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, dataToSend)
       const editedBio = res.data.bio;
       const editedEducation = res.data.education;
       const editedExperience = res.data.experience;
@@ -148,7 +148,7 @@ function EditInfoModal({isOpen, user, handleClose, addBio, addEducation, addExpe
             >
             <div className='flex'>
               <div className='mr-4'>
-                <label htmlFor="username">Username: </label>
+                <label htmlFor="userName">Username: </label>
                 <input 
                   type="text" 
                   id='userName' 

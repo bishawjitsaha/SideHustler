@@ -16,7 +16,7 @@ const User = ({ user }) => {
 
         <div className="flex justify-between text-gray-600 mb-4">
           <p className="font-semibold">Username:</p>
-          <p>{user.username}</p>
+          <p>{user.userName}</p>
         </div>
 
         <div className="border-t border-gray-300 pt-4 mt-4">
