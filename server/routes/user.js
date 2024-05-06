@@ -1,7 +1,26 @@
 // Example of a home.js route file
 import { Router } from 'express';
 const router = Router();
+import { doesUserExist, getUserById } from '../data/users.js';
 import { getUserByUserName, updateUserById } from '../data/users.js';
+import verifyToken from '../middleware.js';
+
+router.route('/addInfo')
+.post(verifyToken, async(req,res) => {
+  try{
+    const infoAdded = { 
+      userName: req.body.userName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      age: req.body.age
+    };
+    const uid = req.uid;
+    let userBeingEdited = await updateUserById(uid, infoAdded );
+    return res.status(200).json({userBeingEdited});
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+})
 
 router.route('/:username')
     .get(async(req, res) => {
@@ -16,8 +35,11 @@ router.route('/:username')
             res.status(400).json({message: err.message})
         }
     })
+
+    router.route('/edit/:username')
     .post(async (req, res) => {
       try{
+        console.log('????')
         const user = await getUserByUserName(req.params.username);
         if(!user) return res.status(404).json({message: 'User not found'});        
 
@@ -131,5 +153,40 @@ router.route('/:username')
         res.status(400).json({message: e})
       }
     })
+
+
+router.route('/verifyUser/:username')
+  .get(async (req,res) => {
+    let enteredUser = req.params.username;
+    try{
+      let userFlag = await doesUserExist(enteredUser);
+      if(userFlag){ //
+        return res.status(200).json({isUserNameUnique: false}); //if the user exists we return false as in it is not unique.
+      }
+      else{
+        return res.status(200).json({isUserNameUnique: true});
+        //if it does not we return true as in it is unique
+      }
+    } catch (e) {
+        return res.status(400).json({message: e});
+    }
+  })
+
+router.route('/getById/:id')
+.get(async (req,res) => {
+  let id = req.params.id;
+  try{
+    let user = await getUserById(id);
+    if(!user){
+      return res.status(404).json({message: 'User not found'});
+    }
+    return res.status(200).json(user)
+  } catch (e) {
+    console.log(e);
+      return res.status(400).json({message: e});
+  }
+})
+
+
 
 export default router;

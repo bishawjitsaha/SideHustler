@@ -52,7 +52,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
-            const res =  await axios.post(`http://localhost:3000/user/${user.userName}`, experiencePayload);
+            const res =  await axios.post(`http://localhost:3000/user/edit/edit/${user.userName}`, experiencePayload);
             const addedExperience = res.data.experience;
             alert('Experience added successfully');
             handleClose();

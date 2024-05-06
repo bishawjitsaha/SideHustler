@@ -1,33 +1,67 @@
-import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import SignOutButton from "./SignOut.jsx";
+import {doSignOut} from '../firebase/firebaseFunctions';
 import "../App.css";
+import axios from "axios";
 
 const Navigation = () => {
-  const { currentUser } = useContext(AuthContext);
-  return <div>{currentUser ? <NavigationAuth/> : <NavigationNonAuth />}</div>;
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
+  const [profileLink, setProfileLink] = useState(null)
+  const { currentUser, setupComplete } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser && setupComplete) {
+      setUserDataLoaded(true);
+      setProfileLink(currentUser.displayName)
+    } else {
+      setUserDataLoaded(false);
+      if (!setupComplete && currentUser) {
+        navigate('/getting-started');
+      }
+    }
+  }, [currentUser, setupComplete, navigate]);
+  return (
+    <div>
+      {currentUser ? (
+        <NavigationAuth userDataLoaded={userDataLoaded} profileLink={profileLink} />
+      ) : (
+        <NavigationNonAuth />
+      )}
+    </div>
+  );
 };
 
-const NavigationAuth = () => {
-  const { currentUser } = useContext(AuthContext);
+const NavigationAuth = ({userDataLoaded, profileLink}) => {
+  const navigate = useNavigate();
+  const signOutHandler = async () => {
+    await doSignOut();
+    navigate("/");
+};
   return (
     <div>
       <nav className="navigation">
-        <NavLink className="navlink" to="/">
-          Home
-        </NavLink>
-        <NavLink to="/search" className="navlink">
-          Search
-        </NavLink>
-        <NavLink to="/posts" className="navlink">
-          Posts
-        </NavLink>
-        <NavLink className ="navlink" to={`/user/${currentUser.displayName}`}>
-        Profile
-      </NavLink>
+        {userDataLoaded && (
+          <>
+            <NavLink className="navlink" to="/">
+              Home
+            </NavLink>
+            <NavLink to="/search" className="navlink">
+              Search
+            </NavLink>
+            <NavLink to="/posts" className="navlink">
+              Posts
+            </NavLink>
+            <NavLink className ="navlink" to={`/user/${profileLink}`}>
+            Profile
+            </NavLink>
+          </>
+        )}
       </nav>
-      <SignOutButton />
+      <button className='button' type='button' onClick={signOutHandler}>
+        Sign Out
+      </button>
     </div>
   );
 };
@@ -45,7 +79,6 @@ const NavigationNonAuth = () => {
       <NavLink className="navlink" to="/signin">
         Sign-in
       </NavLink>
-      
     </nav>
   );
 };

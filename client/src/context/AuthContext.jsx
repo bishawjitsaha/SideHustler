@@ -1,23 +1,36 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
+import axios from 'axios';
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [profileData, setProfileData] = useState({});
+  const [setupComplete, setSetupComplete] = useState(true);
   const auth = getAuth();
   useEffect(() => {
-    let myListener = onAuthStateChanged(auth, (user) => {
-      console.log("user:", user);
-      setCurrentUser(user);
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      console.log("User:", user);
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+        setProfileData({});
+      }
     });
-    return () => {
-      if (myListener) myListener();
-    };
-  }, [auth, currentUser]);
+    return () => unsubscribe();
+  }, [auth,currentUser]);
 
+  const contextValue = useMemo(() => ({
+    currentUser,
+    profileData,
+    setProfileData,
+    setupComplete,
+    setSetupComplete
+  }), [currentUser, profileData, setupComplete]);
+  
   return (
-    <AuthContext.Provider value={{currentUser, profileData, setProfileData}}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

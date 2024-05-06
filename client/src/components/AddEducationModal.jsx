@@ -46,7 +46,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                 major: validatedEducation.major,
                 gradYear: validatedEducation.gradYear
             };
-            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, educationPayload)
+            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, educationPayload)
             const addedEducation = res.data.education;
             alert('Education Added');
             handleClose();
