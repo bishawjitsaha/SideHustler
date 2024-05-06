@@ -72,7 +72,7 @@ export const updatePostById = async (id, updatedPost) => {
     if (updatedPost.taskTime) update.taskTime = validateTaskTime(updatedPost.taskTime);
     if (updatedPost.taskPayment) update.taskPayment = validateTaskPayment(updatedPost.taskPayment);
     if (updatedPost.workType) update.workType = validateWorkType(updatedPost.workType);
-    if(updatedPost.selectedApplicant) update.selectedApplicant = updatedPost.selectedApplicant;
+    if (updatedPost.hasOwnProperty('selectedApplicant')) update.selectedApplicant = updatedPost.selectedApplicant;
     
     const postCollection = await posts();
     const updatedInfo = await postCollection.findOneAndUpdate(

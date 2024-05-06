@@ -12,7 +12,6 @@ const PostPage = () => {
   const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [chosenApplicant, setChosenApplicant] = useState(null);
-  const [isChosen, setIsChosen] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -92,14 +91,25 @@ const PostPage = () => {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully chose applicant!");
-      setIsChosen(true);
+
     }
     catch (error) {
       console.error("Error choosing applicant:", error.message);
       alert("Failed to choose applicant. Please try again.");
     }
-    
   };
+
+  const handleUnchooseApplicant = async () => {
+    try{
+      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null });
+      setChosenApplicant(null);
+      alert("Successfully unchose applicant!");
+    }
+    catch (error) {
+      console.error("Error unchoosing applicant:", error.message);
+      alert("Failed to unchoose applicant. Please try again.");
+    }
+  }
 
   return (
     <div>
@@ -126,10 +136,24 @@ const PostPage = () => {
               <ul>
                 {post.applicants.map((applicant) => (
                   <li key={applicant}>
-                    {applicant.firstName} {applicant.lastName}
-                    {!{isChosen} && <button onClick={() => handleChooseApplicant(applicant._id)}>
-                      Choose Applicant
-                    </button>}
+                    <a href={`/user/${applicant.userName}`}>{applicant.firstName} {applicant.lastName}</a>
+                    {chosenApplicant === applicant._id ? (
+                      <button
+                        onClick={() => handleUnchooseApplicant()}
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
+                      >
+                        Unchoose
+                      </button>
+                        ) : (
+                        !chosenApplicant && (
+                          <button
+                            onClick={() => handleChooseApplicant(applicant._id)}
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+                          >
+                            Choose
+                          </button>
+                        )
+                      )}
                   </li>
                 ))}
               </ul>
