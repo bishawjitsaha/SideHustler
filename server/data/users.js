@@ -2,12 +2,20 @@ import { users, posts } from "../config/mongoCollections.js";
 import * as validate from "../validation/userValidation.js";
 import { ObjectId } from "mongodb";
 
-export async function createUser(id,userName, firstName, lastName, email, age) {
-	userName = validate.validateUsername(userName, "userName");
-	firstName = validate.validateString(firstName, "firstName");
-	lastName = validate.validateString(lastName, "lastName");
-	email = validate.validateEmail(email);
-	age = validate.validateAge(age);
+export async function createUser(id,userName, firstName, lastName, email, age, isSocialSignIn) {
+	if(isSocialSignIn){
+		email = validate.validateEmail(email);
+		userName = "";
+		firstName = "";
+		lastName = "";
+		age = "";
+	} else {
+		userName = validate.validateUsername(userName, "userName");
+		firstName = validate.validateString(firstName, "firstName");
+		lastName = validate.validateString(lastName, "lastName");
+		email = validate.validateEmail(email);
+		age = validate.validateAge(age);
+	}
 
 	const userCollection = await users();
 	const newUser = {
@@ -103,7 +111,7 @@ export async function updateUserById(id, updatedUser) {
 	const currUser = await getUserById(id);
 	const update = {};
 	if (updatedUser.userName)
-		update.username = validate.validateUsername(updatedUser.userName);
+		update.userName = validate.validateUsername(updatedUser.userName);
 	if (updatedUser.firstName)
 		update.firstName = validate.validateString(updatedUser.firstName);
 	if (updatedUser.lastName)
