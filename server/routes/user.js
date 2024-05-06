@@ -39,7 +39,6 @@ router.route('/:username')
     router.route('/edit/:username')
     .post(async (req, res) => {
       try{
-        console.log('????')
         const user = await getUserByUserName(req.params.username);
         if(!user) return res.status(404).json({message: 'User not found'});        
 
