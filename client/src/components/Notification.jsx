@@ -8,6 +8,7 @@ export const Notification = () => {
         const fetchNotifications = async () => {
             try {
                 const response = await axios.get(`/notifications`, { "userid": currentUser._id });
+                // TODO ADD AUTHORIZATION HEADER
                 setNotifications(response.data.notifications);
             } catch (error) {
                 console.error(error);

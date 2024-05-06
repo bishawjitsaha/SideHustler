@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const AddImage = ({ username, type }) => {
+const AddImage = ({ cred, type }) => {
     const [image, setImage] = useState(null);
 
     const handleChange = (e) => {
@@ -15,15 +15,21 @@ const AddImage = ({ username, type }) => {
         if (image && allowedTypes.includes(image.type.toLowerCase())) {
             const formData = new FormData();
             formData.append("file", image);
-            formData.append("username", username);
             let route = "";
             if (type === "pfp") {
+                formData.append("username", cred.username);
                 route = "image/pfpUpload";
             }
-            else {
+            else if (type === "post") {
+                formData.append("postID", cred._id);
                 route = "image/postImgUpload";
             }
+            else {
+                console.log("Invalid image type");
+                return;
+            }
             await axios.post(`http://localhost:3000/${route}`, formData)
+                // TODO ADD Authorization header
                 .then((res) => {
                     console.log("Image uploaded");
                 })
