@@ -138,6 +138,7 @@ const PostPage = () => {
           {currentUser && post.posterId === currentUser.uid && (
             <>
               <h2>Applicants:</h2>
+              {post.applicants && post.applicants.length === 0 && <p>No applicants yet.</p>}
               <ul>
                 {post.applicants.map((applicant) => (
                   <li key={applicant}>
