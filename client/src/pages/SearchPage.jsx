@@ -9,8 +9,9 @@ const SearchPage = () => {
 
   const handleSearch = async (searchTerm, searchType) => {
     try {
+      let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
       const { data } = await axios.get(
-        `http://localhost:3000/search?${searchType}=${searchTerm}`
+        `http://localhost:3000/search?${query}`
       );
       setSearchResults(data[`${searchType}`]);
       setFilteredResults(data[`${searchType}`]);

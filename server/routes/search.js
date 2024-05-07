@@ -6,10 +6,17 @@ router
   .route('/')
   .get(async (req, res) => {
     try{
+        if(req.query){
+            if(req.query.posts === ""){
+                let postQuery = await searchFunction.searchPost(req.query.posts);
+                return res.status(200).json({ 'posts': postQuery });
+            }
+        }
         if (req.query.users) {
             let userQuery = await searchFunction.searchUser(req.query.users);
             return res.status(200).json({ 'users': userQuery });
         }
+        
         if (req.query.posts) {
             let postQuery = await searchFunction.searchPost(req.query.posts);
             return res.status(200).json({ 'posts': postQuery });

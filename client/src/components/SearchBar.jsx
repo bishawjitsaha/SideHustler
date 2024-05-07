@@ -3,6 +3,25 @@ import React, { useState } from "react";
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("posts");
+  const tags = [
+    "Assembly",
+    "Childcare",
+    "Cleaning",
+    "Delivery",
+    "Design",
+    "Handywork",
+    "Indoors",
+    "Installation",
+    "IT Support",
+    "Lawn Care",
+    "Moving",
+    "Outdoors",
+    "Painting",
+    "Petcare",
+    "Photography",
+    "Tutoring",
+    "Wellness",
+];
 
   const handleSearchTypeChange = (e) => {
     setSearchType(e.target.value);
@@ -14,13 +33,26 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <div className="flex items-center justify-center my-4">
-      <input
-        type="text"
-        className="border border-gray-300 rounded-md px-4 py-2 mr-2"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      {searchType !== "tags" ? (
+        <input
+          type="text"
+          className="border border-gray-300 rounded-md px-4 py-2 mr-2"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      ) : (
+        <select
+          className="border border-gray-300 rounded-md px-4 py-2 mr-2"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        >
+          <option value="">Select a tag</option>
+          {tags.map((tag, index) => (
+            <option key={index} value={tag}>{tag}</option>
+          ))}
+        </select>
+      )}
       <select
         className="border border-gray-300 rounded-md px-4 py-2 mr-2"
         onChange={handleSearchTypeChange}
