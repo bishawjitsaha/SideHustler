@@ -18,7 +18,11 @@ const PostPage = () => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/posts/${id}`);
+        const response = await axios.get(`http://localhost:3000/posts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`
+          }
+        });
 
         if (response.status === 200) {
           const fetchedPost = response.data.post;
@@ -107,7 +111,11 @@ const PostPage = () => {
 
   const handleChooseApplicant = async (applicantId) => {
     try {
-      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
+      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId }, {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully chose applicant!");
       setCurStatus("In Progress");
@@ -121,7 +129,11 @@ const PostPage = () => {
 
   const handleUnchooseApplicant = async () => {
     try {
-      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null });
+      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null }, {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
       setChosenApplicant(null);
       alert("Successfully unchose applicant!");
       setCurStatus("Open");

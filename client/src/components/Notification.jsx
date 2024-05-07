@@ -12,8 +12,11 @@ export const Notification = () => {
 
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/notifications/${currentUser.uid}`);
-                // TODO ADD AUTHORIZATION HEADER
+                const response = await axios.get(`http://localhost:3000/notifications/${currentUser.uid}`, {
+                    headers: {
+                      Authorization: `Bearer ${currentUser.accessToken}`
+                    }
+                  });
                 
                 setNotifications(response.data.notifications);
             } catch (error) {

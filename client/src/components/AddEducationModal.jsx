@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateEducation } from '../validation/userValidation';
+import { AuthContext } from '../context/AuthContext';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -23,7 +24,8 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
     const [updatedUser, setUpdatedUser] = useState({...user.education});
     const [errorMessages, setErrorMessages] = useState('');
     const [isError, setIsError] = useState(false);
-    
+    const { currentUser } = useContext(AuthContext); 
+
     const handleErrors = (e) => {
         setErrorMessages(e);
     }
@@ -46,7 +48,11 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                 major: validatedEducation.major,
                 gradYear: validatedEducation.gradYear
             };
-            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, educationPayload)
+            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, educationPayload, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
             const addedEducation = res.data.education;
             alert('Education Added');
             handleClose();

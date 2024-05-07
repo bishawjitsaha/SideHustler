@@ -24,7 +24,7 @@ router.route('/addInfo')
 })
 
 router.route('/:username')
-    .get(async(req, res) => {
+    .get(verifyToken, async(req, res) => {
         try{
           const user = await getUserByUserName(`${req.params.username}`);
           if(!user) return res.status(404).json({message: 'User not found'});
@@ -64,7 +64,7 @@ router.route('/:username')
     })
 
     router.route('/edit/:username')
-    .post(async (req, res) => {
+    .post(verifyToken, async (req, res) => {
       try{
         const user = await getUserByUserName(req.params.username);
         if(!user) return res.status(404).json({message: 'User not found'});        
@@ -182,7 +182,7 @@ router.route('/:username')
 
 
 router.route('/verifyUser/:username')
-  .get(async (req,res) => {
+  .get(verifyToken, async (req,res) => {
     let enteredUser = req.params.username;
     try{
       let userFlag = await doesUserExist(enteredUser);
@@ -199,7 +199,7 @@ router.route('/verifyUser/:username')
   })
 
 router.route('/getById/:id')
-.get(async (req,res) => {
+.get(verifyToken, async (req,res) => {
   let id = req.params.id;
   try{
     let user = await getUserById(id);

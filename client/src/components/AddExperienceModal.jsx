@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateExperience } from '../validation/userValidation';
+import { AuthContext } from '../context/AuthContext';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -23,6 +24,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
     const [isError, setIsError] = useState(false);
+    const { currentUser } = useContext(AuthContext)
     
     const handleErrors = (e) => {
         setErrorMessages(e);
@@ -52,7 +54,11 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
-            const res =  await axios.post(`http://localhost:3000/user/edit/${user.userName}`, experiencePayload);
+            const res =  await axios.post(`http://localhost:3000/user/edit/${user.userName}`, experiencePayload, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
             const addedExperience = res.data.experience;
             alert('Experience added successfully');
             handleClose();

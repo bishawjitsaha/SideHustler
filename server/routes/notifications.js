@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { getNotifications } from "../data/notifications.js";
+import verifyToken from "../middleware.js";
 
 const router = Router();
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", verifyToken, async (req, res) => {
     try {
         // idk if this is the correct way to do this?
         // what if someone else just passed in a notification id?
