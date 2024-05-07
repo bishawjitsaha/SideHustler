@@ -4,6 +4,7 @@ const router = Router();
 import { doesUserExist, getUserById } from '../data/users.js';
 import { getUserByUserName, updateUserById } from '../data/users.js';
 import verifyToken from '../middleware.js';
+import { getPostById } from '../data/posts.js';
 
 router.route('/addInfo')
 .post(verifyToken, async(req,res) => {
@@ -25,7 +26,17 @@ router.route('/addInfo')
 router.route('/:username')
     .get(async(req, res) => {
         try{
-          const user = await getUserByUserName(`${req.params.username}`);
+          let user = await getUserByUserName(`${req.params.username}`);
+          const posts = user.posts.map(post => getPostById(post));
+          user.posts = await Promise.all(posts);
+          const appliedPosts = await Promise.all(user.applications.map(async (application) => {
+              const post = await getPostById(application.postId);
+              return {
+                  post,
+                  status: application.status
+              };
+          }));
+          user.applications = appliedPosts;
           if(!user) return res.status(404).json({message: 'User not found'});
             return res.status(200).json(
               user
