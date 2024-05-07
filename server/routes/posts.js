@@ -6,7 +6,7 @@ import { createChat } from "../data/messages.js";
 import verifyToken from "../middleware.js";
 const router = express.Router();
 
-router.route("/all").get(async (req, res) => {
+router.route("/all").get(verifyToken, async (req, res) => {
   try {
     let allPosts = await postFunctions.getAllPosts();
     if (allPosts) {
@@ -18,7 +18,7 @@ router.route("/all").get(async (req, res) => {
   }
 });
 
-router.route("/:id").get(async (req, res) => {
+router.route("/:id").get(verifyToken, async (req, res) => {
   try {
     let post = await postFunctions.getPostById(req.params.id);
     let applicants = await postFunctions.getApplicants(req.params.id);
@@ -31,7 +31,7 @@ router.route("/:id").get(async (req, res) => {
     res.status(404).json({ error: e });
   }
 })
-.put(async (req, res) => {
+.put(verifyToken, async (req, res) => {
   try {
 
     let updatedApplicant = await updateSelectedApplicant(
@@ -79,7 +79,7 @@ router.route("/:id").get(async (req, res) => {
   }
 });
 
-router.route("/create").post(async (req, res) => {
+router.route("/create").post(verifyToken, async (req, res) => {
   try {
     let newPost = await postFunctions.createPost(
       req.body.title,
@@ -98,7 +98,7 @@ router.route("/create").post(async (req, res) => {
   }
 });
 
-router.route("/update/:id").put(async (req, res) => {
+router.route("/update/:id").put(verifyToken, async (req, res) => {
   try {
     let updatedPost = await postFunctions.updatePostById(
       req.params.id,
@@ -111,7 +111,7 @@ router.route("/update/:id").put(async (req, res) => {
   }
 });
 
-router.route("/update-status/:id").put(async (req, res) => {
+router.route("/update-status/:id").put(verifyToken, async (req, res) => {
   try {
     let updatedPost = await postFunctions.updatePostStatus(
       req.params.id,
@@ -154,7 +154,7 @@ router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
   }
 });
 
-router.route(verifyToken, "/delete/:id").delete(async (req, res) => {
+router.route(verifyToken, "/delete/:id").delete(verifyToken, async (req, res) => {
   try {
     const uid = req.uid;
     let deletedPost = await postFunctions.deletePost(req.params.id, uid);

@@ -3,6 +3,7 @@ import multer from 'multer';
 import { getUserByUserName } from '../data/users.js';
 import { getPostById } from '../data/posts.js';
 import { uploadPfP, uploadPostImage } from '../data/images.js';
+import verifyToken from '../middleware.js';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ const storage = multer.diskStorage({
     }
 });
   
-router.post('/pfpUpload', multer({storage: storage}).single('file'), async (req, res) => {
+router.post('/pfpUpload', multer({storage: storage}).single('file'), verifyToken, async (req, res) => {
     try {
         const user = await getUserByUserName(req.body.username);
         if(!user) throw 'User not found';
@@ -33,7 +34,7 @@ router.post('/pfpUpload', multer({storage: storage}).single('file'), async (req,
     }
 });
 
-router.post('/postImgUpload', multer({storage: storage}).single('file'), async (req, res) => {
+router.post('/postImgUpload', multer({storage: storage}).single('file'), verifyToken, async (req, res) => {
     try {
         console.log("Uploading Post Image");
         const path = req.file.path;
