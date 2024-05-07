@@ -38,27 +38,43 @@ router.route("/:id").get(async (req, res) => {
       req.params.id,
       req.body.selectedApplicant
     );
-
     const currPost = await postFunctions.getPostById(req.params.id);
+    if (req.body.selectedApplicant !== null) {
 
-    // notify the selected applicant that they have been chosen
-    const selectedAppNoti = await createNotification(req.body.selectedApplicant,
-      "post",
-      "You have been chosen for a post",
-      `/post/${req.params.id}`
-    );
+      // notify the selected applicant that they have been chosen
+      const selectedAppNoti = await createNotification(req.body.selectedApplicant,
+        "post",
+        "You have been chosen for a post",
+        `/post/${req.params.id}`
+      );
 
-    // notify the chooser that they have successfully chosen an applicant
-    const postOwnerNoti = await createNotification(currPost.posterId,
-      "post", 
-      "You have successfully chosen an applicant",
-      `/user/${updatedApplicant.userName}`
-    );
+      // notify the chooser that they have successfully chosen an applicant
+      const postOwnerNoti = await createNotification(currPost.posterId,
+        "post", 
+        "You have successfully chosen an applicant",
+        `/user/${updatedApplicant.userName}`
+      );
 
-    const currUser = await getUserById(currPost.posterId);;
+      const currUser = await getUserById(currPost.posterId);;
 
-    // open up a chat between them
-    const newChat = createChat(updatedApplicant.userName, currUser.userName);
+      // open up a chat between them
+      const newChat = createChat(updatedApplicant.userName, currUser.userName);
+    }
+    else if (req.body.selectedApplicant === null) {
+      const unChosenUser = await getUserById(currPost.selectedApplicant);
+
+      const postOwnerNoti = await createNotification(currPost.posterId,
+        "post",
+        "You have unchosen an applicant",
+        `/user/${unChosenUser.userName}`
+      );
+
+      const unChosenUserNoti = await createNotification(currPost.selectedApplicant,
+        "post",
+        "You have been unchosen",
+        `/post/${req.params.id}`
+      );
+    }
 
     let updatedPost = await postFunctions.updatePostById(
       req.params.id,
