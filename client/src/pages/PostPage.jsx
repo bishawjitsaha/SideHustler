@@ -12,6 +12,7 @@ const PostPage = () => {
   const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [chosenApplicant, setChosenApplicant] = useState(null);
+  const [curStatus, setCurStatus] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -29,6 +30,7 @@ const PostPage = () => {
 
           setIsApplicant(currentUserIsApplicant);
           setLoading(false);
+          setCurStatus(fetchedPost.status);
         } else {
           setError("Failed to fetch post");
           setLoading(false);
@@ -92,6 +94,7 @@ const PostPage = () => {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully chose applicant!");
+      setCurStatus("In Progress");
 
     }
     catch (error) {
@@ -105,6 +108,7 @@ const PostPage = () => {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null });
       setChosenApplicant(null);
       alert("Successfully unchose applicant!");
+      setCurStatus("Open");
     }
     catch (error) {
       console.error("Error unchoosing applicant:", error.message);
@@ -121,7 +125,7 @@ const PostPage = () => {
       ) : post ? (
         <div>
           <h1>Post Details</h1>
-          <Post post={post} />
+          <Post post={post} status={curStatus} />
           {isApplicant ? (
             <button
               onClick={handleRemoveApplicant}

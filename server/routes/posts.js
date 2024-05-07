@@ -2,6 +2,7 @@ import express from "express";
 import * as postFunctions from "../data/posts.js";
 import { updateSelectedApplicant } from "../data/users.js";
 import verifyToken from "../middleware.js";
+import { stat } from "fs";
 const router = express.Router();
 
 router.route("/all").get(async (req, res) => {
@@ -40,6 +41,13 @@ router.route("/:id").get(async (req, res) => {
     let updatedPost = await postFunctions.updatePostById(
       req.params.id,
       req.body
+    );
+
+    let status = req.body.selectedApplicant ? "In progress" : "Open"
+
+    let updatedStatus = await postFunctions.updatePostStatus(
+      req.params.id,
+      status
     );
 
     return res.status(200).json({ post: updatedPost });
