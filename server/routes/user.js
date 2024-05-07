@@ -29,6 +29,14 @@ router.route('/:username')
           let user = await getUserByUserName(`${req.params.username}`);
           const posts = user.posts.map(post => getPostById(post));
           user.posts = await Promise.all(posts);
+          const appliedPosts = await Promise.all(user.applications.map(async (application) => {
+              const post = await getPostById(application.postId);
+              return {
+                  post,
+                  status: application.status
+              };
+          }));
+          user.applications = appliedPosts;
           if(!user) return res.status(404).json({message: 'User not found'});
             return res.status(200).json(
               user
