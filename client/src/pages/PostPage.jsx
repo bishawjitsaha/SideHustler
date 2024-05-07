@@ -14,16 +14,22 @@ const PostPage = () => {
   const [chosenApplicant, setChosenApplicant] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
+  const [curStatus, setCurStatus] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/posts/${id}`);
+        const response = await axios.get(`http://localhost:3000/posts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`
+          }
+        });
 
         if (response.status === 200) {
           const fetchedPost = response.data.post;
           setPost(fetchedPost);
+          setChosenApplicant(fetchedPost.selectedApplicant);
 
           const currentUserIsApplicant =
             currentUser && fetchedPost && fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid);
@@ -32,6 +38,7 @@ const PostPage = () => {
           setChosenApplicant(fetchedPost.selectedApplicant);
           setIsCompleted(fetchedPost.status === "completed");
           setLoading(false);
+          setCurStatus(fetchedPost.status);
         } else {
           setError("Failed to fetch post");
           setLoading(false);
@@ -81,6 +88,21 @@ const PostPage = () => {
       if (response.status === 200) {
         setIsApplicant(false);
         alert("Successfully removed your application.");
+
+        const updateResponse = await axios.put( //in case user is the selected applicant, remove selected applicant
+          `http://localhost:3000/posts/${id}`,
+          {
+            selectedApplicant: null,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.accessToken}`,
+            },
+          }
+        );
+        if (updateResponse.status !== 200) {
+          throw new Error("Failed to update post");
+        }
       } else {
         alert("Failed to remove application. Please try again.");
       }
@@ -91,10 +113,15 @@ const PostPage = () => {
   };
 
   const handleChooseApplicant = async (applicantId) => {
-    try{
-      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
+    try {
+      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId }, {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully selected applicant!");
+      setCurStatus("In Progress");
 
     }
     catch (error) {
@@ -104,10 +131,15 @@ const PostPage = () => {
   };
 
   const handleUnchooseApplicant = async () => {
-    try{
-      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null });
+    try {
+      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null }, {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
       setChosenApplicant(null);
       alert("Successfully removed applicant!");
+      setCurStatus("Open");
     }
     catch (error) {
       console.error("Error unchoosing applicant:", error.message);
@@ -151,9 +183,9 @@ const PostPage = () => {
       ) : error ? (
         <p>{error}</p>
       ) : post ? (
-        <div>
-          <h1>Post Details</h1>
-          <Post post={post} />
+        <div className="mx-auto">
+          <br />
+          <Post post={post} status={curStatus} />
           {isApplicant ? (
             <button
               onClick={handleRemoveApplicant}
@@ -175,6 +207,7 @@ const PostPage = () => {
                 }
             
               <h2>Applicants:</h2>
+              {post.applicants && post.applicants.length === 0 && <p>No applicants yet.</p>}
               <ul>
                 {post.applicants.map((applicant) => (
                   <li key={applicant._id}>

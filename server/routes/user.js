@@ -1,8 +1,8 @@
-// Example of a home.js route file
 import { Router } from 'express';
 const router = Router();
 import { doesUserExist, getUserById } from '../data/users.js';
 import { getUserByUserName, updateUserById, updateRating } from '../data/users.js';
+import { getPostsByUsername } from '../data/posts.js';
 import verifyToken from '../middleware.js';
 import { getPostById } from '../data/posts.js';
 
@@ -24,12 +24,16 @@ router.route('/addInfo')
 })
 
 router.route('/:username')
-    .get(async(req, res) => {
+    .get(verifyToken, async(req, res) => {
         try{
-          let user = await getUserByUserName(`${req.params.username}`);
-          const posts = user.posts.map(post => getPostById(post));
+          const user = await getUserByUserName(`${req.params.username}`);
+          if(!user) return res.status(404).json({message: 'User not found'});
+          let posts = user.posts.map(post => getPostById(post));
+          if(!posts) return res.status(404).json({message: 'Posts not found'});
+
           user.posts = await Promise.all(posts);
-          const appliedPosts = await Promise.all(user.applications.map(async (application) => {
+          const appliedPosts = await Promise.all(
+            user.applications.map(async (application) => {
               const post = await getPostById(application.postId);
               return {
                   post,
@@ -37,9 +41,21 @@ router.route('/:username')
               };
           }));
           user.applications = appliedPosts;
-          if(!user) return res.status(404).json({message: 'User not found'});
+
+          posts = await getPostsByUsername(`${req.params.username}`);
+          const postsWithSelectedApplicant = await Promise.all(
+            posts.map(async (post) => {
+              if (post.selectedApplicant) {
+                let selectedApplicant = await getUserById(post.selectedApplicant);
+                post.selectedApplicant = selectedApplicant;
+              }
+              return post;
+            })
+          );
+          user.posts = postsWithSelectedApplicant; // replaces selectedApplicant id with user object
+
             return res.status(200).json(
-              user
+              user            
             )
         }
         catch (err) {
@@ -48,7 +64,7 @@ router.route('/:username')
     })
 
     router.route('/edit/:username')
-    .post(async (req, res) => {
+    .post(verifyToken, async (req, res) => {
       try{
         const user = await getUserByUserName(req.params.username);
         if(!user) return res.status(404).json({message: 'User not found'});        
@@ -166,7 +182,7 @@ router.route('/:username')
 
 
 router.route('/verifyUser/:username')
-  .get(async (req,res) => {
+  .get(verifyToken, async (req,res) => {
     let enteredUser = req.params.username;
     try{
       let userFlag = await doesUserExist(enteredUser);
@@ -183,7 +199,7 @@ router.route('/verifyUser/:username')
   })
 
 router.route('/getById/:id')
-.get(async (req,res) => {
+.get(verifyToken, async (req,res) => {
   let id = req.params.id;
   try{
     let user = await getUserById(id);

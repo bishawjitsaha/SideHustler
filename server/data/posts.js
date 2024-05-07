@@ -20,7 +20,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
         taskTime: validData.taskTime,
         taskPayment: validData.taskPayment,
         posterId: posterId,
-        photos: [], //array of photo objects, todo
+        photos: photos, // one image
         workType: validData.workType, // "remote" or "in-person"
         applicants: [],
         status: "open", //Status : Open, Closed, In Progress, Completed
@@ -51,6 +51,18 @@ export const getPostById = async (id) => {
     if (!post) throw "Post not found";
     post._id = post._id.toString();
     return post;
+}
+
+export const getPostsByUsername = async (username) => {
+    const userCollection = await users();
+    const user = await userCollection.findOne({userName: username});
+    if (!user) throw "User not found";
+    let posts = [];
+    for (let i = 0; i < user.posts.length; i++) {
+        posts.push(await getPostById(user.posts[i]));
+    }
+    return posts;
+    
 }
 
 export const getAllPosts = async () => {

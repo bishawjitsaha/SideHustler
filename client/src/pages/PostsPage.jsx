@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Post, AddPost } from "../components";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const PostsPage = () => {
+  const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,7 +20,11 @@ const PostsPage = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/posts/all");
+        const response = await axios.get("http://localhost:3000/posts/all", {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`
+          }
+        });
         const data = await response.data;
         setPosts(data.posts);
       } catch (error) {

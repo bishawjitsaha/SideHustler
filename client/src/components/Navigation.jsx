@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import {doSignOut} from '../firebase/firebaseFunctions';
+import { doSignOut } from '../firebase/firebaseFunctions';
 import "../App.css";
 import axios from "axios";
 
@@ -33,28 +33,34 @@ const Navigation = () => {
   );
 };
 
-const NavigationAuth = ({userDataLoaded, profileLink}) => {
+const NavigationAuth = ({ userDataLoaded, profileLink }) => {
   const navigate = useNavigate();
   const signOutHandler = async () => {
     await doSignOut();
     navigate("/");
-};
+  };
   return (
     <div>
         <nav className="bg-teal-400 p-4 text-white flex justify-center">
             {userDataLoaded && (
             <>
                 <NavLink className="bg-white text-blue-500 px-3 py-2 rounded hover:bg-gray-300" to="/">
-                Home
+                    Home
                 </NavLink>
                 <NavLink to="/search" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
-                Search
+                    Search
                 </NavLink>
                 <NavLink to="/posts" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
-                Posts
+                    Posts
+                </NavLink>
+                <NavLink to="/chat" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
+                    Chat
+                </NavLink>
+                <NavLink to="/notifications" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
+                    Notifications
                 </NavLink>
                 <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to={`/user/${profileLink}`}>
-                Profile
+                    Profile
                 </NavLink>
             </>
             )}
@@ -67,7 +73,7 @@ const NavigationAuth = ({userDataLoaded, profileLink}) => {
 };
 
 const NavigationNonAuth = () => {
-  
+
   return (
     <nav className="bg-teal-400 p-4 text-white flex justify-center">
       <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to="/">

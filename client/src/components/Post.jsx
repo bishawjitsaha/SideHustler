@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const Post = ({ post }) => {
+const Post = ({ post, status }) => {
     
     const [user, setUser] = useState(null);
 
@@ -20,7 +20,14 @@ const Post = ({ post }) => {
         fetchUser();
     }, [post.posterId]);
 
-    return (
+  
+  const [curStatus, setCurStatus] = useState(status);
+
+  useEffect(() => {
+    setCurStatus(status);
+  }, [status]);
+
+  return (
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
                 <div className="flex justify-start items-center mb-4">
@@ -37,7 +44,9 @@ const Post = ({ post }) => {
                     {post.title}
                 </h2>
 
+
                 <p className="text-gray-700 mb-4">{post.description}</p>
+                {post.photos !== "" && <img src={post.photos} alt="post Image" className="mb-4 h-48 mx-auto" />}
 
             </div>
 
@@ -55,7 +64,7 @@ const Post = ({ post }) => {
                             }
                         )}{" "}
                     </p>
-                    <p>Status: {post.status.charAt(0).toUpperCase() + post.status.slice(1)}</p>
+                    <p>Status: {curStatus.charAt(0).toUpperCase() + curStatus.slice(1)}</p>
                 </div>
                 <div className="flex justify-between text-gray-600 w-full">
                     <p>

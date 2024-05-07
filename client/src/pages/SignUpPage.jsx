@@ -15,7 +15,12 @@ function SignUpPage(props) {
       return false;
     }
     try{
-      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${displayName.value}`)
+      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${displayName.value}`, {
+        headers: {
+          Authorization: `Bearer ${currentUser.accessToken}`
+        }
+      });
+      console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
         return false;
