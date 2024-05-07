@@ -26,9 +26,10 @@ const PostPage = () => {
           setChosenApplicant(fetchedPost.selectedApplicant);
 
           const currentUserIsApplicant =
-            currentUser && fetchedPost && fetchedPost.applicants.includes(currentUser.uid);
+            currentUser && fetchedPost && fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid);
 
           setIsApplicant(currentUserIsApplicant);
+          setChosenApplicant(fetchedPost.selectedApplicant);
           setLoading(false);
           setCurStatus(fetchedPost.status);
         } else {
@@ -116,6 +117,8 @@ const PostPage = () => {
     }
   }
 
+  console.log(post?.applicants)
+
   return (
     <div>
       {loading ? (
@@ -141,7 +144,7 @@ const PostPage = () => {
               {post.applicants && post.applicants.length === 0 && <p>No applicants yet.</p>}
               <ul>
                 {post.applicants.map((applicant) => (
-                  <li key={applicant}>
+                  <li key={applicant._id}>
                     <a href={`/user/${applicant.userName}`}>{applicant.firstName} {applicant.lastName}</a>
                     {chosenApplicant === applicant._id ? (
                       <button
