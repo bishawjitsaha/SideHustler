@@ -2,6 +2,8 @@ import {React, useState, useEffect, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Box from '@mui/material/Box';  
+import Rating from '@mui/material/Rating';
 import { AddBioModal, AddEducationModal, AddExperienceModal, AddSkillsModal, EditInfoModal } from '../components'
 
 function ProfilePage() {
@@ -143,8 +145,11 @@ function ProfilePage() {
                     </div>
                     <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Rating</h2>
-                        {user.rating.average && <p>Average: {user.rating.average}</p>}
-                        {user.rating.total && <p>Total: {user.rating.total}</p>}
+                        {user.rating.total > 0 ? (
+                            <Box sx={{'& > legend': { mt: 2 },}}>
+                                <Rating name="read-only" value={user.rating.average} readOnly />
+                            </Box>
+                        ): <p>No Ratings</p>}
                     </div>
                     {(currentUser.displayName && currentUser.displayName === username) && 
                     <>

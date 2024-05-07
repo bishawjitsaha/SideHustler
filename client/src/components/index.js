@@ -11,3 +11,4 @@ export { default as AddBioModal } from "./AddBioModal";
 export { default as EditInfoModal } from "./EditInfoModal";
 export { default as Navigation } from "./Navigation";
 export { default as PrivateRoute } from "./PrivateRoute";
+export { default as RatingComponent } from "./RatingComponent";
