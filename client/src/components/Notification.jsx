@@ -7,7 +7,7 @@ export const Notification = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get(`/notifications`, { "userid": currentUser._id });
+                const response = await axios.get(`/notifications`, { "userid": currentUser.uid });
                 // TODO ADD AUTHORIZATION HEADER
                 setNotifications(response.data.notifications);
             } catch (error) {

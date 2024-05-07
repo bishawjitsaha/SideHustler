@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import {doSignOut} from '../firebase/firebaseFunctions';
+import { doSignOut } from '../firebase/firebaseFunctions';
 import "../App.css";
 import axios from "axios";
 
@@ -33,12 +33,12 @@ const Navigation = () => {
   );
 };
 
-const NavigationAuth = ({userDataLoaded, profileLink}) => {
+const NavigationAuth = ({ userDataLoaded, profileLink }) => {
   const navigate = useNavigate();
   const signOutHandler = async () => {
     await doSignOut();
     navigate("/");
-};
+  };
   return (
     <div>
       <nav className="navigation">
@@ -53,8 +53,14 @@ const NavigationAuth = ({userDataLoaded, profileLink}) => {
             <NavLink to="/posts" className="navlink">
               Posts
             </NavLink>
-            <NavLink className ="navlink" to={`/user/${profileLink}`}>
-            Profile
+            <NavLink to="/chat" className="navlink">
+              Chat
+            </NavLink>
+            <NavLink to="/notifications" className="navlink">
+              Notifications
+            </NavLink>
+            <NavLink className="navlink" to={`/user/${profileLink}`}>
+              Profile
             </NavLink>
           </>
         )}
@@ -67,7 +73,7 @@ const NavigationAuth = ({userDataLoaded, profileLink}) => {
 };
 
 const NavigationNonAuth = () => {
-  
+
   return (
     <nav className="navigation">
       <NavLink className="navlink" to="/">

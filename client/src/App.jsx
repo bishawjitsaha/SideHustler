@@ -12,6 +12,7 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 import GettingStarted from "./components/GettingStarted.jsx"
 import ChatLog from "./components/Chat/ChatLog.jsx";
 import ChatMessages from "./components/Chat/ChatMessages.jsx";
+import Notification from "./components/Notification.jsx";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path='/getting-started' element={<GettingStarted />} />
             <Route path='/chat' element={<ChatLog />} />
             <Route path='/chat/:id' element={<ChatMessages />} />
+            <Route path='/notifications' element={<Notification />} />
             <Route path='/not-found' element={<NotFoundPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
