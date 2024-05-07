@@ -179,12 +179,14 @@ function ProfilePage() {
                                     <p className='text-left'>
                                         <a href={`/post/${post._id}`}>{post.title}</a>
                                     </p>}
-                                {post.status && <p className='text-left ml-5'>{post.status}</p>}
-                                {post.selectedApplicant ? 
-                                    <p className='text-left ml-5'>Selected Applicant: 
-                                        <a href={`/user/${post.selectedApplicant.userName}`}>{post.selectedApplicant.firstName} {post.selectedApplicant.lastName}</a>
-                                    </p> 
-                                    : <p className='text-left ml-5'>No Selected Applicant</p>}
+                                {(currentUser.displayName && currentUser.displayName === username) && 
+                                    post.status && <p className='text-left ml-5'>{post.status}</p>}
+                                {(currentUser.displayName && currentUser.displayName === username) && 
+                                    (post.selectedApplicant ? 
+                                        <p className='text-left ml-5'>Selected Applicant: 
+                                            <a href={`/user/${post.selectedApplicant.userName}`}>{post.selectedApplicant.firstName} {post.selectedApplicant.lastName}</a>
+                                        </p> 
+                                        : <p className='text-left ml-5'>No Selected Applicant</p>)}
                             </div>
                         )) : <p>No Posts</p>}
                     </div>

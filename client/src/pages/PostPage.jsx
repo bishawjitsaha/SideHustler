@@ -81,6 +81,21 @@ const PostPage = () => {
       if (response.status === 200) {
         setIsApplicant(false);
         alert("Successfully removed your application.");
+
+        const updateResponse = await axios.put( //in case user is the selected applicant, remove selected applicant
+          `http://localhost:3000/posts/${id}`,
+          {
+            selectedApplicant: null,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.accessToken}`,
+            },
+          }
+        );
+        if (updateResponse.status !== 200) {
+          throw new Error("Failed to update post");
+        }
       } else {
         alert("Failed to remove application. Please try again.");
       }

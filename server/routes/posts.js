@@ -2,7 +2,6 @@ import express from "express";
 import * as postFunctions from "../data/posts.js";
 import { updateSelectedApplicant } from "../data/users.js";
 import verifyToken from "../middleware.js";
-import { stat } from "fs";
 const router = express.Router();
 
 router.route("/all").get(async (req, res) => {

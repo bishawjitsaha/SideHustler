@@ -27,10 +27,14 @@ router.route('/addInfo')
 router.route('/:username')
     .get(async(req, res) => {
         try{
-          let user = await getUserByUserName(`${req.params.username}`);
-          const posts = user.posts.map(post => getPostById(post));
+          const user = await getUserByUserName(`${req.params.username}`);
+          if(!user) return res.status(404).json({message: 'User not found'});
+          let posts = user.posts.map(post => getPostById(post));
+          if(!posts) return res.status(404).json({message: 'Posts not found'});
+
           user.posts = await Promise.all(posts);
-          const appliedPosts = await Promise.all(user.applications.map(async (application) => {
+          const appliedPosts = await Promise.all(
+            user.applications.map(async (application) => {
               const post = await getPostById(application.postId);
               return {
                   post,
@@ -38,10 +42,8 @@ router.route('/:username')
               };
           }));
           user.applications = appliedPosts;
-          if(!user) return res.status(404).json({message: 'User not found'});
-          const posts = await getPostsByUsername(`${req.params.username}`);
-          if(!posts) return res.status(404).json({message: 'Posts not found'});
 
+          posts = await getPostsByUsername(`${req.params.username}`);
           const postsWithSelectedApplicant = await Promise.all(
             posts.map(async (post) => {
               if (post.selectedApplicant) {
@@ -51,8 +53,8 @@ router.route('/:username')
               return post;
             })
           );
-        
-          user.posts = postsWithSelectedApplicant;
+          user.posts = postsWithSelectedApplicant; // replaces selectedApplicant id with user object
+
             return res.status(200).json(
               user            
             )
