@@ -3,53 +3,62 @@ import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../firebase/firebaseFunctions';
 import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from '../components/SocialSignIn';
+import { validateAge, validateUsername, validateName, validateEmail } from '../validation/userValidation';
 import axios from 'axios';
 function SignUpPage(props) {
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser, setCurrentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
   const handleSignUp = async (event) => {
     event.preventDefault();
-    const {displayName, email, passwordOne, passwordTwo, firstName, lastName, age} = event.target.elements;
+    let {displayName, email, passwordOne, passwordTwo, firstName, lastName, age} = event.target.elements;
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch('Passwords do not match');
       return false;
     }
     try{
-      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${displayName.value}`, {
-        headers: {
-          Authorization: `Bearer ${currentUser.accessToken}`
-        }
-      });
+      displayName = validateUsername(displayName.value);
+      age = validateAge(parseInt(age.value));
+      firstName = validateName(firstName.value);
+      lastName = validateName(lastName.value);
+      email = validateEmail(email.value);
+    } catch(e){
+      alert(e);
+      return false;
+    }
+    try{
+      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${displayName}`);
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
         return false;
       }
     } catch (e){
-      console.log(e);
+      alert(e)
     }
     try {
+      
       let user = await doCreateUserWithEmailAndPassword(
-        email.value,
+        email,
         passwordOne.value,
-        displayName.value
+        displayName
       );
+      setCurrentUser(user);
       await axios.post('http://localhost:3000/signup', {
-        userName: displayName.value,
-        firstName: firstName.value,
-        lastName: lastName.value,
-        age: parseInt(age.value),
+        userName: displayName,
+        firstName: firstName,
+        lastName: lastName,
+        age: age,
         isSocialSignUp: false
       }, {
         headers: {
           Authorization: `Bearer ${user.idToken}`
         }
       });
+
     } catch (e) {
-      alert(e);
+      console.log(e);
     }
   };
-
   if (currentUser) {
     return <Navigate to='/' />;
   }
