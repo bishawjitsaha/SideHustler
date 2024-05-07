@@ -16,7 +16,8 @@ export async function createNotification(userID, type, content, link) {
 
 export async function getNotifications(userID) {
     const notificationCollection = await notifications();
-    const notificationList = await notificationCollection.find({ userID: userID }).toArray().reverse();
+    const notificationArray = await notificationCollection.find({ userID: userID }).toArray();
+    const notificationList = notificationArray.reverse();
     const ret = [];
     for (let i = 0; i < notificationList.length; i++) {
         const notification = notificationList[i];
