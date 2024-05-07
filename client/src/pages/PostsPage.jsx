@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Post, AddPost } from "../components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PostsPage = () => {
   const [posts, setPosts] = useState(null);
@@ -15,29 +16,27 @@ const PostsPage = () => {
   };
 
   useEffect(() => {
-
     const fetchPosts = async () => {
-        try{
-            let {data}  = await axios.get(`http://localhost:3000/posts/all`);
-            if(data){
-                console.log(data)
-            }
-            setPosts(data.posts);   
-        }catch(e){
-    
-        }
-    }
-    fetchPosts();
-    
-}, []);
+      try {
+        const response = await axios.get("http://localhost:3000/posts/all");
+        const data = await response.data;
+        setPosts(data.posts);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    useEffect(() => {
-      console.log("Post State: ", posts)
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    console.log("Post State: ", posts);
   }, [posts]);
 
-    const addPost = async (newPost) => {
-        setPosts([...posts, newPost]);
-    }
+  const addPost = async (newPost) => {
+    setPosts([...posts, newPost]);
+  };
+
   return (
     <>
       <button
@@ -47,11 +46,21 @@ const PostsPage = () => {
         New Post
       </button>
 
-      {isModalOpen && <AddPost isOpen={isModalOpen} handleClose={handleCloseModal} addPost={addPost} />}
+      {isModalOpen && (
+        <AddPost
+          isOpen={isModalOpen}
+          handleClose={handleCloseModal}
+          addPost={addPost}
+        />
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
-        {posts && posts.map((post) => (
-          <Post key={post._id} post={post} />
-        ))}
+        {posts &&
+          posts.map((post) => (
+            <Link key={post._id} to={`/post/${post._id}`}>
+              <Post post={post} />
+            </Link>
+          ))}
       </div>
     </>
   );

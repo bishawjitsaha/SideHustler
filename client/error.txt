@@ -1,0 +1,12 @@
+(node:50306) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Vercel CLI 34.1.1
+Retrieving project…
+Deploying devv64s-projects/sidehustler
+Uploading [--------------------] (0.0B/2.1KB)
+Uploading [====================] (2.1KB/2.1KB)
+Inspect: https://vercel.com/devv64s-projects/sidehustler/CSWSxCqgAFYcgHQhUMuHy9ZJghpX [3s]
+Production: https://sidehustler-mwbyv6gc4-devv64s-projects.vercel.app [3s]
+Queued
+Building
+Completing
