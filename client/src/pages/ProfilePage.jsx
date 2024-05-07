@@ -149,8 +149,8 @@ function ProfilePage() {
                         <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
                         {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
                             <div key={index} className='mb-2'>
-                                {time.dateStart && time.dateEnd && <p>{time.dateStart} - {time.dateEnd}</p>}
-                                {time.timeStart && time.timeEnd && <p>{time.timeStart} - {time.timeEnd}</p>}
+                                {time.dateStart && time.dateEnd && <p>{time.dateStart} to {time.dateEnd}</p>}
+                                {time.timeStart && time.timeEnd && <p>{time.timeStart} to {time.timeEnd}</p>}
                             </div>
                         )) : <p>No Other Jobs Scheduled</p>}
                     </div>
