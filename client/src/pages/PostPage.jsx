@@ -14,7 +14,6 @@ const PostPage = () => {
   const [chosenApplicant, setChosenApplicant] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
-//   const [rating, setRating] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -143,7 +142,7 @@ const PostPage = () => {
     }
   }
 
-  console.log(post?.applicants)
+//   console.log(post?.applicants)
 
   return (
     <div>

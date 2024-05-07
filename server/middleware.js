@@ -6,9 +6,7 @@ const verifyToken = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     console.log('Token received: ', token);
     try {
-      console.log(typeof token);
       const decodedToken = await firebase.auth().verifyIdToken(token);
-      console.log(decodedToken);
       req.uid = decodedToken.uid;
       req.email =decodedToken.email;
       next();

@@ -1,9 +1,38 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const Post = ({ post }) => {
+    
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await axios.get(`http://localhost:3000/user/getById/${post.posterId}`);
+                setUser(res.data);
+            } catch (error) {
+                console.error("Error fetching user:", error);
+            }
+        };
+
+        fetchUser();
+    }, [post.posterId]);
+
     return (
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
+                <div className="flex justify-start items-center mb-4">
+                    {user &&   
+                        <Link 
+                            to={`/user/${user.userName}`} 
+                            className="text-teal-500 text-left font-bold text-xl hover:text-teal-200"
+                        >
+                            {user.userName}
+                        </Link>
+                    }
+                </div>
                 <h2 className="text-2xl font-bold mb-4 text-blue-700">
                     {post.title}
                 </h2>
@@ -12,7 +41,7 @@ const Post = ({ post }) => {
 
             </div>
 
-                <hr className="border-gray-200 my-4" />
+            <hr className="border-gray-200 my-4" />
             <div className="flex flex-col  justify-center">
                 <div className="flex justify-between text-gray-600 mb-2 w-full">
                     <p>

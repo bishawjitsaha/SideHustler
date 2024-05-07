@@ -192,7 +192,6 @@ router.route('/getById/:id')
     }
     return res.status(200).json(user)
   } catch (e) {
-    console.log(e);
       return res.status(400).json({message: e});
   }
 })
@@ -200,7 +199,6 @@ router.route('/getById/:id')
 router.route('/update-rating/:id')
     .post(async (req, res) => {
         try{
-            console.log("In update rating with id: ", req.params.id)
             let user = await getUserById(req.params.id);
             if(!user){
                 return res.status(404).json({message: 'User not found'});

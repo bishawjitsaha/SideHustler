@@ -96,7 +96,6 @@ router.route("/update-status/:id").put(async (req, res) => {
 
 router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
   try {
-    console.log('hello')
     const uid = req.uid;
     console.log(req.params.id, uid)
     let updatedPost = await postFunctions.addApplicant(req.params.id, uid);
@@ -110,7 +109,6 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
 
 router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
   try {
-    console.log('remove')
     const uid = req.uid;
     console.log(req.params.id, uid)
     let updatedPost = await postFunctions.removeApplicant(
