@@ -42,13 +42,13 @@ const PostsPage = () => {
     <>
       <button
         onClick={handleOpenModal}
-        className="bg-blue-500 text-white p-2 rounded-lg"
+        className="bg-blue-500 text-white p-2 rounded-lg mb-4"
       >
         New Post
       </button>
 
       {isModalOpen && <AddPost isOpen={isModalOpen} handleClose={handleCloseModal} addPost={addPost} />}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-gray-200 rounded-lg mx-auto px-auto">
         {posts && posts.map((post) => (
           <Post key={post._id} post={post} />
         ))}

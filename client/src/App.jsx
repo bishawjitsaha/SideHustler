@@ -16,25 +16,29 @@ function App() {
     <>
       <AuthProvider>
           <div>
-            <header className="bg-teal-500 text-white p-4">
-              <h1 className="text-3xl font-bold underline">SideHustler</h1>
-              <p className="text-lg font-semibold">
-                A database of side hustles - built by hustlers
-              </p>
-              <Navigation/>
+            <header className="bg-teal-400 text-white py-4 rounded">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-3xl font-bold">SideHustler</h1>
+                    <p className="text-lg font-semibold">
+                    A database of side hustles - built by hustlers
+                    </p>
+                </div>
+                <Navigation />
             </header>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
-              <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
-              <Route path='/signup' element={<SignUpPage />}/>
-              <Route path='/signin' element={<SignInPage />}/>
-              <Route path='/forgot' element={<ForgotPasswordPage />}/>
-              <Route path='/not-found' element={<NotFoundPage/>}/>
-              <Route path='/user/:username' element={<ProfilePage/>}/>
-              <Route path='/getting-started' element={ <GettingStarted/>}/>
-              <Route path="*" element={<h1>Not Found</h1>} />
-            </Routes>
+            <div className="container mx-auto px-4">
+                <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
+                <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
+                <Route path='/signup' element={<SignUpPage />}/>
+                <Route path='/signin' element={<SignInPage />}/>
+                <Route path='/forgot' element={<ForgotPasswordPage />}/>
+                <Route path='/not-found' element={<NotFoundPage/>}/>
+                <Route path='/user/:username' element={<ProfilePage/>}/>
+                <Route path='/getting-started' element={ <GettingStarted/>}/>
+                <Route path="*" element={<h1>Not Found</h1>} />
+                </Routes>
+            </div>
           </div>
       </AuthProvider>
     </>

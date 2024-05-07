@@ -35,47 +35,50 @@ import {
       return <Navigate to='/' />;
     }
     return (
-      <div>
-        <div className='card'>
-          <h1>Log-In</h1>
-          <form className='form' onSubmit={handleLogin}>
-            <div className='form-group'>
-              <label>
-                Email Address:
-                <br />
-                <input
-                  name='email'
-                  id='email'
-                  type='email'
-                  placeholder='Email'
-                  autoFocus={true}
-                />
-              </label>
-            </div>
+     <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+          <h1 className="mt-2 text-center text-4xl font-bold text-gray-900">Log-In</h1>
+          <form className='mt-8 space-y-6' onSubmit={handleLogin}>
+            <div className='rounded-md shadow-sm -space-y-px'>
+              <div>
+                <label>
+                    Email Address:
+                    <br />
+                    <input
+                    name='email'
+                    id='email'
+                    type='email'
+                    placeholder='Email'
+                    className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    autoFocus={true}
+                    />
+                </label>
+              </div>
             <br />
-            <div className='form-group'>
-              <label>
-                Password:
-                <br />
-                <input
-                  name='password'
-                  type='password'
-                  placeholder='Password'
-                  autoComplete='off'
-                />
-              </label>
+              <div>
+                <label>
+                    Password:
+                    <br />
+                    <input
+                    name='password'
+                    type='password'
+                    placeholder='Password'
+                    className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    autoComplete='off'
+                    />
+                </label>
+              </div>
             </div>
   
-            <button className='button' type='submit'>
+            <button className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4' type='submit'>
               Log in
             </button>
   
-            <button className='forgotPassword' onClick={passwordReset}>
+            <button className='text-blue-500 hover:text-blue-600 font-bold mr-4' onClick={passwordReset}>
               Forgot Password
             </button>
           </form>
   
-          <br />
           <SocialSignIn/>
         </div>
       </div>
