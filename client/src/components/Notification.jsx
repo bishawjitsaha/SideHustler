@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 export const Notification = () => {
     const { currentUser } = AuthContext;
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
+        if (!currentUser) return;
+
         const fetchNotifications = async () => {
             try {
                 const response = await axios.get(`/notifications`, { "userid": currentUser.uid });
