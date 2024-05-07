@@ -5,6 +5,7 @@ import searchRoute from './search.js';
 import postsRoute from './posts.js';
 import imageRoute from './image.js';
 import notificationRoute from './notifications.js';
+import messageRoute from './messages.js';
 
 const constructorMethod = (app) => {
     app.get('/', (req, res) => {
@@ -17,6 +18,7 @@ const constructorMethod = (app) => {
     app.use('/posts', postsRoute)
     app.use('/image', imageRoute)
     app.use('/notifications', notificationRoute)
+    app.use('/messages', messageRoute)
 
     app.use('*', (req, res) => {
         res.sendStatus(404);
