@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateBio } from '../validation/userValidation';
+import { AuthContext } from '../context/AuthContext';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -23,6 +24,7 @@ function AddBioModal({isOpen, user, handleClose, addBio}){
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
     const [isError, setIsError] = useState(false);
+    const { currentUser } = useContext(AuthContext)
     
     const handleErrors = (e) => {
         setErrorMessages(e);
@@ -40,7 +42,11 @@ function AddBioModal({isOpen, user, handleClose, addBio}){
         e.preventDefault();
         try{
             const validatedBio = validateBio(updatedUser.bio);
-            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, {bio: validatedBio})
+            const res = await axios.post(`http://localhost:3000/user/${user.userName}`, {bio: validatedBio}, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
             const addedBio = res.data.bio;
             alert('Bio Added');
             handleClose();

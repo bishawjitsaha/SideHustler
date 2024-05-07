@@ -15,8 +15,11 @@ export const ChatLog = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`http://localhost:3000/user/${currentUser.displayName}`);
-                // TODO ADD AUTHORIZATION HEADER
+                const res = await axios.get(`http://localhost:3000/user/${currentUser.displayName}`, {
+                    headers: {
+                      Authorization: `Bearer ${currentUser.accessToken}`
+                    }
+                  });
 
 
                 setChatLog(res.data.chatLog);

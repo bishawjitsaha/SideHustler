@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { SearchBar, SearchResult, SearchPostsFilters } from "../components";
+import { AuthContext } from "../context/AuthContext";
 
 const SearchPage = () => {
+  const { currentUser } = useContext(AuthContext);
   const [searchResults, setSearchResults] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
@@ -12,7 +14,11 @@ const SearchPage = () => {
       let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
       const { data } = await axios.get(
         `http://localhost:3000/search?${query}`
-      );
+        , {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`
+          }
+        });
       setSearchResults(data[`${searchType}`]);
       setFilteredResults(data[`${searchType}`]);
 

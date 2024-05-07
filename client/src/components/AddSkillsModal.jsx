@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateSkills } from '../validation/userValidation';
+import { AuthContext } from '../context/AuthContext';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -23,6 +24,7 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
     const [updatedUser, setUpdatedUser] = useState({...user});
     const [errorMessages, setErrorMessages] = useState('');
     const [isError, setIsError] = useState(false);
+    const { currentUser } = useContext(AuthContext);
     
     const handleErrors = (e) => {
         setErrorMessages(e);
@@ -47,7 +49,11 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
                 name: validatedSkills[0].name,
                 description: validatedSkills[0].description
             };
-            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, skillsPayload);
+            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, skillsPayload, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
             const addedSkills = res.data.skills;
             alert('Skill added successfully');
             handleClose();

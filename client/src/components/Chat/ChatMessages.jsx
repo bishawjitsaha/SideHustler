@@ -19,8 +19,11 @@ export const ChatMessages = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/messages/${id}`);
-            // TODO ADD AUTHORIZATION HEADER
+            const response = await axios.get(`http://localhost:3000/messages/${id}`, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
 
             setHistory(response.data.messages);
         } catch (error) {
@@ -38,8 +41,11 @@ export const ChatMessages = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`http://localhost:3000/user/${currentUser.displayName}`);
-                // TODO ADD AUTHORIZATION HEADER
+                const res = await axios.get(`http://localhost:3000/user/${currentUser.displayName}`, {
+                    headers: {
+                      Authorization: `Bearer ${currentUser.accessToken}`
+                    }
+                  });
 
                 setChatLog(res.data.chatLog);
 
@@ -96,8 +102,11 @@ export const ChatMessages = () => {
             message: currMessage
         }
         try {
-            const response = await axios.post('http://localhost:3000/messages/addMessage', msg);
-            // TODO ADD AUTHORIZATION HEADER
+            const response = await axios.post('http://localhost:3000/messages/addMessage', msg, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
 
             socketRef.current.emit('send_message', id);
             const temp = {
