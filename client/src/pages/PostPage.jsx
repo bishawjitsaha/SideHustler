@@ -23,8 +23,9 @@ const PostPage = () => {
           const fetchedPost = response.data.post;
           setPost(fetchedPost);
 
+          console.log(currentUser, fetchedPost, fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid));
           const currentUserIsApplicant =
-            currentUser && fetchedPost && fetchedPost.applicants.includes(currentUser.uid);
+            currentUser && fetchedPost && fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid);
 
           setIsApplicant(currentUserIsApplicant);
           setLoading(false);
@@ -111,6 +112,8 @@ const PostPage = () => {
     }
   }
 
+  console.log(post?.applicants)
+
   return (
     <div>
       {loading ? (
@@ -135,7 +138,7 @@ const PostPage = () => {
               <h2>Applicants:</h2>
               <ul>
                 {post.applicants.map((applicant) => (
-                  <li key={applicant}>
+                  <li key={applicant._id}>
                     <a href={`/user/${applicant.userName}`}>{applicant.firstName} {applicant.lastName}</a>
                     {chosenApplicant === applicant._id ? (
                       <button
