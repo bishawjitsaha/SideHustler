@@ -72,6 +72,7 @@ export const updatePostById = async (id, updatedPost) => {
     if (updatedPost.taskTime) update.taskTime = validateTaskTime(updatedPost.taskTime);
     if (updatedPost.taskPayment) update.taskPayment = validateTaskPayment(updatedPost.taskPayment);
     if (updatedPost.workType) update.workType = validateWorkType(updatedPost.workType);
+    if (updatedPost.hasOwnProperty('selectedApplicant')) update.selectedApplicant = updatedPost.selectedApplicant;
     
     const postCollection = await posts();
     const updatedInfo = await postCollection.findOneAndUpdate(
@@ -226,4 +227,15 @@ export const deletePostById = async (postId, currentUserId) => {
     if (deletionInfo.deletedCount === 0) throw "Could not delete post " + postId;
 
     return post;
+}
+
+export const getApplicants = async (postId) => {
+    postId = validId(postId);
+    const post = await getPostById(postId);
+    if (!post) throw "Post not found";
+
+    const userCollection = await users();
+    const usersFound = await userCollection.find({_id: { $in: post.applicants }}).toArray();
+
+    return usersFound;
 }

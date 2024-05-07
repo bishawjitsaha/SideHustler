@@ -13,9 +13,13 @@ let searchFunction = {
         let userCollection = await users();
         let usersArr = await userCollection.find({ 'username' : { $regex: query, $options: 'i' }}).toArray();
         return usersArr;
-        
     },
     async searchPost (query){
+        if(!query){
+            let postCollection = await posts();
+            let postsArr = await postCollection.find({}).toArray();
+            return postsArr;
+        }
         query = checkString(query);
         let postCollection = await posts();
         let postsArr = await postCollection.find({ 'title' : { $regex: query, $options: 'i' }}).toArray();
