@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import { doUpdateUserDisplayName } from '../firebase/firebaseFunctions';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { validateAge, validateUsername, validateName } from '../validation/userValidation';
 
 function GettingStarted(){
   const { currentUser, setSetupComplete, setupComplete} = useContext(AuthContext); 
@@ -18,10 +19,18 @@ function GettingStarted(){
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const {userName, firstName, lastName, age} = event.target.elements;
-
+    let {userName, firstName, lastName, age} = event.target.elements;
     try{
-      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${userName.value}`)
+      userName = validateUsername(userName.value);
+      age = validateAge(parseInt(age.value));
+      firstName = validateName(firstName.value);
+      lastName = validateName(lastName.value);
+    } catch(e){
+      alert(e);
+      return false;
+    }
+    try{
+      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${userName}`)
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
@@ -32,16 +41,16 @@ function GettingStarted(){
     }
     try {
       const user = await axios.post(`http://localhost:3000/user/addInfo`, {
-        userName: userName.value,
-        firstName: firstName.value,
-        lastName: lastName.value,
-        age: parseInt(age.value)
+        userName: userName,
+        firstName: firstName,
+        lastName: lastName,
+        age: age
       }, {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`
         }
       });
-      doUpdateUserDisplayName(userName.value);
+      doUpdateUserDisplayName(userName);
       await refreshUser();
       setSetupComplete(true);
         navigate("/");

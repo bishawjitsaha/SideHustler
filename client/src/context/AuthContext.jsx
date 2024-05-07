@@ -26,7 +26,8 @@ export const AuthProvider = ({children}) => {
     profileData,
     setProfileData,
     setupComplete,
-    setSetupComplete
+    setSetupComplete,
+    setCurrentUser
   }), [currentUser, profileData, setupComplete]);
   
   return (
