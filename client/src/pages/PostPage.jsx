@@ -106,7 +106,7 @@ const PostPage = () => {
   };
 
   const handleChooseApplicant = async (applicantId) => {
-    try{
+    try {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully chose applicant!");
@@ -120,7 +120,7 @@ const PostPage = () => {
   };
 
   const handleUnchooseApplicant = async () => {
-    try{
+    try {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null });
       setChosenApplicant(null);
       alert("Successfully unchose applicant!");
@@ -141,8 +141,8 @@ const PostPage = () => {
       ) : error ? (
         <p>{error}</p>
       ) : post ? (
-        <div>
-          <h1>Post Details</h1>
+        <div className="mx-auto">
+          <br />
           <Post post={post} status={curStatus} />
           {isApplicant ? (
             <button
@@ -168,16 +168,16 @@ const PostPage = () => {
                       >
                         Unchoose
                       </button>
-                        ) : (
-                        !chosenApplicant && (
-                          <button
-                            onClick={() => handleChooseApplicant(applicant._id)}
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
-                          >
-                            Choose
-                          </button>
-                        )
-                      )}
+                    ) : (
+                      !chosenApplicant && (
+                        <button
+                          onClick={() => handleChooseApplicant(applicant._id)}
+                          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+                        >
+                          Choose
+                        </button>
+                      )
+                    )}
                   </li>
                 ))}
               </ul>

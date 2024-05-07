@@ -20,7 +20,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
         taskTime: validData.taskTime,
         taskPayment: validData.taskPayment,
         posterId: posterId,
-        photos: [], //array of photo objects, todo
+        photos: photos, // one image
         workType: validData.workType, // "remote" or "in-person"
         applicants: [],
         status: "open", //Status : Open, Closed, In Progress, Completed
