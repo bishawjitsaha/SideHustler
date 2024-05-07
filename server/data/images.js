@@ -21,10 +21,26 @@ const emptyUploadsFolder = async () => {
 	}
 };
 
+const deletePrevImage = async (url) => {
+
+    const storage = getStorage(firebase);
+    const bucketRef = storage.bucket();
+    try {
+        let fileName = path.basename(url);
+        fileName = fileName.split('?')[0];
+        fileName = fileName.split('%2F')[1];
+        console.log("filanem", fileName);
+        const file = bucketRef.file(`images/${fileName}`);
+        await file.delete();
+    } catch (err) {
+        console.error("Error deleting image:", err);
+    }
+};
+
 // firebase config for image storage uplaod
 const uploadImage = async (imagePath) => {
     const rename = imagePath.split('.');
-    const newPath = `${rename[0] + v4()}-1.${rename[1]}`;
+    const newPath = `${rename[0] + v4()}-imagemagicked.${rename[1]}`;
     // use image magic to compress image
     try {
         await new Promise((resolve, reject) => {
@@ -60,6 +76,10 @@ const uploadImage = async (imagePath) => {
 export const uploadPfP = async (username, imagePath) => {
     const user = await getUserByUserName(username);
     if (!user) throw 'User not found';
+
+    if (user.pfp !== "") {
+        await deletePrevImage(user.pfp);
+    }
 
     // get firebase storage reference url link
     const url = await uploadImage(imagePath);

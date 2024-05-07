@@ -8,7 +8,7 @@ function HomePage() {
       <p className="text-lg font-semibold">
         A database of side hustles - built by hustlers
       </p>
-      {/* <AddImage cred={currentUser} type={"pfp"} /> */}
+      <AddImage cred={{ username: "bsaha" }} type={"pfp"} />
     </div>
 
   );

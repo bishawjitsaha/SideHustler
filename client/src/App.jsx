@@ -33,33 +33,12 @@ function App() {
             <Route path='/signup' element={<SignUpPage />} />
             <Route path='/signin' element={<SignInPage />} />
             <Route path='/forgot' element={<ForgotPasswordPage />} />
-            <Route path='/not-found' element={<NotFoundPage />} />
-            <Route path='/user/:username' element={<ProfilePage />} />
-            <Route path='/getting-started' element={<GettingStarted />} />
-            <Route path="*" element={<h1>Not Found</h1>} />
-          </Routes>
-        </div>
-        <div>
-          <header className="bg-teal-500 text-white p-4">
-            <h1 className="text-3xl font-bold underline">SideHustler</h1>
-            <p className="text-lg font-semibold">
-              A database of side hustles - built by hustlers
-            </p>
-            <Navigation />
-          </header>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
-            <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
-            <Route path='/signup' element={<SignUpPage />} />
-            <Route path='/signin' element={<SignInPage />} />
-            <Route path='/forgot' element={<ForgotPasswordPage />} />
-            <Route path='/not-found' element={<NotFoundPage />} />
             <Route path='/user/:username' element={<ProfilePage />} />
             <Route path='/getting-started' element={<GettingStarted />} />
             <Route path='/chat' element={<ChatLog />} />
             <Route path='/chat/:id' element={<ChatMessages />} />
-            <Route path="*" element={<h1>Not Found</h1>} />
+            <Route path='/not-found' element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </AuthProvider>
