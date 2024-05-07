@@ -28,8 +28,6 @@ export const ChatMessages = () => {
         }
         finally {
             setLoading(false);
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
     };
 
@@ -68,10 +66,13 @@ export const ChatMessages = () => {
     }, [id, currentUser, navigate])
 
     const formatDate = (date) => {
-        return new Date(date).toLocaleDateString("en-US", {
+        return new Date(date).toLocaleString("en-US", {
+            timeZone: "America/New_York",
             year: "numeric",
             month: "long",
             day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
         });
     }
 
@@ -102,7 +103,7 @@ export const ChatMessages = () => {
             const temp = {
                 sender: currentUser.displayName,
                 message: currMessage,
-                timestamp: new Date()
+                timestamp: new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
             }
             setHistory([...history, temp]);
             setCurrMessage('');
@@ -112,6 +113,12 @@ export const ChatMessages = () => {
 
     }
 
+    // make it auto scroll to bottom
+    useEffect(() => {
+        const chatContainer = document.getElementById('chat-container');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, [history])
+
     return (
         <div>
             <h2>Chat Messages with {chatPartner}</h2>
@@ -119,8 +126,7 @@ export const ChatMessages = () => {
                 {history.length > 0 ? history.map((message, index) => {
                     return (
                         <div key={index}>
-                            <p>{message.sender}: {message.message}</p>
-                            <p>{formatDate(message.timestamp)}</p>
+                            <p>({formatDate(message.timestamp)}) {message.sender}: {message.message}</p>
                         </div>
                     )
                 }) :

@@ -65,7 +65,7 @@ export async function addMessage(chatId, sender, message) {
     const messageObj = {
         sender: sender,
         message: message,
-        timestamp: new Date()
+        timestamp: new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
     };
 
     const chatCollection = await chats();
