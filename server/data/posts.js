@@ -251,26 +251,3 @@ export const getApplicants = async (postId) => {
 
     return usersFound;
 }
-
-export const setSelectedApplicant = async (postId, applicantId) => {
-    postId = validId(postId);
-    applicantId = validId(applicantId);
-
-    const post = await getPostById(postId);
-    if (!post) throw "Post not found";
-
-    const userCollection = await users();
-    const user = await userCollection.findOne({_id: applicantId});
-    if (!user) throw "User not found";
-
-    const postsCollection = await posts();
-    const updatedPost = await postsCollection.findOneAndUpdate(
-        { _id: new ObjectId(postId) },
-        { $set: { selectedApplicant: applicantId } },
-        { returnDocument: "after" }
-    );
-
-    if (!updatedPost) throw "Failed to update post";
-
-    return updatedPost;
-}

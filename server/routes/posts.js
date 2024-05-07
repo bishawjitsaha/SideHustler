@@ -1,5 +1,6 @@
 import express from "express";
 import * as postFunctions from "../data/posts.js";
+import { updateSelectedApplicant } from "../data/users.js";
 import verifyToken from "../middleware.js";
 const router = express.Router();
 
@@ -30,10 +31,17 @@ router.route("/:id").get(async (req, res) => {
 })
 .put(async (req, res) => {
   try {
+
+    let updatedApplicant = await updateSelectedApplicant(
+      req.params.id,
+      req.body.selectedApplicant
+    );
+
     let updatedPost = await postFunctions.updatePostById(
       req.params.id,
       req.body
     );
+
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
