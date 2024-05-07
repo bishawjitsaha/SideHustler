@@ -41,7 +41,8 @@ export async function createUser(id,userName, firstName, lastName, email, age, i
 			total: 0,
 		},
 		reservedTime: [],
-        applications: []
+        applications: [],
+		chatLog: []
 	};
 
 	const insertInfo = await userCollection.insertOne(newUser);

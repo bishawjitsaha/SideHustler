@@ -5,7 +5,9 @@ const Post = ({ post }) => {
     <div className="bg-blue-400 shadow-md rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">{post.title}</h2>
 
+
       <p className="text-gray-700 mb-2">{post.description}</p>
+      {post.photos !== "" && <img src={post.photos} alt="post Image" className="mb-4 h-48 mx-auto" />}
 
       <div className="flex justify-between text-gray-600">
         <p>

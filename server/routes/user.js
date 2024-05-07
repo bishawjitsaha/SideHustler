@@ -1,4 +1,3 @@
-// Example of a home.js route file
 import { Router } from 'express';
 const router = Router();
 import { doesUserExist, getUserById } from '../data/users.js';
