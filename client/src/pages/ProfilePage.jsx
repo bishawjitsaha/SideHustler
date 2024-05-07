@@ -86,6 +86,7 @@ function ProfilePage() {
         setSkills(newSkill);
     }
 
+
     return (
         <div className='flex justify-center'>
             {user && (
@@ -96,7 +97,7 @@ function ProfilePage() {
                     {currentUser.displayName && currentUser.displayName === username &&
                         <button onClick={() => handleOpenInfoModal()}>Edit</button>}
                     <div className='grid grid-cols-2 gap-4'>
-                        <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Bio</h2>
                             {user.bio && <p>{bio}</p>}
                             {(currentUser.displayName && currentUser.displayName === username) && !user.bio ? (
@@ -105,7 +106,7 @@ function ProfilePage() {
                                 null
                             )}
                         </div>
-                        <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Education</h2>
                             {education.school && <p>{education.school}</p>}
                             {education.degree && education.major && <p>{education.degree} in {education.major}</p>}
@@ -117,7 +118,7 @@ function ProfilePage() {
                                 null
                             )}
                         </div>
-                        <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Experience</h2>
                             {experience.map((exp, index) => (
                                 <div key={index} className='mb-2'>
@@ -129,7 +130,7 @@ function ProfilePage() {
                             {currentUser.displayName && currentUser.displayName === username &&
                                 <button onClick={() => handleOpenExperienceModal()}>Add Experience</button>}
                         </div>
-                        <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Skills</h2>
                             {skills.map((skill, index) => (
                                 <div key={index} className='mb-2'>
@@ -140,27 +141,48 @@ function ProfilePage() {
                             {currentUser.displayName && currentUser.displayName === username &&
                                 <button onClick={() => handleOpenSkillsModal()}>Add Skill</button>}
                         </div>
-                        <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Rating</h2>
                             {user.rating.average && <p>Average: {user.rating.average}</p>}
                             {user.rating.total && <p>Total: {user.rating.total}</p>}
                         </div>
                         {(currentUser.displayName && currentUser.displayName === username) &&
-                            <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
-                                <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
-                                {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
-                                    <div key={index} className='mb-2'>
-                                        {time.dateStart && time.dateEnd && <p>{time.dateStart} - {time.dateEnd}</p>}
-                                        {time.timeStart && time.timeEnd && <p>{time.timeStart} - {time.timeEnd}</p>}
-                                    </div>
-                                )) : <p>No Other Jobs Scheduled</p>}
-                            </div>
+                            <>
+                                <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
+                                    <h2 className='text-2xl font-semibold'>Applications</h2>
+                                    {user.applications.length > 0 ? user.applications.map((application, index) => (
+                                        <div key={index} className='mb-2'>
+                                            {application.post.title && <p>{application.post.title}</p>}
+                                            {application.status && <p>{application.status}</p>}
+                                            <button onClick={() => navigate(`/post/${application.post._id}`)}>View Post</button>
+                                        </div>
+                                    )) : <p>No Applications</p>}
+                                </div>
+                                <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
+                                    <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
+                                    {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
+                                        <div key={index} className='mb-2'>
+                                            {time.dateStart && time.dateEnd && <p>{time.dateStart} to {time.dateEnd}</p>}
+                                            {time.timeStart && time.timeEnd && <p>{time.timeStart} to {time.timeEnd}</p>}
+                                        </div>
+                                    )) : <p>No Other Jobs Scheduled</p>}
+                                </div>
+                            </>
                         }
-                        <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Posts</h2>
                             {user.posts.length > 0 ? user.posts.map((post, index) => (
                                 <div key={index} className='mb-2'>
-                                    {post}
+                                    {post.title &&
+                                        <>
+                                            <p>{post.title}</p>
+                                            <p>{post.status}</p>
+                                            {post.applicants.length > 0 ?
+                                                <p>Applicants: {post.applicants.length}</p> : <p>No Applicants</p>
+                                            }
+                                            <button onClick={() => navigate(`/post/${post._id}`)}>View Post</button>
+                                        </>
+                                    }
                                 </div>
                             )) : <p>No Posts</p>}
                         </div>

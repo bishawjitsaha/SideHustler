@@ -193,3 +193,54 @@ export async function updateUserById(id, updatedUser) {
     updatedInfo._id = updatedInfo._id.toString();
 	return updatedInfo;
 }
+
+export async function updateSelectedApplicant(postId, userId) {
+
+	postId = validate.validateId(postId);
+	const postCollection = await posts();
+	const post = await postCollection.findOne({ _id: new ObjectId(postId)});
+	if (!post) throw "Post not found";
+
+	const userCollection = await users();
+	let user;
+	let updatedApplicant;
+	if(userId){
+		userId = validate.validateId(userId);
+		user = await userCollection.findOne({ _id: userId });
+		if (!user) throw "User not found";
+
+		// format the date to YYYY-MM-DD
+		const startDate = new Date(post.taskTime.dateStart);
+		const endDate = new Date(post.taskTime.dateEnd);
+		const formattedDate = {
+			dateStart: startDate.toISOString().split("T")[0],
+			dateEnd: endDate.toISOString().split("T")[0],
+			timeStart: post.taskTime.timeStart,
+			timeEnd: post.taskTime.timeEnd,
+		};
+
+		updatedApplicant = await userCollection.findOneAndUpdate(
+			{ _id: userId },
+			{ $push: { reservedTime: formattedDate } },
+			{ returnDocument: "after" }
+		);
+		if (!updatedApplicant) throw "Failed to update user";
+	
+		return updatedApplicant;
+	}
+	else{
+		userId = post.selectedApplicant;
+		userId = validate.validateId(userId);
+		user = await userCollection.findOne({ _id: userId });
+		if (!user) throw "User not found";
+		updatedApplicant = await userCollection.findOneAndUpdate(
+			{ _id: userId },
+			{ $pull: { reservedTime: post.taskTime } },
+			{ returnDocument: "after" }
+		);
+		if (!updatedApplicant) throw "Failed to update user";
+		return updatedApplicant;
+	}
+	
+
+}
