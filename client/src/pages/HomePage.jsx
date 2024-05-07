@@ -1,5 +1,5 @@
 import React from "react";
-import AddImage from "../components/AddImage";
+// import AddImage from "../components/AddImage";
 
 function HomePage() {
   return (
@@ -8,7 +8,7 @@ function HomePage() {
       <p className="text-lg font-semibold">
         A database of side hustles - built by hustlers
       </p>
-      <AddImage cred={{ username: "bsaha" }} type={"pfp"} />
+      {/* Used to debug <AddImage cred={{ username: "bsaha" }} type={"pfp"} /> */}
     </div>
 
   );
