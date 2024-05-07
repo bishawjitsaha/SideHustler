@@ -1,6 +1,8 @@
 import express from "express";
 import * as postFunctions from "../data/posts.js";
-import { updateSelectedApplicant } from "../data/users.js";
+import { getUserById, updateSelectedApplicant } from "../data/users.js";
+import { createNotification } from "../data/notifications.js";
+import { createChat } from "../data/messages.js";
 import verifyToken from "../middleware.js";
 const router = express.Router();
 
@@ -36,6 +38,27 @@ router.route("/:id").get(async (req, res) => {
       req.params.id,
       req.body.selectedApplicant
     );
+
+    const currPost = await postFunctions.getPostById(req.params.id);
+
+    // notify the selected applicant that they have been chosen
+    const selectedAppNoti = await createNotification(req.body.selectedApplicant,
+      "post",
+      "You have been chosen for a post",
+      `/post/${req.params.id}`
+    );
+
+    // notify the chooser that they have successfully chosen an applicant
+    const postOwnerNoti = await createNotification(currPost.posterId,
+      "post", 
+      "You have successfully chosen an applicant",
+      `/user/${updatedApplicant.userName}`
+    );
+
+    const currUser = await getUserById(currPost.posterId);;
+
+    // open up a chat between them
+    const newChat = createChat(updatedApplicant.userName, currUser.userName);
 
     let updatedPost = await postFunctions.updatePostById(
       req.params.id,

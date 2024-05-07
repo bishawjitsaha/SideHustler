@@ -18,19 +18,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/create', async (req, res) => {
-    try {
-        const user1 = validateUsername(req.body.user1);
-        const user2 = validateUsername(req.body.user2);
-        const chat = await createChat(user1, user2);
-        // console.log("created", chat);
-        res.status(200).json(chat);
-    }
-    catch (e) {
-        res.status(400).json({ message: e });
-    }
-});
-
 router.post('/addMessage', async (req, res) => {
     try {
         const chatId = validId(req.body.chatId);
