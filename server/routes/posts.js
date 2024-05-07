@@ -4,6 +4,7 @@ import { getUserById, updateSelectedApplicant } from "../data/users.js";
 import { createNotification } from "../data/notifications.js";
 import { createChat } from "../data/messages.js";
 import verifyToken from "../middleware.js";
+
 const router = express.Router();
 
 router.route("/all").get(async (req, res) => {
@@ -51,7 +52,7 @@ router.route("/:id").get(async (req, res) => {
       // notify the chooser that they have successfully chosen an applicant
       const postOwnerNoti = await createNotification(currPost.posterId,
         "post", 
-        "You have successfully chosen an applicant",
+        "You have successfully chosen an applicant: " + updatedApplicant.userName,
         `/user/${updatedApplicant.userName}`
       );
 
@@ -65,15 +66,10 @@ router.route("/:id").get(async (req, res) => {
 
       const postOwnerNoti = await createNotification(currPost.posterId,
         "post",
-        "You have unchosen an applicant",
+        "You have unchosen an applicant: " + unChosenUser.userName,
         `/user/${unChosenUser.userName}`
       );
 
-      const unChosenUserNoti = await createNotification(currPost.selectedApplicant,
-        "post",
-        "You have been unchosen",
-        `/post/${req.params.id}`
-      );
     }
 
     let updatedPost = await postFunctions.updatePostById(
@@ -145,7 +141,27 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
     console.log('hello')
     const uid = req.uid;
     console.log(req.params.id, uid)
+
     let updatedPost = await postFunctions.addApplicant(req.params.id, uid);
+    
+    
+    // notify the posterID that someone has applied
+    const post = await postFunctions.getPostById(req.params.id);
+    const getApplicant = await getUserById(uid);
+
+    const noti = await createNotification(post.posterId,
+      "post",
+      getApplicant.userName + "has applied to your post",
+      `/user/${getApplicant.userName}`
+    );
+
+    //notify the applicant that they have applied
+    const applicantNoti = await createNotification(uid,
+      "post",
+      "You have applied to a post",
+      `/post/${req.params.id}`
+    );
+
     console.log(updatedPost)
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
@@ -163,6 +179,24 @@ router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
       req.params.id,
       uid
     );
+
+    // notify the posterID that someone has removed their application
+    const post = await postFunctions.getPostById(req.params.id);
+    const getApplicant = await getUserById(uid);
+
+    const noti = await createNotification(post.posterId,
+      "post",
+      getApplicant.userName + " has removed their application to your post",
+      `/user/${getApplicant.userName}`
+    );
+
+    //notify the applicant that they have removed their application
+    const applicantNoti = await createNotification(uid,
+      "post",
+      "You have removed your application to a post",
+      `/post/${req.params.id}`
+    );
+
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
