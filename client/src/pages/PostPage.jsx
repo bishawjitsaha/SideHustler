@@ -12,6 +12,7 @@ const PostPage = () => {
   const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [chosenApplicant, setChosenApplicant] = useState(null);
+  const [curStatus, setCurStatus] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -22,6 +23,7 @@ const PostPage = () => {
         if (response.status === 200) {
           const fetchedPost = response.data.post;
           setPost(fetchedPost);
+          setChosenApplicant(fetchedPost.selectedApplicant);
 
           const currentUserIsApplicant =
             currentUser && fetchedPost && fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid);
@@ -29,6 +31,7 @@ const PostPage = () => {
           setIsApplicant(currentUserIsApplicant);
           setChosenApplicant(fetchedPost.selectedApplicant);
           setLoading(false);
+          setCurStatus(fetchedPost.status);
         } else {
           setError("Failed to fetch post");
           setLoading(false);
@@ -78,6 +81,21 @@ const PostPage = () => {
       if (response.status === 200) {
         setIsApplicant(false);
         alert("Successfully removed your application.");
+
+        const updateResponse = await axios.put( //in case user is the selected applicant, remove selected applicant
+          `http://localhost:3000/posts/${id}`,
+          {
+            selectedApplicant: null,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.accessToken}`,
+            },
+          }
+        );
+        if (updateResponse.status !== 200) {
+          throw new Error("Failed to update post");
+        }
       } else {
         alert("Failed to remove application. Please try again.");
       }
@@ -92,6 +110,7 @@ const PostPage = () => {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId });
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully chose applicant!");
+      setCurStatus("In Progress");
 
     }
     catch (error) {
@@ -105,6 +124,7 @@ const PostPage = () => {
       const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null });
       setChosenApplicant(null);
       alert("Successfully unchose applicant!");
+      setCurStatus("Open");
     }
     catch (error) {
       console.error("Error unchoosing applicant:", error.message);
@@ -123,7 +143,7 @@ const PostPage = () => {
       ) : post ? (
         <div className="mx-auto">
           <br />
-          <Post post={post} />
+          <Post post={post} status={curStatus} />
           {isApplicant ? (
             <button
               onClick={handleRemoveApplicant}
@@ -136,6 +156,7 @@ const PostPage = () => {
           {currentUser && post.posterId === currentUser.uid && (
             <>
               <h2>Applicants:</h2>
+              {post.applicants && post.applicants.length === 0 && <p>No applicants yet.</p>}
               <ul>
                 {post.applicants.map((applicant) => (
                   <li key={applicant._id}>

@@ -18,6 +18,7 @@ function ProfilePage() {
     const [education, setEducation] = useState({});
     const [experience, setExperience] = useState([]);
     const [skills, setSkills] = useState([]);
+    const [posts, setPosts] = useState([]);
 
     const navigate = useNavigate();
 
@@ -29,6 +30,7 @@ function ProfilePage() {
             setEducation(res.data.education);
             setExperience(res.data.experience);
             setSkills(res.data.skills);
+            setPosts(res.data.posts);
         }
         catch (e) {
             console.error(e);
@@ -171,18 +173,20 @@ function ProfilePage() {
                         }
                         <div className='bg-white shadow-lg rounded-lg overflow-hidden p-4 h-auto'>
                             <h2 className='text-2xl font-semibold'>Posts</h2>
-                            {user.posts.length > 0 ? user.posts.map((post, index) => (
+                            {posts.length > 0 ? posts.map((post, index) => (
                                 <div key={index} className='mb-2'>
                                     {post.title &&
-                                        <>
-                                            <p>{post.title}</p>
-                                            <p>{post.status}</p>
-                                            {post.applicants.length > 0 ?
-                                                <p>Applicants: {post.applicants.length}</p> : <p>No Applicants</p>
-                                            }
-                                            <button onClick={() => navigate(`/post/${post._id}`)}>View Post</button>
-                                        </>
-                                    }
+                                            <p className='text-left'>
+                                                    <a href={`/post/${post._id}`}>{post.title}</a>
+                                                </p>}
+                                            {(currentUser.displayName && currentUser.displayName === username) && 
+                                                post.status && <p className='text-left ml-5'>{post.status}</p>}
+                                {(currentUser.displayName && currentUser.displayName === username) && 
+                                    (post.selectedApplicant ? 
+                                                    <p className='text-left ml-5'>Selected Applicant: 
+                                                        <a href={`/user/${post.selectedApplicant.userName}`}>{post.selectedApplicant.firstName} {post.selectedApplicant.lastName}</a>
+                                                </p> 
+                                            : <p className='text-left ml-5'>No Selected Applicant</p>)}
                                 </div>
                             )) : <p>No Posts</p>}
                         </div>

@@ -53,6 +53,18 @@ export const getPostById = async (id) => {
     return post;
 }
 
+export const getPostsByUsername = async (username) => {
+    const userCollection = await users();
+    const user = await userCollection.findOne({userName: username});
+    if (!user) throw "User not found";
+    let posts = [];
+    for (let i = 0; i < user.posts.length; i++) {
+        posts.push(await getPostById(user.posts[i]));
+    }
+    return posts;
+    
+}
+
 export const getAllPosts = async () => {
     const postCollection = await posts();
     const allPosts = await postCollection.find({}).toArray();

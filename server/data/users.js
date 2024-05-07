@@ -204,12 +204,11 @@ export async function updateSelectedApplicant(postId, userId) {
 	const userCollection = await users();
 	let user;
 	let updatedApplicant;
-	if(userId){
+	if(userId){ // means that a user has been selected
 		userId = validate.validateId(userId);
 		user = await userCollection.findOne({ _id: userId });
 		if (!user) throw "User not found";
 
-		// format the date to YYYY-MM-DD
 		const startDate = new Date(post.taskTime.dateStart);
 		const endDate = new Date(post.taskTime.dateEnd);
 		const formattedDate = {
@@ -225,10 +224,18 @@ export async function updateSelectedApplicant(postId, userId) {
 			{ returnDocument: "after" }
 		);
 		if (!updatedApplicant) throw "Failed to update user";
+
+		const updatedApplicationPostStatus = await userCollection.findOneAndUpdate(
+			{ _id: userId, "applications.postId": postId },
+			{ $set: { "applications.$.status": "Accepted" } },
+			{ returnDocument: "after" }
+		);
+		if (!updatedApplicationPostStatus) throw "Failed to update user";
+
 	
 		return updatedApplicant;
 	}
-	else{
+	else{ // means that the selected applicant has been removed
 		userId = post.selectedApplicant;
 		userId = validate.validateId(userId);
 		user = await userCollection.findOne({ _id: userId });
@@ -239,8 +246,15 @@ export async function updateSelectedApplicant(postId, userId) {
 			{ returnDocument: "after" }
 		);
 		if (!updatedApplicant) throw "Failed to update user";
+
+		const updatedApplicationPostStatus = await userCollection.findOneAndUpdate(
+			{ _id: userId, "applications.postId": postId },
+			{ $set: { "applications.$.status": "Rejected" } },
+			{ returnDocument: "after" }
+		);
+		if (!updatedApplicationPostStatus) throw "Failed to update user";
+
 		return updatedApplicant;
 	}
 	
-
 }

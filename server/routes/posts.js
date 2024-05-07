@@ -65,6 +65,13 @@ router.route("/:id").get(async (req, res) => {
       req.body
     );
 
+    let status = req.body.selectedApplicant ? "In progress" : "Open"
+
+    let updatedStatus = await postFunctions.updatePostStatus(
+      req.params.id,
+      status
+    );
+
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
