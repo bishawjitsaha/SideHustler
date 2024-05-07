@@ -14,7 +14,7 @@ export const Notification = () => {
             try {
                 const response = await axios.get(`http://localhost:3000/notifications/${currentUser.uid}`);
                 // TODO ADD AUTHORIZATION HEADER
-                console.log("made axios call ", response.data);
+                
                 setNotifications(response.data.notifications);
             } catch (error) {
                 console.error(error);
