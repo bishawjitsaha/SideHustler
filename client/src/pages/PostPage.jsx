@@ -23,11 +23,11 @@ const PostPage = () => {
           const fetchedPost = response.data.post;
           setPost(fetchedPost);
 
-          console.log(currentUser, fetchedPost, fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid));
           const currentUserIsApplicant =
             currentUser && fetchedPost && fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid);
 
           setIsApplicant(currentUserIsApplicant);
+          setChosenApplicant(fetchedPost.selectedApplicant);
           setLoading(false);
         } else {
           setError("Failed to fetch post");

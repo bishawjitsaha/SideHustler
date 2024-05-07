@@ -86,6 +86,8 @@ function ProfilePage() {
         setSkills(newSkill);
     }
 
+
+    // console.log(user)
   return (
     <div className='flex justify-center'>
         {user && (
@@ -145,6 +147,18 @@ function ProfilePage() {
                         {user.rating.total && <p>Total: {user.rating.total}</p>}
                     </div>
                     {(currentUser.displayName && currentUser.displayName === username) && 
+                    <>
+                    <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
+                        <h2 className='text-2xl font-semibold'>Applications</h2>
+                        {user.applications.length > 0 ? user.applications.map((application, index) => (
+                            <div key={index} className='mb-2'>
+                                {/* TODO: DO THAT BS IN BACKEND TO LOAD POST OBJECT INSTEAD OF ID */}
+                                {/* {application.title && <p>{application.title}</p>} */}
+                                {application.status && <p>{application.status}</p>}
+                                <button onClick={() => navigate(`/post/${application.postId}`)}>View Post</button>
+                            </div>
+                        )) : <p>No Applications</p>}
+                    </div>
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Other Jobs Scheduled For</h2>
                         {user.reservedTime.length > 0 ? user.reservedTime.map((time, index) => (
@@ -154,12 +168,22 @@ function ProfilePage() {
                             </div>
                         )) : <p>No Other Jobs Scheduled</p>}
                     </div>
+                    </>
                     }
                     <div className='bg-white shadow-lg rounded-lg rouneded-lg overflow-hidden p-4 h-auto'>
                         <h2 className='text-2xl font-semibold'>Posts</h2>
                         {user.posts.length > 0 ? user.posts.map((post, index) => (
                             <div key={index} className='mb-2'>
-                                {post}
+                                {post.title && 
+                                <>
+                                <p>{post.title}</p>
+                                <p>{post.status}</p>
+                                {post.applicants.length > 0 ?
+                                    <p>Applicants: {post.applicants.length}</p> : <p>No Applicants</p>
+                                }
+                                <button onClick={() => navigate(`/post/${post._id}`)}>View Post</button>
+                                </>
+                                }
                             </div>
                         )) : <p>No Posts</p>}
                     </div>
