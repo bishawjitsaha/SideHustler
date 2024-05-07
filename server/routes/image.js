@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { getUserByUserName } from '../data/users.js';
+import { getPostById } from '../data/posts.js';
 import { uploadPfP, uploadPostImage } from '../data/images.js';
 
 const router = Router();
@@ -34,19 +35,17 @@ router.post('/pfpUpload', multer({storage: storage}).single('file'), async (req,
 
 router.post('/postImgUpload', multer({storage: storage}).single('file'), async (req, res) => {
     try {
-        const id = req.body.postID;
-
-        const postwithid = await getPostById(id);
-        if (!postwithid) throw 'Post not found';
-
+        console.log("Uploading Post Image");
         const path = req.file.path;
         if (!path) throw 'No file uploaded';
 
-        await uploadPostImage(id, path);
+        const posturl = await uploadPostImage(path);
 
-        return res.status(200).json({});
+        console.log("Post Image Uploaded");
+        return res.status(200).json(posturl);
     }
     catch (e) {
+        console.log(e);
         res.status(400).json({message: e.message})
     }
 });

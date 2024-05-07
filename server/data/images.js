@@ -29,18 +29,19 @@ const deletePrevImage = async (url) => {
         let fileName = path.basename(url);
         fileName = fileName.split('?')[0];
         fileName = fileName.split('%2F')[1];
-        console.log("filanem", fileName);
         const file = bucketRef.file(`images/${fileName}`);
         await file.delete();
     } catch (err) {
-        console.error("Error deleting image:", err);
+        // console.error("Error deleting image:", err);
     }
 };
 
 // firebase config for image storage uplaod
 const uploadImage = async (imagePath) => {
-    const rename = imagePath.split('.');
-    const newPath = `${rename[0] + v4()}-imagemagicked.${rename[1]}`;
+    let rename = imagePath.split('.');
+    // repalce spaces with dashes
+    rename = rename.map((str) => str.replace(/ /g, '-'));
+    let newPath = `${rename[0] + v4()}-imagemagicked.${rename[1]}`;
     // use image magic to compress image
     try {
         await new Promise((resolve, reject) => {
@@ -54,6 +55,7 @@ const uploadImage = async (imagePath) => {
         });
     } catch (err) {
         console.error(err);
+        // newPath = imagePath;
     };
 
     const storage = getStorage(firebase);
@@ -101,27 +103,15 @@ export const uploadPfP = async (username, imagePath) => {
 };
 
 
-export const uploadPostImage = async (postID, imagePath) => {
-    const post = await getPostById(postID);
-    if (!post) throw 'Post not found';
+export const uploadPostImage = async (imagePath) => {
 
     // get firebase storage reference url link
     const url = await uploadImage(imagePath);
     if (!url) throw 'Could not upload image';
 
-    const updatedFields = {
-        photos: [url] 
-    };
+    console.log("Image url is: ", url);
 
-    const postCollection = await posts();
-    const updatedPost = await postCollection.findOneAndUpdate(
-        {_id: ObjectId (postID)},
-        {$set: updatedFields},
-        {ReturnDocument: 'after'}
-    );
-    if (!updatedPost) throw "Could not update post " + postID;
-    updatedPost._id = updatedPost._id.toString(); 
-    return updatedPost;
+    return url;
 };
 
 

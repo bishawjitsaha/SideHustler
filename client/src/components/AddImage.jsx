@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const AddImage = ({ cred, type }) => {
+const AddImage = ({ type, username, setPostURL, isError, handleErrors }) => {
     const [image, setImage] = useState(null);
 
     const handleChange = (e) => {
@@ -11,6 +11,7 @@ const AddImage = ({ cred, type }) => {
 
     const handleUpload = async (e) => {
         e.preventDefault();
+        if (isError) return;
         const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
         if (image && allowedTypes.includes(image.type.toLowerCase())) {
             const formData = new FormData();
@@ -21,14 +22,13 @@ const AddImage = ({ cred, type }) => {
                 route = "image/pfpUpload";
             }
             else if (type === "post") {
-                formData.append("postID", cred._id);
                 route = "image/postImgUpload";
             }
             else {
-                console.log("Invalid image type");
+                console.log("Invalid upload type");
                 return;
             }
-            await axios.post(`http://localhost:3000/${route}`, formData)
+            const url = await axios.post(`http://localhost:3000/${route}`, formData)
                 // TODO ADD Authorization header
                 .then((res) => {
                     console.log("Image uploaded");
@@ -36,8 +36,10 @@ const AddImage = ({ cred, type }) => {
                 .catch((err) => {
                     console.log(err);
                 });
+            setPostURL(url);
         }
         else {
+            handleErrors("Invalid file type");
             console.log("Invalid file type");
         }
     }
