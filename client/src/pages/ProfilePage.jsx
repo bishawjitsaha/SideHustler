@@ -161,7 +161,10 @@ function ProfilePage() {
                         <h2 className='text-2xl font-semibold'>Posts</h2>
                         {posts.length > 0 ? posts.map((post, index) => (
                             <div key={index} className='mb-2'>
-                                {post.title && <p className='text-left'>{post.title}</p>}
+                                {post.title && 
+                                    <p className='text-left'>
+                                        <a href={`/post/${post._id}`}>{post.title}</a>
+                                    </p>}
                                 {post.status && <p className='text-left ml-5'>{post.status}</p>}
                                 {post.selectedApplicant ? 
                                     <p className='text-left ml-5'>Selected Applicant: 

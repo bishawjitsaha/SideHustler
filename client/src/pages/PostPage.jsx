@@ -22,6 +22,7 @@ const PostPage = () => {
         if (response.status === 200) {
           const fetchedPost = response.data.post;
           setPost(fetchedPost);
+          setChosenApplicant(fetchedPost.selectedApplicant);
 
           const currentUserIsApplicant =
             currentUser && fetchedPost && fetchedPost.applicants.includes(currentUser.uid);
