@@ -10,11 +10,15 @@ export async function createChat(user1, user2) {
     const userCollection = await users();
     const user_one = await userCollection.findOne({ userName: user1 });
     if (!user_one) throw 'User1 not found';
-    if (user_one.chatLog.includes(user2)) throw 'Chat already exists';
+    for (let i = 0; i < user_one.chatLog.length; i++) {
+        if (user_one.chatLog[i].to === user2) throw 'Chat already exists';
+    }
 
     const user_two = await userCollection.findOne({ userName: user2 });
     if (!user_two) throw 'User2 not found';
-    if (user_two.chatLog.includes(user1)) throw 'Chat already exists';
+    for (let i = 0; i < user_one.chatLog.length; i++) {
+        if (user_two.chatLog[i].to === user1) throw 'Chat already exists';
+    }
 
     
     const chat = {
