@@ -41,34 +41,37 @@ const NavigationAuth = ({ userDataLoaded, profileLink }) => {
   };
   return (
     <div>
-        <nav className="bg-teal-400 p-4 text-white flex justify-center">
-            {userDataLoaded && (
-            <>
-                <NavLink className="bg-white text-blue-500 px-3 py-2 rounded hover:bg-gray-300" to="/">
-                    Home
-                </NavLink>
-                <NavLink to="/search" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
-                    Search
-                </NavLink>
-                <NavLink to="/posts" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
-                    Posts
-                </NavLink>
-                <NavLink to="/chat" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
-                    Chat
-                </NavLink>
-                <NavLink to="/notifications" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
-                    Notifications
-                </NavLink>
-                <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to={`/user/${profileLink}`}>
-                    Profile
-                </NavLink>
-            </>
-            )}
-        </nav>
-        <button className='bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300' type='button' onClick={signOutHandler}>
-            Sign Out
-        </button>
-</div>
+      <nav className="bg-teal-400 p-4 text-white flex justify-center">
+        {userDataLoaded && (
+          <>
+            <NavLink className="bg-white text-blue-500 px-3 py-2 rounded hover:bg-gray-300" to="/">
+              Home
+            </NavLink>
+            <NavLink to="/search" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
+              Search
+            </NavLink>
+            <NavLink to="/posts" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
+              Posts
+            </NavLink>
+            <NavLink to="/chat" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
+              Chat
+            </NavLink>
+            <NavLink to="/notifications" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
+              Notifications
+            </NavLink>
+            <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to={`/user/${profileLink}`}>
+              Profile
+            </NavLink>
+            <NavLink
+              className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300"
+              to="/"
+              onClick={signOutHandler}>
+              Sign Out
+            </NavLink>
+          </>
+        )}
+      </nav>
+    </div>
   );
 };
 
