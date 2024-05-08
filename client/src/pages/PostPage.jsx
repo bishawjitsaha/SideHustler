@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Post, RatingComponent } from "../components";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const PostPage = () => {
@@ -14,9 +14,8 @@ const PostPage = () => {
   const [chosenApplicant, setChosenApplicant] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);
-  const [curStatus, setCurStatus] = useState('');
-
-
+  const [curStatus, setCurStatus] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -27,8 +26,8 @@ const PostPage = () => {
         setLoading(true);
         const response = await axios.get(`http://localhost:3000/posts/${id}`, {
           headers: {
-            Authorization: `Bearer ${currentUser.accessToken}`
-          }
+            Authorization: `Bearer ${currentUser.accessToken}`,
+          },
         });
 
         if (response.status === 200) {
@@ -37,7 +36,11 @@ const PostPage = () => {
           setChosenApplicant(fetchedPost.selectedApplicant);
 
           const currentUserIsApplicant =
-            currentUser && fetchedPost && fetchedPost.applicants.some(applicant => applicant._id === currentUser?.uid);
+            currentUser &&
+            fetchedPost &&
+            fetchedPost.applicants.some(
+              (applicant) => applicant._id === currentUser?.uid
+            );
 
           setIsApplicant(currentUserIsApplicant);
           setChosenApplicant(fetchedPost.selectedApplicant);
@@ -94,7 +97,8 @@ const PostPage = () => {
         setIsApplicant(false);
         alert("Successfully removed your application.");
 
-        const updateResponse = await axios.put( //in case user is the selected applicant, remove selected applicant
+        const updateResponse = await axios.put(
+          //in case user is the selected applicant, remove selected applicant
           `http://localhost:3000/posts/${id}`,
           {
             selectedApplicant: null,
@@ -119,17 +123,19 @@ const PostPage = () => {
 
   const handleChooseApplicant = async (applicantId) => {
     try {
-      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: applicantId }, {
-        headers: {
-          Authorization: `Bearer ${currentUser.accessToken}`
+      const res = await axios.put(
+        `http://localhost:3000/posts/${post._id}`,
+        { selectedApplicant: applicantId },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`,
+          },
         }
-      });
+      );
       setChosenApplicant(res.data.post.selectedApplicant);
       alert("Successfully selected applicant!");
       setCurStatus("In Progress");
-
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error choosing applicant:", error.message);
       alert("Failed to choose applicant. Please try again.");
     }
@@ -137,91 +143,154 @@ const PostPage = () => {
 
   const handleUnchooseApplicant = async () => {
     try {
-      const res = await axios.put(`http://localhost:3000/posts/${post._id}`, { selectedApplicant: null }, {
-        headers: {
-          Authorization: `Bearer ${currentUser.accessToken}`
+      const res = await axios.put(
+        `http://localhost:3000/posts/${post._id}`,
+        { selectedApplicant: null },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`,
+          },
         }
-      });
+      );
       setChosenApplicant(null);
       alert("Successfully removed applicant!");
       setCurStatus("Open");
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error unchoosing applicant:", error.message);
       alert("Failed to unchoose applicant. Please try again.");
     }
-  }
+  };
 
   const handleCompleteTask = async () => {
-    try{
-      const res = await axios.put(`http://localhost:3000/posts/update-status/${post._id}`, { status: "completed" }, {
-            headers: {
-                Authorization: `Bearer ${currentUser.accessToken}`
-            }
-        });
+    try {
+      const res = await axios.put(
+        `http://localhost:3000/posts/update-status/${post._id}`,
+        { status: "completed" },
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`,
+          },
+        }
+      );
       setIsCompleted(true);
       setShowRatingModal(true);
       setCurStatus("completed");
       alert("Task successfully marked completed!");
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error completing task:", error.message);
       alert("Failed to complete task. Please try again.");
     }
-  }
+  };
 
   const handleRateApplicant = async (rating) => {
     try {
-        const res = await axios.post(
-            `http://localhost:3000/user/update-rating/${chosenApplicant}`,
-            { rating }
-        );
-        alert("Successfully rated applicant!");
-        setShowRatingModal(false); // Close the rating modal after rating submission
+      const res = await axios.post(
+        `http://localhost:3000/user/update-rating/${chosenApplicant}`,
+        { rating }
+      );
+      alert("Successfully rated applicant!");
+      setShowRatingModal(false);
     } catch (error) {
-        console.error("Error rating applicant:", error.message);
-        alert("Failed to rate applicant.");
+      console.error("Error rating applicant:", error.message);
+      alert("Failed to rate applicant.");
     }
-  }
+  };
 
-//   console.log(post?.applicants)
+  const GoToChat = async () => {
+    try {
+      const user = await axios.get(
+        `http://localhost:3000/user/getById/${currentUser.uid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`,
+          },
+        }
+      );
+
+      const poster = await axios.get(
+        `http://localhost:3000/user/getById/${post.posterId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`,
+          },
+        }
+      );
+
+      const chatId = user.data.chatLog.find(
+        (entry) => entry.to === poster.data.userName
+      )?.chatID;
+      
+      if (!chatId) {
+        throw new Error("Chat not found");
+      }
+
+      navigate(`/chat/${chatId}`);
+    } catch (error) {
+      console.error("Error starting chat:", error.message);
+      alert("Failed to start chat. Please try again.");
+    }
+  };
 
   return (
-    <div>
+    <div className="mx-auto">
+      <br />
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : post ? (
-        <div className="mx-auto">
-          <br />
+        <div>
           <Post post={post} status={curStatus} />
-          {isApplicant ? (
-            <button
-              onClick={handleRemoveApplicant}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Remove Application
-            </button>
-          ) : null}
 
-          {currentUser && post.posterId === currentUser.uid && !isCompleted && ( //Show applicants and mark complete button if you are the poster and task is uncomplete
-            <>
-                {chosenApplicant && //Show Mark Complete button if an applicant has been chosen
-                <button 
-                    onClick={() => handleCompleteTask()}
-                    className="mt-2 mb-4 bg-green-300"
+          {currentUser && post.posterId !== currentUser.uid && (
+            <button
+              onClick={GoToChat}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            >
+              Chat with the Poster
+            </button>
+          )}
+
+          {chosenApplicant === currentUser.uid ? (
+            <div className="mt-4">
+              <p className="text-green-500 text-lg font-bold">
+                Congratulations! You have been chosen for this post.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-4">
+              {isApplicant && (
+                <button
+                  onClick={handleRemoveApplicant}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                 >
-                    Mark Task Complete
+                  Remove Application
                 </button>
-                }
-            
+              )}
+            </div>
+          )}
+
+          {currentUser && post.posterId === currentUser.uid && !isCompleted && (
+            <>
+              {chosenApplicant && (
+                <button
+                  onClick={() => handleCompleteTask()}
+                  className="mt-2 mb-4 bg-green-300"
+                >
+                  Mark Task Complete
+                </button>
+              )}
+
               <h2>Applicants:</h2>
-              {post.applicants && post.applicants.length === 0 && <p>No applicants yet.</p>}
+              {post.applicants && post.applicants.length === 0 && (
+                <p>No applicants yet.</p>
+              )}
               <ul>
                 {post.applicants.map((applicant) => (
                   <li key={applicant._id}>
-                    <a href={`/user/${applicant.userName}`}>{applicant.firstName} {applicant.lastName}</a>
+                    <a href={`/user/${applicant.userName}`}>
+                      {applicant.firstName} {applicant.lastName}
+                    </a>
                     {chosenApplicant === applicant._id ? (
                       <button
                         onClick={() => handleUnchooseApplicant()}
@@ -229,36 +298,28 @@ const PostPage = () => {
                       >
                         Remove
                       </button>
-                        ) : (
-                        !chosenApplicant && (
-                          <button
-                            onClick={() => handleChooseApplicant(applicant._id)}
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
-                          >
-                            Select
-                          </button>
-                        )
-                      )}
+                    ) : (
+                      !chosenApplicant && (
+                        <button
+                          onClick={() => handleChooseApplicant(applicant._id)}
+                          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+                        >
+                          Select
+                        </button>
+                      )
+                    )}
                   </li>
                 ))}
               </ul>
             </>
           )}
+
           {showRatingModal && (
             <RatingComponent
               isOpen={showRatingModal}
               onClose={() => setShowRatingModal(false)}
               onSubmit={handleRateApplicant}
             />
-          )}
-
-          {currentUser && post.posterId !== currentUser.uid && !isApplicant && (
-            <button
-              onClick={handleApply}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Apply to Post
-            </button>
           )}
         </div>
       ) : (
