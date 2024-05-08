@@ -87,7 +87,7 @@ export const ChatMessages = () => {
 
     const socketRef = useRef();
     useEffect(() => {
-        socketRef.current = io('${backendUrl}');
+        socketRef.current = io(`${backendUrl}`);
         socketRef.current.on('receive_message', async (data) => {
             if (data !== id) return;
             else await fetchMessages();
@@ -115,7 +115,7 @@ export const ChatMessages = () => {
             message: currMessage
         }
         try {
-            const response = await axios.post('${backendUrl}/messages/addMessage', msg, {
+            const response = await axios.post(`${backendUrl}/messages/addMessage`, msg, {
                 headers: {
                     Authorization: `Bearer ${currentUser.accessToken}`
                 }
