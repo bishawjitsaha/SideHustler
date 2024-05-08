@@ -6,8 +6,9 @@ import {
   doSignInWithEmailAndPassword
 } from '../firebase/firebaseFunctions.js';
   function SignInPage() {
-    let navigate = useNavigate();
     const {currentUser} = useContext(AuthContext);
+    let navigate = useNavigate();
+    
     const handleLogin = async (event) => {
       event.preventDefault();
       let {email, password} = event.target.elements;
@@ -19,18 +20,9 @@ import {
       }
     };
     const passwordReset = () => {
-      // event.preventDefault();
-      // let email = document.getElementById('email').value;
-      // if (email) {
-      //   doPasswordReset(email);
-      //   alert('Password reset email was sent');
-      // } else {
-      //   alert(
-      //     'Please enter an email address below before you click the forgot password link'
-      //   );
-      // }
       navigate('/forgot');
     };
+    
     if (currentUser) {
       return <Navigate to='/' />;
     }

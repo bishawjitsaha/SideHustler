@@ -1,5 +1,6 @@
 import express from 'express';
 import searchFunction from '../data/search.js';
+import verifyToken from '../middleware.js';
 const router = express.Router();
 
 router

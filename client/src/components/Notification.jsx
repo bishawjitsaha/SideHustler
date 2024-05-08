@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
 export const Notification = () => {
-    const { currentUser } = AuthContext;
+    const { currentUser } = useContext(AuthContext);
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
@@ -11,8 +12,12 @@ export const Notification = () => {
 
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get(`/notifications`, { "userid": currentUser.uid });
-                // TODO ADD AUTHORIZATION HEADER
+                const response = await axios.get(`http://localhost:3000/notifications/${currentUser.uid}`, {
+                    headers: {
+                      Authorization: `Bearer ${currentUser.accessToken}`
+                    }
+                  });
+                
                 setNotifications(response.data.notifications);
             } catch (error) {
                 console.error(error);
@@ -38,7 +43,7 @@ export const Notification = () => {
                     <div key={index}>
                         <p>{notification.content}</p>
                         <p>{notification.type}</p>
-                        <link to={notification.link}>View</link>
+                        <Link to={notification.link}>View</Link>
                         <p>{formatDate(notification.date)}</p>
                     </div>
                 )
