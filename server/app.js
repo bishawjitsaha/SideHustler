@@ -23,18 +23,18 @@ const io = new Server(server, {
 
 // Handle Socket.IO connections
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  // console.log('A user connected');
 
   // Handle 'send_message' event
   socket.on('send_message', (data) => {
-    console.log('Message received:', data);
+    // console.log('Message received:', data);
     // Broadcast the received message to all clients except the sender
     socket.broadcast.emit('receive_message', data);
   });
 
   // Handle disconnection
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    // console.log('A user disconnected');
   });
 });
 

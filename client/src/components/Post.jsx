@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const Post = ({ post, status}) => {
     
@@ -13,7 +14,7 @@ const Post = ({ post, status}) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/user/getById/${post.posterId}`, {
+                const res = await axios.get(`${backendUrl}/user/getById/${post.posterId}`, {
                     headers: {
                         Authorization: `Bearer ${currentUser.accessToken}`
                     }
@@ -51,8 +52,13 @@ const Post = ({ post, status}) => {
 
 
                 <p className="text-gray-700 mb-4">{post.description}</p>
-                {post.photos !== "" && <img src={post.photos} alt="post Image" className="mb-4 h-48 mx-auto" />}
-
+                {post.photos && (
+                    <img
+                        src={post.photos}
+                        alt="Post"
+                        className="w-full h-64 object-cover object-center rounded-lg mb-4"
+                    />
+                )}
             </div>
 
             <hr className="border-gray-200 my-4" />

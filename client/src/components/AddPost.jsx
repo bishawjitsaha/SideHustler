@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from "../context/AuthContext";
 import TagSelector from "./TagSelector";
 import * as postValidation from '../validation/postValidation.js';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 
@@ -87,7 +88,7 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
                 const formData = new FormData();
                 formData.append("file", image);
                 try {
-                    const response = await axios.post('http://localhost:3000/image/postImgUpload', formData, {
+                    const response = await axios.post(`${backendUrl}/image/postImgUpload`, formData, {
                         headers: {
                             Authorization: `Bearer ${currentUser.accessToken}`
                         }
@@ -138,7 +139,7 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
 
             console.log("postObj", postObj);
 
-            const response = await axios.post('http://localhost:3000/posts/create', postObj, {
+            const response = await axios.post('${backendUrl}/posts/create', postObj, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

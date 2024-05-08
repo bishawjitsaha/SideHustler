@@ -5,6 +5,7 @@ import {AuthContext} from '../context/AuthContext';
 import SocialSignIn from '../components/SocialSignIn';
 import { validateAge, validateUsername, validateName, validateEmail } from '../validation/userValidation';
 import axios from 'axios';
+import { backendUrl } from '../App';
 function SignUpPage(props) {
   const {currentUser, setCurrentUser} = useContext(AuthContext);
   const [pwMatch, setPwMatch] = useState('');
@@ -26,7 +27,7 @@ function SignUpPage(props) {
       return false;
     }
     try{
-      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${displayName}`);
+      let {data} = await axios.get(`${backendUrl}/user/verifyUser/${displayName}`);
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
@@ -43,7 +44,7 @@ function SignUpPage(props) {
         displayName
       );
       setCurrentUser(user);
-      await axios.post('http://localhost:3000/signup', {
+      await axios.post('${backendUrl}/signup', {
         userName: displayName,
         firstName: firstName,
         lastName: lastName,
