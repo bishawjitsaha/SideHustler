@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
-import axios from 'axios';
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
