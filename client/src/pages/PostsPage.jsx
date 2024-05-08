@@ -70,9 +70,14 @@ const PostsPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-gray-200 rounded-lg mx-auto px-auto">
         {posts &&
           posts.map((post) => (
-            // <Link key={post._id} to={`/post/${post._id}`}>
-              <Post post={post} status={post.status} key={post._id}/>
-            // </Link>
+            <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
+                <Link key={post.posterId} to={`/user/${post.posterUsername}`} className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4">
+                    {post.posterUsername}
+                </Link>
+                <Link key={post._id} to={`/post/${post._id}`} className="transform transition duration-250 ease-in-out hover:scale-105">
+                    <Post post={post} status={post.status} key={post._id}/>
+                </Link>
+            </div>
           ))}
       </div>
     </>
