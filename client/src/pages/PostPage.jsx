@@ -189,7 +189,7 @@ const PostPage = () => {
         { rating }
       );
       alert("Successfully rated applicant!");
-      setShowRatingModal(false);
+      setShowRatingModal(false); // Close the rating modal after rating submission
     } catch (error) {
       console.error("Error rating applicant:", error.message);
       alert("Failed to rate applicant.");
@@ -219,7 +219,7 @@ const PostPage = () => {
       const chatId = user.data.chatLog.find(
         (entry) => entry.to === poster.data.userName
       )?.chatID;
-      
+
       if (!chatId) {
         throw new Error("Chat not found");
       }
@@ -231,95 +231,119 @@ const PostPage = () => {
     }
   };
 
+  //   console.log(post?.applicants)
+
   return (
-    <div className="mx-auto">
-      <br />
+    <div>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>{error}</p>
       ) : post ? (
-        <div>
+        <div className="mx-auto">
+          <br />
           <Post post={post} status={curStatus} />
-
-          {currentUser && post.posterId !== currentUser.uid && (
-            <button
-              onClick={GoToChat}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Chat with the Poster
-            </button>
-          )}
-
-          {chosenApplicant === currentUser.uid ? (
-            <div className="mt-4">
-              <p className="text-green-500 text-lg font-bold">
-                Congratulations! You have been chosen for this post.
-              </p>
-            </div>
-          ) : (
-            <div className="mt-4">
-              {isApplicant && (
+          {isApplicant ? (
+            <>
+              {chosenApplicant ? (
+                // Case: Current user is the chosen applicant
+                chosenApplicant === currentUser.uid ? (
+                  <>
+                    <p className="text-green-500 text-lg font-bold">
+                      Congratulations! You have been chosen for this post.
+                    </p>
+                    <button
+                      onClick={GoToChat}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                    >
+                      Chat with the Poster
+                    </button>
+                  </>
+                ) : (
+                  // Case: Someone else is chosen
+                  <p className="text-red-500 text-lg font-bold">
+                    Sorry, someone else has been selected for this job.
+                  </p>
+                )
+              ) : (
+                // Case: No chosen applicant yet, show remove application button
                 <button
                   onClick={handleRemoveApplicant}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
                 >
                   Remove Application
                 </button>
               )}
-            </div>
-          )}
-
-          {currentUser && post.posterId === currentUser.uid && !isCompleted && (
-            <>
-              {chosenApplicant && (
-                <button
-                  onClick={() => handleCompleteTask()}
-                  className="mt-2 mb-4 bg-green-300"
-                >
-                  Mark Task Complete
-                </button>
-              )}
-
-              <h2>Applicants:</h2>
-              {post.applicants && post.applicants.length === 0 && (
-                <p>No applicants yet.</p>
-              )}
-              <ul>
-                {post.applicants.map((applicant) => (
-                  <li key={applicant._id}>
-                    <a href={`/user/${applicant.userName}`}>
-                      {applicant.firstName} {applicant.lastName}
-                    </a>
-                    {chosenApplicant === applicant._id ? (
-                      <button
-                        onClick={() => handleUnchooseApplicant()}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
-                      >
-                        Remove
-                      </button>
-                    ) : (
-                      !chosenApplicant && (
-                        <button
-                          onClick={() => handleChooseApplicant(applicant._id)}
-                          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
-                        >
-                          Select
-                        </button>
-                      )
-                    )}
-                  </li>
-                ))}
-              </ul>
             </>
-          )}
+          ) : null}
 
+          {currentUser &&
+            post.posterId === currentUser.uid &&
+            !isCompleted && ( // Show applicants and mark complete button if you are the poster and task is uncomplete
+              <>
+                {chosenApplicant && ( // Show Mark Complete button if an applicant has been chosen
+                  <button
+                    onClick={() => handleCompleteTask()}
+                    className="mt-2 mb-4 bg-green-300"
+                  >
+                    Mark Task Complete
+                  </button>
+                )}
+
+                {chosenApplicant ? null : ( // Show applicants only if no applicant is chosen
+                  <>
+                    <h2>Applicants:</h2>
+                    {post.applicants && post.applicants.length === 0 ? (
+                      <p>No applicants yet.</p>
+                    ) : (
+                      <ul>
+                        {post.applicants.map((applicant) => (
+                          <li key={applicant._id}>
+                            <a href={`/user/${applicant.userName}`}>
+                              {applicant.firstName} {applicant.lastName}
+                            </a>
+                            {chosenApplicant === applicant._id ? (
+                              <button
+                                onClick={() => handleUnchooseApplicant()}
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
+                              >
+                                Remove
+                              </button>
+                            ) : (
+                              !chosenApplicant && (
+                                <button
+                                  onClick={() =>
+                                    handleChooseApplicant(applicant._id)
+                                  }
+                                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+                                >
+                                  Select
+                                </button>
+                              )
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                )}
+              </>
+            )}
           {showRatingModal && (
             <RatingComponent
               isOpen={showRatingModal}
               onClose={() => setShowRatingModal(false)}
               onSubmit={handleRateApplicant}
             />
+          )}
+
+          {currentUser && post.posterId !== currentUser.uid && !isApplicant && (
+            <button
+              onClick={handleApply}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            >
+              Apply to Post
+            </button>
           )}
         </div>
       ) : (
