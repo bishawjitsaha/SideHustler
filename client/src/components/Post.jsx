@@ -69,6 +69,17 @@ const Post = ({ post, status}) => {
                             }
                         )}{" "}
                     </p>
+                    <p>
+                        End Date:{" "}
+                        {new Date(post.taskTime.dateEnd).toLocaleString(
+                            "en-US",
+                            {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                            }
+                        )}
+                    </p>
                     {status &&
                         <p>Status: {status.charAt(0).toUpperCase() + status.slice(1)}</p>
                      } 

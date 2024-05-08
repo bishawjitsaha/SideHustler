@@ -21,14 +21,6 @@ export const validateName = (str) => {
 	return str;
 };
 
-export const validateString = (str) => {
-	if (!str || typeof str !== "string" || str.trim().length === 0) {
-		throw `Invalid string: ${str}`;
-	}
-	str.trim();
-	return str;
-};
-
 export const validateEmail = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
 		throw `Invalid string for email: ${str}`;

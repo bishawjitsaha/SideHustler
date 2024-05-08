@@ -11,8 +11,8 @@ export async function createUser(id,userName, firstName, lastName, email, age, i
 		age = "";
 	} else {
 		userName = validate.validateUsername(userName, "userName");
-		firstName = validate.validateString(firstName, "firstName");
-		lastName = validate.validateString(lastName, "lastName");
+		firstName = validate.validateName(firstName, "firstName");
+		lastName = validate.validateName(lastName, "lastName");
 		email = validate.validateEmail(email);
 		age = validate.validateAge(age);
 	}
@@ -61,7 +61,7 @@ export async function getUserById(id) {
 	return user;
 }
 export async function doesUserExist(userName){
-	userName = validate.validateString(userName, "userName");
+	userName = validate.validateUsername(userName, "userName");
 	const userCollection = await users();
 	const user = await userCollection.findOne({ "userName": { "$regex": `^${userName}$`, "$options": "i" } });
 	if (!user){ // if the user does not exist return false
@@ -71,7 +71,7 @@ export async function doesUserExist(userName){
 }
 
 export async function getUserByUserName(userName) {
-	userName = validate.validateString(userName, "userName");
+	userName = validate.validateUsername(userName, "userName");
 	const userCollection = await users();
 	const user = await userCollection.findOne({ "userName": { "$regex": `^${userName}$`, "$options": "i" } });
 	if (user === null) throw "No user with that username";
@@ -114,9 +114,9 @@ export async function updateUserById(id, updatedUser) {
 	if (updatedUser.userName)
 		update.userName = validate.validateUsername(updatedUser.userName);
 	if (updatedUser.firstName)
-		update.firstName = validate.validateString(updatedUser.firstName);
+		update.firstName = validate.validateName(updatedUser.firstName);
 	if (updatedUser.lastName)
-		update.lastName = validate.validateString(updatedUser.lastName);
+		update.lastName = validate.validateName(updatedUser.lastName);
 	if (updatedUser.email)
 		update.email = validate.validateEmail(updatedUser.email);
 	if (updatedUser.age) update.age = validate.validateAge(updatedUser.age);
@@ -205,7 +205,6 @@ export async function updateSelectedApplicant(postId, userId) {
 	let user;
 	let updatedApplicant;
 	if(userId !== null){ // means that a user has been selected
-		console.log("this route is being hit ", userId);
 		userId = validate.validateId(userId);
 		user = await userCollection.findOne({ _id: userId });
 		if (!user) throw "User not found";
@@ -259,4 +258,46 @@ export async function updateSelectedApplicant(postId, userId) {
 		return updatedApplicant;
 	}
 	
+}
+
+export async function checkReservedTime(postId, userId) {
+	postId = validate.validateId(postId);
+	userId = validate.validateId(userId);
+	const postCollection = await posts();
+	const post = await postCollection.findOne({ _id: new ObjectId(postId) });
+	if (!post) throw "Post not found";
+	const userCollection = await users();
+	const user = await userCollection.findOne({ _id: userId });
+	if (!user) throw "User not found";
+
+	const userReservedTime = user.reservedTime;
+	const postTaskTime = post.taskTime;
+	const startDate = new Date(postTaskTime.dateStart);
+	const endDate = new Date(postTaskTime.dateEnd);
+	const formattedDate = {
+		dateStart: startDate.toISOString().split("T")[0],
+		dateEnd: endDate.toISOString().split("T")[0],
+		timeStart: postTaskTime.timeStart,
+		timeEnd: postTaskTime.timeEnd,
+	};
+
+	for (let i = 0; i < userReservedTime.length; i++) {
+		const reservedTime = userReservedTime[i];
+		if (
+			(reservedTime.dateStart <= formattedDate.dateStart &&
+				reservedTime.dateEnd >= formattedDate.dateStart) ||
+			(reservedTime.dateStart <= formattedDate.dateEnd &&
+				reservedTime.dateEnd >= formattedDate.dateEnd)
+		) {
+			if (
+				(reservedTime.timeStart <= formattedDate.timeStart &&
+					reservedTime.timeEnd >= formattedDate.timeStart) ||
+				(reservedTime.timeStart <= formattedDate.timeEnd &&
+					reservedTime.timeEnd >= formattedDate.timeEnd)
+			) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
