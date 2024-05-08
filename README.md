@@ -20,6 +20,9 @@ Database is hosted with a MongoDB Cluster cloud link.
 - Link can be found on submission in server/.env
 - Anything you edit on localhost will show up on the Vercel deployment
 
+Firebase authentication token expires after an hour of usage for security purposes. 
+If things stop loading then, you need to sign-out and sign back in.
+
 # Run It Locally
 
 Open two terminals in the root directory. Make sure the `.env` files are present in both the `client/` and `server/` directories.
