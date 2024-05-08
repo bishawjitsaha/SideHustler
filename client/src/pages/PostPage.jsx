@@ -14,8 +14,13 @@ const PostPage = () => {
   const [chosenApplicant, setChosenApplicant] = useState(null);
   const [curStatus, setCurStatus] = useState('');
 
+  
+  
   useEffect(() => {
     const fetchPost = async () => {
+      if(!currentUser){
+        return;
+      }
       try {
         setLoading(true);
         const response = await axios.get(`http://localhost:3000/posts/${id}`, {
