@@ -79,9 +79,9 @@ export const uploadPfP = async (username, imagePath) => {
     const user = await getUserByUserName(username);
     if (!user) throw 'User not found';
 
-    if (user.pfp !== "") {
-        await deletePrevImage(user.pfp);
-    }
+    // if (user.pfp !== "") {
+    //     await deletePrevImage(user.pfp);
+    // }
 
     // get firebase storage reference url link
     const url = await uploadImage(imagePath);
