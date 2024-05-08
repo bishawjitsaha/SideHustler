@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
+import {doSignOut} from '../firebase/firebaseFunctions';
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
@@ -15,6 +16,7 @@ export const AuthProvider = ({children}) => {
       } else {
         setCurrentUser(null);
         setProfileData({});
+        doSignOut(auth);
       }
     });
     return () => unsubscribe();
