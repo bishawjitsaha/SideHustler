@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 import { doesUserExist, getUserById } from '../data/users.js';
-import { getUserByUserName, updateUserById } from '../data/users.js';
+import { getUserByUserName, updateUserById, updateRating } from '../data/users.js';
 import { getPostsByUsername } from '../data/posts.js';
 import verifyToken from '../middleware.js';
 import { getPostById } from '../data/posts.js';
@@ -208,11 +208,23 @@ router.route('/getById/:id')
     }
     return res.status(200).json(user)
   } catch (e) {
-    console.log(e);
       return res.status(400).json({message: e});
   }
 })
 
+router.route('/update-rating/:id')
+    .post(async (req, res) => {
+        try{
+            let user = await getUserById(req.params.id);
+            if(!user){
+                return res.status(404).json({message: 'User not found'});
+            }
 
+            let updatedUser = await updateRating(user._id, req.body.rating);
+            return res.status(200).json(updatedUser);
+        } catch (e) {
+            res.status(400).json({message: e})
+        }
+    })
 
 export default router;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { SearchBar, SearchResult, SearchPostsFilters } from "../components";
 import { AuthContext } from "../context/AuthContext";
@@ -10,15 +10,17 @@ const SearchPage = () => {
   const [filteredResults, setFilteredResults] = useState([]);
 
   const handleSearch = async (searchTerm, searchType) => {
-    if(searchType === "tags" && searchTerm === ""){
+    if (searchType === "tags" && searchTerm === "") {
       alert("Please select a tag.");
       return false;
     }
-    if(searchType === "users" && searchTerm === ""){
+    if (searchType === "users" && searchTerm === "") {
       alert("Please enter a Username.")
       return false;
     }
     try {
+      if (!currentUser) return;
+
       let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
       const { data } = await axios.get(
         `http://localhost:3000/search?${query}`
@@ -47,7 +49,7 @@ const SearchPage = () => {
         return itemPrice >= parseFloat(priceRange.min) && itemPrice <= parseFloat(priceRange.max);
       });
     }
-  
+
     if (dateRange.startDate !== "" && dateRange.endDate !== "") {
       filteredResults = filteredResults.filter((item) => {
         const itemDate = new Date(item.taskTime.dateStart);
@@ -56,10 +58,13 @@ const SearchPage = () => {
         return itemDate >= startDate && itemDate <= endDate;
       });
     }
-  
+
     setFilteredResults(filteredResults);
   };
-  
+
+  useEffect(() => {
+
+  }, [currentUser]);
 
   return (
     <div>

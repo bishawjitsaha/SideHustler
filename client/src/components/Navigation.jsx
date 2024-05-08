@@ -23,7 +23,7 @@ const Navigation = () => {
     }
   }, [currentUser, setupComplete, navigate]);
   return (
-    <div>
+    <div className="bg-teal-400 text-white">
       {currentUser ? (
         <NavigationAuth userDataLoaded={userDataLoaded} profileLink={profileLink} />
       ) : (
@@ -41,33 +41,36 @@ const NavigationAuth = ({ userDataLoaded, profileLink }) => {
   };
   return (
     <div>
-      <nav className="navigation">
+      <nav className="bg-teal-400 p-4 text-white flex justify-center">
         {userDataLoaded && (
           <>
-            <NavLink className="navlink" to="/">
+            <NavLink className="bg-white text-blue-500 px-3 py-2 rounded hover:bg-gray-300" to="/">
               Home
             </NavLink>
-            <NavLink to="/search" className="navlink">
+            <NavLink to="/search" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
               Search
             </NavLink>
-            <NavLink to="/posts" className="navlink">
+            <NavLink to="/posts" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
               Posts
             </NavLink>
-            <NavLink to="/chat" className="navlink">
+            <NavLink to="/chat" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
               Chat
             </NavLink>
-            <NavLink to="/notifications" className="navlink">
+            <NavLink to="/notifications" className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300">
               Notifications
             </NavLink>
-            <NavLink className="navlink" to={`/user/${profileLink}`}>
+            <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to={`/user/${profileLink}`}>
               Profile
+            </NavLink>
+            <NavLink
+              className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300"
+              to="/"
+              onClick={signOutHandler}>
+              Sign Out
             </NavLink>
           </>
         )}
       </nav>
-      <button className='button' type='button' onClick={signOutHandler}>
-        Sign Out
-      </button>
     </div>
   );
 };
@@ -75,14 +78,14 @@ const NavigationAuth = ({ userDataLoaded, profileLink }) => {
 const NavigationNonAuth = () => {
 
   return (
-    <nav className="navigation">
-      <NavLink className="navlink" to="/">
+    <nav className="bg-teal-400 p-4 text-white flex justify-center">
+      <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to="/">
         Home
       </NavLink>
-      <NavLink className="navlink" to="/signup">
+      <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to="/signup">
         Sign-up
       </NavLink>
-      <NavLink className="navlink" to="/signin">
+      <NavLink className="bg-white text-blue-500 px-3 py-2 rounded ml-2 hover:bg-gray-300" to="/signin">
         Sign-in
       </NavLink>
     </nav>

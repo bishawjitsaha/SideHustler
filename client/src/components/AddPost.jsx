@@ -336,13 +336,9 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
                         selectedTags={selectedTags}
                         setSelectedTags={setSelectedTags}
                     />
-                    <div className="add-image"
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                        }}>
-                        <h2>Add Image</h2>
-                        <input style={{ margin: "auto" }} type="file" onChange={handleFileChange} />
+                    <div className="add-image flex items-center justify-start mt-4">
+                        <h2 className="text-m mr-4">Add Image:</h2>
+                        <input className="cursor-pointer" type="file" onChange={handleFileChange} />
                     </div>
                     {isError && (
                         <p className="text-red-500 text-m mt-2 font-bold">

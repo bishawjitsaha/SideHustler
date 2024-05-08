@@ -15,7 +15,7 @@ const TagSelector = ({ tags, selectedTags, setSelectedTags }) => {
 
     return (
         <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mt-2">
                 <label className="text-gray-700 text-m">Tags:</label>
                 <select
                     className="border border-gray-300 rounded-md px-2 py-1 text-sm w-auto mb-2"
