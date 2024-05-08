@@ -182,7 +182,7 @@ router.route('/:username')
 
 
 router.route('/verifyUser/:username')
-  .get(verifyToken, async (req,res) => {
+  .get(async (req,res) => {
     let enteredUser = req.params.username;
     try{
       let userFlag = await doesUserExist(enteredUser);

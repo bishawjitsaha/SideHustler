@@ -2,11 +2,10 @@ import { firebase } from './firebase/serverconfig.js';
 
 const verifyToken = async (req, res, next) => {
     try {
-        console.log('Verifying token');
-        console.log(req.headers);
+        // console.log('Verifying token');
+        // console.log(req.headers);
         const token = req.headers.authorization.split(" ")[1];
-        console.log('Token received: ', token);
-        console.log(typeof token);
+        // console.log('Token received: ', token);
         const decodedToken = await firebase.auth().verifyIdToken(token);
         req.uid = decodedToken.uid;
         req.email = decodedToken.email;

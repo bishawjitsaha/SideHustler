@@ -26,7 +26,11 @@ function ProfilePage() {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/user/${username}`);
+            const res = await axios.get(`http://localhost:3000/user/${username}`, {
+                headers: {
+                  Authorization: `Bearer ${currentUser.accessToken}`
+                }
+              });
             setUser(res.data);
             setBio(res.data.bio);
             setEducation(res.data.education);
