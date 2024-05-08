@@ -18,9 +18,9 @@ export const ChatLog = () => {
             try {
                 const res = await axios.get(`${backendUrl}/user/${currentUser.displayName}`, {
                     headers: {
-                      Authorization: `Bearer ${currentUser.accessToken}`
+                        Authorization: `Bearer ${currentUser.accessToken}`
                     }
-                  });
+                });
 
 
                 setChatLog(res.data.chatLog);
@@ -38,20 +38,24 @@ export const ChatLog = () => {
     return (
         <div>
             <h2>Chat Log</h2>
-            {loading && <p>Loading...</p>}
-            {chatLog.length > 0 ? (
-                chatLog.map((chatLog, index) => {
-                    return (
-                        <div key={index}>
-                            <Link to={`/chat/${chatLog.chatID}`}>
-                                {chatLog.to}
-                            </Link>
-                        </div>
-                    );
-                })
-            ) : (
-                <p>No chats found</p>
-            )}
+            {loading ? <p>Loading...</p> :
+                chatLog.length > 0 ? (
+                    chatLog.map((chatLog, index) => {
+                        return (
+                            <div key={index}>
+                                <Link to={`/chat/${chatLog.chatID}`}>
+                                    {chatLog.to}
+                                </Link>
+                            </div>
+                        );
+                    })
+                ) : (
+                    <p>
+                        No chats found
+                        Apply to posts and get selected to chat with the owner of the post
+                        Or create a post and and select an applicant to chat with them
+                    </p>
+                )}
         </div>
     )
 }

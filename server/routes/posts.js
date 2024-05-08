@@ -148,7 +148,7 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
 
     const noti = await createNotification(post.posterId,
       "post",
-      getApplicant.userName + "has applied to your post",
+      getApplicant.userName + " has applied to your post",
       `/user/${getApplicant.userName}`
     );
 
