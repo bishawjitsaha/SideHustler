@@ -3,6 +3,7 @@ import {doSocialSignIn} from '../firebase/firebaseFunctions';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { backendUrl } from '../App';
 const SocialSignIn = (props) => {
   const {setSetupComplete} = useContext(AuthContext)
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const SocialSignIn = (props) => {
       let user =  newSocialSignUp.result.user;
       let idToken = newSocialSignUp.idToken
       if(newSocialSignUp.newUser){
-        await axios.post('http://localhost:3000/signup', {
+        await axios.post(`${backendUrl}/signup`, {
           email: user.email,
           isSocialSignUp: true
         }, {

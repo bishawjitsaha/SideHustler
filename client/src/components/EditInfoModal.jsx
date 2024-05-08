@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import * as validate from '../validation/userValidation.js';
 import { AuthContext } from '../context/AuthContext';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -42,7 +43,7 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
       const formData = new FormData();
       formData.append("file", image);
       formData.append("username", user.userName);
-      await axios.post(`http://localhost:3000/image/pfpUpload`, formData, {
+      await axios.post(`${backendUrl}/image/pfpUpload`, formData, {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`
         }
@@ -153,7 +154,7 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
         skillsList: skillSelected,
       }
 
-      const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, dataToSend, {
+      const res = await axios.post(`${backendUrl}/user/edit/${user.userName}`, dataToSend, {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`
         }
