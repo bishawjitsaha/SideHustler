@@ -20,17 +20,22 @@ Database is hosted with a MongoDB Cluster cloud link.
 - Link can be found on submission in server/.env
 - Anything you edit on localhost will show up on the Vercel deployment
 
-# RUN IT LOCALLY
-Open two terminals in the root directory
-Make sure the .env files are present in both the client/ and server/
-- Terminal One:
-    - cd /server/
-    - npm i
-    - npm run seed
-    - npm start
-- Terminal Two:
-    - cd /client/
-    - npm i
-    - num run dev
+# Run It Locally
+
+Open two terminals in the root directory. Make sure the `.env` files are present in both the `client/` and `server/` directories.
+
+**Terminal One:**
+```bash
+cd server/
+npm i
+npm run seed
+npm start
+```
+**Terminal Two:**
+```bash
+cd client/
+npm i
+npm run dev
+```
 
 Enjoy.
