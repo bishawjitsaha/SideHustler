@@ -5,7 +5,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(async (req, res) => {
+  .get(verifyToken, async (req, res) => {
     try{
         if(req.query){
             if(req.query.posts === ""){
