@@ -12,20 +12,20 @@ export const validateUsername = (str) => {
 	return str;
 };
 
+export const validateString = (str) => {
+	if (!str || typeof str !== "string" || str.trim().length === 0) {
+		throw `Invalid string`;
+	}
+	str.trim();
+	return str;
+};
+
 export const validateName = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
 		throw `Invalid string for name: ${str}`;
 	}
 	str.trim();
 	if (!/^[a-zA-Z]+$/.test(str)) throw "String must be alphabetic";
-	return str;
-};
-
-export const validateString = (str) => {
-	if (!str || typeof str !== "string" || str.trim().length === 0) {
-		throw `Invalid string: ${str}`;
-	}
-	str.trim();
 	return str;
 };
 

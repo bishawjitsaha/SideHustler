@@ -96,6 +96,7 @@ const PostPage = () => {
       );
       if (response.status === 200) {
         setIsApplicant(false);
+        setCurStatus("Open");
         alert("Successfully removed your application.");
 
         const updateResponse = await axios.put(
@@ -338,7 +339,7 @@ const PostPage = () => {
             />
           )}
 
-          {currentUser && post.posterId !== currentUser.uid && !isApplicant && (
+          {currentUser && post.posterId !== currentUser.uid && !isApplicant && curStatus !== "completed" && (
             <button
               onClick={handleApply}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"

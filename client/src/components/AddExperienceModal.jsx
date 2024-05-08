@@ -28,7 +28,16 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
     const { currentUser } = useContext(AuthContext)
     
     const handleErrors = (e) => {
-        setErrorMessages(e);
+        if (typeof e === 'string') {
+            // Frontend error
+            setErrorMessages(e);
+        } else if (e.response && e.response.data && e.response.data.message) {
+            // Backend error
+            setErrorMessages(e.response.data.message);
+        } else {
+            // Fallback for any other type of error
+            setErrorMessages('An error occurred.');
+        }
     }
     const handleCloseAddModal = () => {
         setShowAddModal(false);
@@ -65,7 +74,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
             handleClose();
             addExperience(addedExperience);
         } catch (e) {
-            handleErrors(e.response.data.message);
+            handleErrors(e);
             setIsError(true);
         }
     }
