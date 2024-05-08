@@ -4,6 +4,7 @@ import { getUserById, updateSelectedApplicant } from "../data/users.js";
 import { createNotification } from "../data/notifications.js";
 import { createChat } from "../data/messages.js";
 import verifyToken from "../middleware.js";
+
 const router = express.Router();
 
 router.route("/all").get(verifyToken, async (req, res) => {
@@ -33,32 +34,42 @@ router.route("/:id").get(verifyToken, async (req, res) => {
 })
 .put(verifyToken, async (req, res) => {
   try {
-
     let updatedApplicant = await updateSelectedApplicant(
       req.params.id,
       req.body.selectedApplicant
     );
-
     const currPost = await postFunctions.getPostById(req.params.id);
+    if (req.body.selectedApplicant !== null) {
 
-    // notify the selected applicant that they have been chosen
-    const selectedAppNoti = await createNotification(req.body.selectedApplicant,
-      "post",
-      "You have been chosen for a post",
-      `/post/${req.params.id}`
-    );
+      // notify the selected applicant that they have been chosen
+      const selectedAppNoti = await createNotification(req.body.selectedApplicant,
+        "post",
+        "You have been chosen for a post",
+        `/post/${req.params.id}`
+      );
 
-    // notify the chooser that they have successfully chosen an applicant
-    const postOwnerNoti = await createNotification(currPost.posterId,
-      "post", 
-      "You have successfully chosen an applicant",
-      `/user/${updatedApplicant.userName}`
-    );
+      // notify the chooser that they have successfully chosen an applicant
+      const postOwnerNoti = await createNotification(currPost.posterId,
+        "post", 
+        "You have successfully chosen an applicant: " + updatedApplicant.userName,
+        `/user/${updatedApplicant.userName}`
+      );
 
-    const currUser = await getUserById(currPost.posterId);;
+      const currUser = await getUserById(currPost.posterId);;
 
-    // open up a chat between them
-    const newChat = createChat(updatedApplicant.userName, currUser.userName);
+      // open up a chat between them
+      const newChat = createChat(updatedApplicant.userName, currUser.userName);
+    }
+    else if (req.body.selectedApplicant === null && currPost.selectedApplicant !== null) {
+      const unChosenUser = await getUserById(currPost.selectedApplicant);
+
+      const postOwnerNoti = await createNotification(currPost.posterId,
+        "post",
+        "You have unchosen an applicant: " + unChosenUser.userName,
+        `/user/${unChosenUser.userName}`
+      );
+
+    }
 
     let updatedPost = await postFunctions.updatePostById(
       req.params.id,
@@ -71,7 +82,6 @@ router.route("/:id").get(verifyToken, async (req, res) => {
       req.params.id,
       status
     );
-
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
@@ -126,11 +136,31 @@ router.route("/update-status/:id").put(verifyToken, async (req, res) => {
 
 router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
   try {
-    console.log('hello')
+    // console.log('hello')
     const uid = req.uid;
-    console.log(req.params.id, uid)
+    // console.log(req.params.id, uid)
+
     let updatedPost = await postFunctions.addApplicant(req.params.id, uid);
-    console.log(updatedPost)
+    
+    
+    // notify the posterID that someone has applied
+    const post = await postFunctions.getPostById(req.params.id);
+    const getApplicant = await getUserById(uid);
+
+    const noti = await createNotification(post.posterId,
+      "post",
+      getApplicant.userName + "has applied to your post",
+      `/user/${getApplicant.userName}`
+    );
+
+    //notify the applicant that they have applied
+    const applicantNoti = await createNotification(uid,
+      "post",
+      "You have applied to a post",
+      `/post/${req.params.id}`
+    );
+
+    // console.log(updatedPost)
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
@@ -140,16 +170,32 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
 
 router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
   try {
-    console.log('remove')
+    // console.log('remove')
     const uid = req.uid;
-    console.log(req.params.id, uid)
+    // console.log(req.params.id, uid)
     let updatedPost = await postFunctions.removeApplicant(
       req.params.id,
       uid
     );
+
+    // notify the posterID that someone has removed their application
+    const post = await postFunctions.getPostById(req.params.id);
+    const getApplicant = await getUserById(uid);
+
+    const noti = await createNotification(post.posterId,
+      "post",
+      getApplicant.userName + " has removed their application to your post",
+      `/user/${getApplicant.userName}`
+    );
+
+    //notify the applicant that they have removed their application
+    const applicantNoti = await createNotification(uid,
+      "post",
+      "You have removed your application to a post",
+      `/post/${req.params.id}`
+    );
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
-    console.log(e);
     res.status(404).json({ error: e });
   }
 });

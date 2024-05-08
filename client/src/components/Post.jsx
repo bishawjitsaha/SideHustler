@@ -1,13 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-const Post = ({ post, status }) => {
-
-  const [curStatus, setCurStatus] = useState(status);
-
-  useEffect(() => {
-    setCurStatus(status);
-  }, [status]);
+const Post = ({ post }) => {
 
   return (
     <div className="bg-blue-400 shadow-md rounded-lg p-6">
@@ -32,7 +26,7 @@ const Post = ({ post, status }) => {
         </p>
       </div>
       <div className="flex justify-between text-gray-600">
-        <p>Status: {curStatus}</p>
+        <p>Status: {post.status}</p>
         <p>Payment: ${post.taskPayment}</p>
       </div>
     </div>
