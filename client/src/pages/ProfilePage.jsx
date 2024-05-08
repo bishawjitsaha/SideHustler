@@ -23,12 +23,15 @@ function ProfilePage() {
     const navigate = useNavigate();
 
     const fetchData = async () => {
+        if (!currentUser || loading) return;
+
+        setLoading(true);
         try {
             const res = await axios.get(`http://localhost:3000/user/${username}`, {
                 headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
+                    Authorization: `Bearer ${currentUser.accessToken}`
                 }
-              });
+            });
             setUser(res.data);
             setBio(res.data.bio);
             setEducation(res.data.education);
@@ -39,6 +42,9 @@ function ProfilePage() {
         catch (e) {
             console.error(e);
             navigate('/not-found');
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -181,16 +187,16 @@ function ProfilePage() {
                             {posts.length > 0 ? posts.map((post, index) => (
                                 <div key={index} className='mb-2'>
                                     {post.title &&
-                                            <p className='text-left'>
-                                                    <a href={`/post/${post._id}`}>{post.title}</a>
-                                                </p>}
-                                            {(currentUser.displayName && currentUser.displayName === username) && 
-                                                post.status && <p className='text-left ml-5'>{post.status}</p>}
-                                {(currentUser.displayName && currentUser.displayName === username) && 
-                                    (post.selectedApplicant ? 
-                                                    <p className='text-left ml-5'>Selected Applicant: 
-                                                        <a href={`/user/${post.selectedApplicant.userName}`}>{post.selectedApplicant.firstName} {post.selectedApplicant.lastName}</a>
-                                                </p> 
+                                        <p className='text-left'>
+                                            <a href={`/post/${post._id}`}>{post.title}</a>
+                                        </p>}
+                                    {(currentUser.displayName && currentUser.displayName === username) &&
+                                        post.status && <p className='text-left ml-5'>{post.status}</p>}
+                                    {(currentUser.displayName && currentUser.displayName === username) &&
+                                        (post.selectedApplicant ?
+                                            <p className='text-left ml-5'>Selected Applicant:
+                                                <a href={`/user/${post.selectedApplicant.userName}`}>{post.selectedApplicant.firstName} {post.selectedApplicant.lastName}</a>
+                                            </p>
                                             : <p className='text-left ml-5'>No Selected Applicant</p>)}
                                 </div>
                             )) : <p>No Posts</p>}

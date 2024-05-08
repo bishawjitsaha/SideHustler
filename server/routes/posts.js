@@ -34,7 +34,6 @@ router.route("/:id").get(verifyToken, async (req, res) => {
 })
 .put(verifyToken, async (req, res) => {
   try {
-
     let updatedApplicant = await updateSelectedApplicant(
       req.params.id,
       req.body.selectedApplicant
@@ -61,7 +60,7 @@ router.route("/:id").get(verifyToken, async (req, res) => {
       // open up a chat between them
       const newChat = createChat(updatedApplicant.userName, currUser.userName);
     }
-    else if (req.body.selectedApplicant === null) {
+    else if (req.body.selectedApplicant === null && currPost.selectedApplicant !== null) {
       const unChosenUser = await getUserById(currPost.selectedApplicant);
 
       const postOwnerNoti = await createNotification(currPost.posterId,
@@ -83,7 +82,6 @@ router.route("/:id").get(verifyToken, async (req, res) => {
       req.params.id,
       status
     );
-
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
@@ -138,9 +136,9 @@ router.route("/update-status/:id").put(verifyToken, async (req, res) => {
 
 router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
   try {
-    console.log('hello')
+    // console.log('hello')
     const uid = req.uid;
-    console.log(req.params.id, uid)
+    // console.log(req.params.id, uid)
 
     let updatedPost = await postFunctions.addApplicant(req.params.id, uid);
     
@@ -162,7 +160,7 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
       `/post/${req.params.id}`
     );
 
-    console.log(updatedPost)
+    // console.log(updatedPost)
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
@@ -172,9 +170,9 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
 
 router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
   try {
-    console.log('remove')
+    // console.log('remove')
     const uid = req.uid;
-    console.log(req.params.id, uid)
+    // console.log(req.params.id, uid)
     let updatedPost = await postFunctions.removeApplicant(
       req.params.id,
       uid
@@ -196,10 +194,8 @@ router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
       "You have removed your application to a post",
       `/post/${req.params.id}`
     );
-
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
-    console.log(e);
     res.status(404).json({ error: e });
   }
 });

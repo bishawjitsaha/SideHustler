@@ -204,7 +204,8 @@ export async function updateSelectedApplicant(postId, userId) {
 	const userCollection = await users();
 	let user;
 	let updatedApplicant;
-	if(userId){ // means that a user has been selected
+	if(userId !== null){ // means that a user has been selected
+		console.log("this route is being hit ", userId);
 		userId = validate.validateId(userId);
 		user = await userCollection.findOne({ _id: userId });
 		if (!user) throw "User not found";
@@ -236,6 +237,7 @@ export async function updateSelectedApplicant(postId, userId) {
 		return updatedApplicant;
 	}
 	else{ // means that the selected applicant has been removed
+		if (post.selectedApplicant === null) return;
 		userId = post.selectedApplicant;
 		userId = validate.validateId(userId);
 		user = await userCollection.findOne({ _id: userId });
