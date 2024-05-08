@@ -16,11 +16,11 @@ const PostPage = () => {
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [curStatus, setCurStatus] = useState('');
 
-  
-  
+
+
   useEffect(() => {
     const fetchPost = async () => {
-      if(!currentUser){
+      if (!currentUser) {
         return;
       }
       try {

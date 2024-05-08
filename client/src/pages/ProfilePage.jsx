@@ -25,12 +25,15 @@ function ProfilePage() {
     const navigate = useNavigate();
 
     const fetchData = async () => {
+        if (!currentUser || loading) return;
+
+        setLoading(true);
         try {
             const res = await axios.get(`http://localhost:3000/user/${username}`, {
                 headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
+                    Authorization: `Bearer ${currentUser.accessToken}`
                 }
-              });
+            });
             setUser(res.data);
             setBio(res.data.bio);
             setEducation(res.data.education);
@@ -41,6 +44,9 @@ function ProfilePage() {
         catch (e) {
             console.error(e);
             navigate('/not-found');
+        }
+        finally {
+            setLoading(false);
         }
     }
 

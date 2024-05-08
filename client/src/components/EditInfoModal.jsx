@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 import * as validate from '../validation/userValidation.js';
+import { AuthContext } from '../context/AuthContext';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -26,6 +27,7 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
   const [companySelected, setCompanySelected] = useState('');
   const [skillSelected, setSkillSelected] = useState('');
   const [image, setImage] = useState(null);
+  const { currentUser } = useContext(AuthContext);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -33,6 +35,7 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
   }
 
   const handleUpload = async () => {
+    if (!currentUser) return;
     if (isError) return;
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
     if (image && allowedTypes.includes(image.type.toLowerCase())) {
@@ -82,6 +85,9 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!currentUser) return;
+
     try {
 
       if (updatedUser.userName) {
@@ -169,6 +175,10 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
       handleErrors(e);
     }
   }
+
+  useEffect(() => {
+    setShowEditModal(isOpen);
+  }, [currentUser, isOpen, user]);
 
   return (
     <div>
