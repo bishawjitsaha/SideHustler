@@ -36,5 +36,6 @@ routes(app);
 
 
 server.listen(3000, () => {
-  console.log('Your routes will be running on https://sidehustler-backend.onrender.com');
+  console.log('Your routes will be running on https://localhost:5173/');
+  // console.log('Your routes will be running on https://sidehustler-backend.onrender.com');
 });

@@ -19,7 +19,7 @@ export const ChatMessages = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get(`https://sidehustler-backend.onrender.com/messages/${id}`, {
+            const response = await axios.get(`https://localhost:3000/messages/${id}`, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }
@@ -41,7 +41,7 @@ export const ChatMessages = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${currentUser.displayName}`, {
+                const res = await axios.get(`https://localhost:3000/user/${currentUser.displayName}`, {
                     headers: {
                       Authorization: `Bearer ${currentUser.accessToken}`
                     }
@@ -109,7 +109,7 @@ export const ChatMessages = () => {
             message: currMessage
         }
         try {
-            const response = await axios.post('https://sidehustler-backend.onrender.com/messages/addMessage', msg, {
+            const response = await axios.post('https://localhost:3000/messages/addMessage', msg, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

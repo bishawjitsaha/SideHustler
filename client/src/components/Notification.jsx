@@ -12,7 +12,7 @@ export const Notification = () => {
 
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get(`https://sidehustler-backend.onrender.com/notifications/${currentUser.uid}`, {
+                const response = await axios.get(`https://localhost:3000/notifications/${currentUser.uid}`, {
                     headers: {
                       Authorization: `Bearer ${currentUser.accessToken}`
                     }

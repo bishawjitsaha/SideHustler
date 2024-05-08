@@ -48,7 +48,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                 major: validatedEducation.major,
                 gradYear: validatedEducation.gradYear
             };
-            const res = await axios.post(`https://sidehustler-backend.onrender.com/user/edit/${user.userName}`, educationPayload, {
+            const res = await axios.post(`https://localhost:3000/user/edit/${user.userName}`, educationPayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

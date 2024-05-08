@@ -44,7 +44,7 @@ function AddBioModal({ isOpen, user, handleClose, addBio }) {
         e.preventDefault();
         try {
             const validatedBio = validateBio(updatedUser.bio);
-            const res = await axios.post(`https://sidehustler-backend.onrender.com/user/${user.userName}`, { bio: validatedBio }, {
+            const res = await axios.post(`https://localhost:3000/user/${user.userName}`, { bio: validatedBio }, {
                 headers: {
                     Authorization: `Bearer ${currentUser.accessToken}`
                 }

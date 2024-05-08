@@ -26,7 +26,7 @@ function SignUpPage(props) {
       return false;
     }
     try{
-      let {data} = await axios.get(`https://sidehustler-backend.onrender.com/user/verifyUser/${displayName}`);
+      let {data} = await axios.get(`https://localhost:3000/user/verifyUser/${displayName}`);
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
@@ -43,7 +43,7 @@ function SignUpPage(props) {
         displayName
       );
       setCurrentUser(user);
-      await axios.post('https://sidehustler-backend.onrender.com/signup', {
+      await axios.post('https://localhost:3000/signup', {
         userName: displayName,
         firstName: firstName,
         lastName: lastName,

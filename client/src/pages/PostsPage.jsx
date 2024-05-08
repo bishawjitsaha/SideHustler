@@ -25,7 +25,7 @@ const PostsPage = () => {
         return;
       }
       try {
-        const response = await axios.get("https://sidehustler-backend.onrender.com/posts/all", {
+        const response = await axios.get("https://localhost:3000/posts/all", {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`
           }

@@ -85,7 +85,7 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
         if (image && allowedTypes.includes(image.type.toLowerCase())) {
             const formData = new FormData();
             formData.append("file", image);
-            return await axios.post('https://sidehustler-backend.onrender.com/image/postImgUpload', formData, {
+            return await axios.post('https://localhost:3000/image/postImgUpload', formData, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }
@@ -135,7 +135,7 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
 
             console.log("postObj", postObj);
 
-            const response = await axios.post('https://sidehustler-backend.onrender.com/posts/create', postObj, {
+            const response = await axios.post('https://localhost:3000/posts/create', postObj, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

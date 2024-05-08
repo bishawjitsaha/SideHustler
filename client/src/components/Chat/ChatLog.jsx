@@ -15,7 +15,7 @@ export const ChatLog = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${currentUser.displayName}`, {
+                const res = await axios.get(`https://localhost:3000/user/${currentUser.displayName}`, {
                     headers: {
                       Authorization: `Bearer ${currentUser.accessToken}`
                     }
