@@ -194,7 +194,8 @@ function ProfilePage() {
                                 <div key={index} className='mb-2'>
                                     {post.title &&
                                         <p className='text-left'>
-                                            <a href={`/post/${post._id}`}>{post.title}</a>
+                                            <button onClick={() => navigate(`/post/${post._id}`)}>{post.title}</button>
+                                            {/* <a href={`/post/${post._id}`}>{post.title}</a> */}
                                         </p>
                                     }
 
@@ -205,9 +206,12 @@ function ProfilePage() {
                                     {(currentUser.displayName && currentUser.displayName === username) && 
                                         (post.selectedApplicant ? 
                                             <p className='text-left ml-5'>Selected Applicant: 
-                                                <a href={`/user/${post.selectedApplicant.userName}`}>
+                                            <button onClick={() => navigate(`/user/${post.selectedApplicant.userName}`)}>
+                                                {post.selectedApplicant.firstName} {post.selectedApplicant.lastName}
+                                            </button>
+                                                {/* <a href={`/user/${post.selectedApplicant.userName}`}>
                                                     {post.selectedApplicant.firstName} {post.selectedApplicant.lastName}
-                                                </a>
+                                                </a> */}
                                             </p> 
                                         : <p className='text-left ml-5'>No Selected Applicant</p>)
                                     }
