@@ -19,7 +19,7 @@ export const ChatMessages = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/messages/${id}`, {
+            const response = await axios.get(`https://sidehustler-backend.onrender.com/messages/${id}`, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }
@@ -41,7 +41,7 @@ export const ChatMessages = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`http://localhost:3000/user/${currentUser.displayName}`, {
+                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${currentUser.displayName}`, {
                     headers: {
                       Authorization: `Bearer ${currentUser.accessToken}`
                     }
@@ -84,7 +84,7 @@ export const ChatMessages = () => {
 
     const socketRef = useRef();
     useEffect(() => {
-        socketRef.current = io('http://localhost:3000');
+        socketRef.current = io('https://sidehustler-backend.onrender.com');
         socketRef.current.on('receive_message', async (data) => {
             if (data !== id) return;
             else await fetchMessages();
@@ -102,7 +102,7 @@ export const ChatMessages = () => {
             message: currMessage
         }
         try {
-            const response = await axios.post('http://localhost:3000/messages/addMessage', msg, {
+            const response = await axios.post('https://sidehustler-backend.onrender.com/messages/addMessage', msg, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

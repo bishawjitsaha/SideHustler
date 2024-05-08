@@ -30,7 +30,7 @@ function GettingStarted(){
       return false;
     }
     try{
-      let {data} = await axios.get(`http://localhost:3000/user/verifyUser/${userName}`)
+      let {data} = await axios.get(`https://sidehustler-backend.onrender.com/user/verifyUser/${userName}`)
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
@@ -40,7 +40,7 @@ function GettingStarted(){
       console.log(e);
     }
     try {
-      const user = await axios.post(`http://localhost:3000/user/addInfo`, {
+      const user = await axios.post(`https://sidehustler-backend.onrender.com/user/addInfo`, {
         userName: userName,
         firstName: firstName,
         lastName: lastName,

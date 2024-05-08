@@ -31,8 +31,8 @@ function App() {
             <div className="container mx-auto px-4">
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
-                    <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/posts" element={<PostsPage />} />
                     <Route path="/post/:id" element={<PostPage />} />
                     <Route path='/signup' element={<SignUpPage />} />
                     <Route path='/signin' element={<SignInPage />} />

@@ -34,7 +34,7 @@ function ProfilePage() {
 
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:3000/user/${username}`, {
+      const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${username}`, {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`,
         },
