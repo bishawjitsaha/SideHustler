@@ -11,9 +11,6 @@ const Post = ({ post, status }) => {
 
 
   useEffect(() => {
-    if (!currentUser) {
-      return;
-    }
 
     const fetchUser = async () => {
       try {
