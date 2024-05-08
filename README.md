@@ -4,6 +4,7 @@
 
 **ONRENDER BACKEND HOSTED LINK:** (insert link here)
 
+
 ## Dependencies
 
 Download ImageMagick here: [https://imagemagick.org/script/download.php](https://imagemagick.org/script/download.php)
@@ -18,3 +19,18 @@ Database is hosted with a MongoDB Cluster cloud link.
 - Images and signup/login are hosted on Firebase
 - Link can be found on submission in server/.env
 - Anything you edit on localhost will show up on the Vercel deployment
+
+# RUN IT LOCALLY
+Open two terminals in the root directory
+Make sure the .env files are present in both the client/ and server/
+- Terminal One:
+    - cd /server/
+    - npm i
+    - npm run seed
+    - npm start
+- Terminal Two:
+    - cd /client/
+    - npm i
+    - num run dev
+
+Enjoy.
