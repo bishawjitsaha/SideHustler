@@ -3,6 +3,7 @@ import routes from './routes/index.js';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import http from 'http';
+
 const app = express();
 
 app.use(cors());
@@ -13,14 +14,14 @@ app.use((req, res, next) => {
 
 const server = http.createServer(app);
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://sidehustler.vercel.app',
+];
+
 const io = new Server(server, {
   cors: {
-    // origin: 'http://localhost:5173/',
-    origin: [
-      'http://localhost:5173/',
-      'https://sidehustler.vercel.app/',
-      'https://sidehustler.vercel.app/chat/663af57b5813a49f2a3d3eaa'
-    ],
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
   },
 });
@@ -33,7 +34,6 @@ io.on('connection', (socket) => {
 
 app.use(express.json());
 routes(app);
-
 
 server.listen(3000, () => {
   console.log('Your routes will be running on http://localhost:3000');
