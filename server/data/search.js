@@ -26,7 +26,9 @@ let searchFunction = {
         return postsArr;
     },
     async searchTag (query){
-        query = checkString(query);
+        if(!(Array.isArray(query))){
+            throw "searchTag Query is not an array.";
+        }
         let postCollection = await posts();
         let tagsArr = await postCollection.find({ 'tags' : { $regex: query, $options: 'i' }}).toArray();
         return tagsArr;

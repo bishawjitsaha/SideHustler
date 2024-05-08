@@ -10,6 +10,14 @@ const SearchPage = () => {
   const [filteredResults, setFilteredResults] = useState([]);
 
   const handleSearch = async (searchTerm, searchType) => {
+    if(searchType === "tags" && searchTerm === ""){
+      alert("Please select a tag.");
+      return false;
+    }
+    if(searchType === "users" && searchTerm === ""){
+      alert("Please enter a Username.")
+      return false;
+    }
     try {
       let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
       const { data } = await axios.get(
