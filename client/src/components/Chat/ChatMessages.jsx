@@ -20,24 +20,6 @@ export const ChatMessages = () => {
     const navigate = useNavigate();
 
 
-    const fetchMessages = async () => {
-        try {
-            const response = await axios.get(`${backendUrl}/messages/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${currentUser.accessToken}`
-                }
-            });
-
-            setHistory(response.data.messages);
-        } catch (error) {
-            console.error(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    };
-
-
     useEffect(() => {
         // check if id relates to current user
         const fetchUser = async () => {
@@ -63,9 +45,28 @@ export const ChatMessages = () => {
                 if (!allowed) { navigate('/chat') }
             }
             catch (e) {
-                console.error(e);;
+                console.error(e);
             }
         };
+
+        const fetchMessages = async () => {
+            if (!currentUser) return;
+            try {
+                const response = await axios.get(`${backendUrl}/messages/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${currentUser.accessToken}`
+                    }
+                });
+
+                setHistory(response.data.messages);
+            } catch (error) {
+                console.error(error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+
 
         fetchUser();
 
