@@ -13,7 +13,7 @@ const Post = ({ post, status}) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`http://localhost:3000/user/getById/${post.posterId}`, {
+                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/getById/${post.posterId}`, {
                     headers: {
                         Authorization: `Bearer ${currentUser.accessToken}`
                     }

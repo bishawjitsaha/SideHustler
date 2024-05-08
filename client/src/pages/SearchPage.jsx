@@ -23,7 +23,7 @@ const SearchPage = () => {
 
       let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
       const { data } = await axios.get(
-        `http://localhost:3000/search?${query}`
+        `https://sidehustler-backend.onrender.com/search?${query}`
         , {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`

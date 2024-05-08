@@ -49,7 +49,7 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
                 name: validatedSkills[0].name,
                 description: validatedSkills[0].description
             };
-            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, skillsPayload, {
+            const res = await axios.post(`https://sidehustler-backend.onrender.com/user/edit/${user.userName}`, skillsPayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

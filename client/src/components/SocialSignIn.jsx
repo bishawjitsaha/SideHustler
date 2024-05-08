@@ -12,7 +12,7 @@ const SocialSignIn = (props) => {
       let user =  newSocialSignUp.result.user;
       let idToken = newSocialSignUp.idToken
       if(newSocialSignUp.newUser){
-        await axios.post('http://localhost:3000/signup', {
+        await axios.post('https://sidehustler-backend.onrender.com/signup', {
           email: user.email,
           isSocialSignUp: true
         }, {
