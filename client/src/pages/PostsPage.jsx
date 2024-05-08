@@ -21,7 +21,7 @@ const PostsPage = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      if(!currentUser){
+      if (!currentUser) {
         setLoading(true);
         return;
       }
@@ -52,13 +52,13 @@ const PostsPage = () => {
   return (
     <>
       <div className="flex justify-start mt-8">
-            <button
-                onClick={handleOpenModal}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
-            >
-                Create Post
-            </button>
-        </div>
+        <button
+          onClick={handleOpenModal}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+        >
+          Create Post
+        </button>
+      </div>
 
       {isModalOpen && (
         <AddPost
@@ -72,8 +72,8 @@ const PostsPage = () => {
         {posts &&
           posts.map((post) => (
             // <Link key={post._id} to={`/post/${post._id}`}>
-              <Post post={post} status={post.status} key={post._id}/>
-            // </Link>
+            <Post post={post} status={post.status} key={post._id} />
+            // </Link> 
           ))}
       </div>
     </>
