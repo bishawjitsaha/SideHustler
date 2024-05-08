@@ -299,9 +299,9 @@ const PostPage = () => {
                       <ul>
                         {post.applicants.map((applicant) => (
                           <li key={applicant._id}>
-                            <a href={`/user/${applicant.userName}`}>
+                            <Link to={`/user/${applicant.userName}`}>
                               {applicant.firstName} {applicant.lastName}
-                            </a>
+                            </Link>
                             {chosenApplicant === applicant._id ? (
                               <button
                                 onClick={() => handleUnchooseApplicant()}
