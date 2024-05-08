@@ -24,6 +24,7 @@ const SearchBar = ({ onSearch }) => {
 ];
 
   const handleSearchTypeChange = (e) => {
+    setSearchTerm("");
     setSearchType(e.target.value);
   };
 

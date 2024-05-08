@@ -21,7 +21,7 @@ function ProfilePage() {
     const [experience, setExperience] = useState([]);
     const [skills, setSkills] = useState([]);
     const [posts, setPosts] = useState([]);
-
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const fetchData = async () => {
@@ -45,7 +45,8 @@ function ProfilePage() {
     }
 
     useEffect(() => {
-        if (currentUser) {
+        if (!currentUser) return
+        else {
             fetchData();
         }
     }, [currentUser, username, bio, education, experience, skills])

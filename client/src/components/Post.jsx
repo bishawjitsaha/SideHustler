@@ -23,8 +23,11 @@ const Post = ({ post, status}) => {
                 console.error("Error fetching user:", error);
             }
         };
-
-        fetchUser();
+        if(!currentUser){
+            return;
+        }else{
+            fetchUser();
+        }
     }, [post.posterId]);
 
   return (

@@ -8,6 +8,7 @@ const PostsPage = () => {
   const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -19,6 +20,10 @@ const PostsPage = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      if(!currentUser){
+        setLoading(true);
+        return;
+      }
       try {
         const response = await axios.get("http://localhost:3000/posts/all", {
           headers: {

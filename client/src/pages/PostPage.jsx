@@ -16,8 +16,13 @@ const PostPage = () => {
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [curStatus, setCurStatus] = useState('');
 
+  
+  
   useEffect(() => {
     const fetchPost = async () => {
+      if(!currentUser){
+        return;
+      }
       try {
         setLoading(true);
         const response = await axios.get(`http://localhost:3000/posts/${id}`, {
@@ -149,9 +154,14 @@ const PostPage = () => {
 
   const handleCompleteTask = async () => {
     try{
-      const res = await axios.put(`http://localhost:3000/posts/update-status/${post._id}`, { status: "completed" });
+      const res = await axios.put(`http://localhost:3000/posts/update-status/${post._id}`, { status: "completed" }, {
+            headers: {
+                Authorization: `Bearer ${currentUser.accessToken}`
+            }
+        });
       setIsCompleted(true);
       setShowRatingModal(true);
+      setCurStatus("completed");
       alert("Task successfully marked completed!");
     }
     catch (error) {
