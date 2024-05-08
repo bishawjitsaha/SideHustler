@@ -50,12 +50,14 @@ const PostsPage = () => {
 
   return (
     <>
-      <button
-        onClick={handleOpenModal}
-        className="bg-blue-500 text-white p-2 rounded-lg"
-      >
-        New Post
-      </button>
+      <div className="flex justify-start mt-8">
+            <button
+                onClick={handleOpenModal}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+            >
+                Create Post
+            </button>
+        </div>
 
       {isModalOpen && (
         <AddPost
@@ -65,12 +67,12 @@ const PostsPage = () => {
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-gray-300">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-gray-200 rounded-lg mx-auto px-auto">
         {posts &&
           posts.map((post) => (
-            <Link key={post._id} to={`/post/${post._id}`}>
-              <Post post={post} />
-            </Link>
+            // <Link key={post._id} to={`/post/${post._id}`}>
+              <Post post={post} status={post.status} key={post._id}/>
+            // </Link>
           ))}
       </div>
     </>

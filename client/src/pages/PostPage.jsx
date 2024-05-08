@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { Post } from "../components";
+import { Post, RatingComponent } from "../components";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -12,6 +12,8 @@ const PostPage = () => {
   const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const [chosenApplicant, setChosenApplicant] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
   const [curStatus, setCurStatus] = useState('');
 
 
@@ -39,6 +41,7 @@ const PostPage = () => {
 
           setIsApplicant(currentUserIsApplicant);
           setChosenApplicant(fetchedPost.selectedApplicant);
+          setIsCompleted(fetchedPost.status === "completed");
           setLoading(false);
           setCurStatus(fetchedPost.status);
         } else {
@@ -122,7 +125,7 @@ const PostPage = () => {
         }
       });
       setChosenApplicant(res.data.post.selectedApplicant);
-      alert("Successfully chose applicant!");
+      alert("Successfully selected applicant!");
       setCurStatus("In Progress");
 
     }
@@ -140,7 +143,7 @@ const PostPage = () => {
         }
       });
       setChosenApplicant(null);
-      alert("Successfully unchose applicant!");
+      alert("Successfully removed applicant!");
       setCurStatus("Open");
     }
     catch (error) {
@@ -149,7 +152,39 @@ const PostPage = () => {
     }
   }
 
-  console.log(post?.applicants)
+  const handleCompleteTask = async () => {
+    try{
+      const res = await axios.put(`http://localhost:3000/posts/update-status/${post._id}`, { status: "completed" }, {
+            headers: {
+                Authorization: `Bearer ${currentUser.accessToken}`
+            }
+        });
+      setIsCompleted(true);
+      setShowRatingModal(true);
+      setCurStatus("completed");
+      alert("Task successfully marked completed!");
+    }
+    catch (error) {
+      console.error("Error completing task:", error.message);
+      alert("Failed to complete task. Please try again.");
+    }
+  }
+
+  const handleRateApplicant = async (rating) => {
+    try {
+        const res = await axios.post(
+            `http://localhost:3000/user/update-rating/${chosenApplicant}`,
+            { rating }
+        );
+        alert("Successfully rated applicant!");
+        setShowRatingModal(false); // Close the rating modal after rating submission
+    } catch (error) {
+        console.error("Error rating applicant:", error.message);
+        alert("Failed to rate applicant.");
+    }
+  }
+
+//   console.log(post?.applicants)
 
   return (
     <div>
@@ -170,8 +205,17 @@ const PostPage = () => {
             </button>
           ) : null}
 
-          {currentUser && post.posterId === currentUser.uid && (
+          {currentUser && post.posterId === currentUser.uid && !isCompleted && ( //Show applicants and mark complete button if you are the poster and task is uncomplete
             <>
+                {chosenApplicant && //Show Mark Complete button if an applicant has been chosen
+                <button 
+                    onClick={() => handleCompleteTask()}
+                    className="mt-2 mb-4 bg-green-300"
+                >
+                    Mark Task Complete
+                </button>
+                }
+            
               <h2>Applicants:</h2>
               {post.applicants && post.applicants.length === 0 && <p>No applicants yet.</p>}
               <ul>
@@ -183,22 +227,29 @@ const PostPage = () => {
                         onClick={() => handleUnchooseApplicant()}
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-4"
                       >
-                        Unchoose
+                        Remove
                       </button>
-                    ) : (
-                      !chosenApplicant && (
-                        <button
-                          onClick={() => handleChooseApplicant(applicant._id)}
-                          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
-                        >
-                          Choose
-                        </button>
-                      )
-                    )}
+                        ) : (
+                        !chosenApplicant && (
+                          <button
+                            onClick={() => handleChooseApplicant(applicant._id)}
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-4"
+                          >
+                            Select
+                          </button>
+                        )
+                      )}
                   </li>
                 ))}
               </ul>
             </>
+          )}
+          {showRatingModal && (
+            <RatingComponent
+              isOpen={showRatingModal}
+              onClose={() => setShowRatingModal(false)}
+              onSubmit={handleRateApplicant}
+            />
           )}
 
           {currentUser && post.posterId !== currentUser.uid && !isApplicant && (

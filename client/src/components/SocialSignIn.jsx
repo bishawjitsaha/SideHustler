@@ -30,7 +30,7 @@ const SocialSignIn = (props) => {
   }
 
   return (
-    <div>
+    <div className="flex justify-center items-center mt-4">
       <img
         onClick={() => socialSignOn()}
         alt='google signin'

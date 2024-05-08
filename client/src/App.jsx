@@ -19,29 +19,33 @@ function App() {
     <>
       <AuthProvider>
         <div>
-          <header className="bg-teal-500 text-white p-4">
-            <h1 className="text-3xl font-bold underline">SideHustler</h1>
-            <p className="text-lg font-semibold">
-              A database of side hustles - built by hustlers
-            </p>
-            <Navigation />
-          </header>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
-            <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
-            <Route path="/post/:id" element={<PostPage />} />
-            <Route path='/signup' element={<SignUpPage />} />
-            <Route path='/signin' element={<SignInPage />} />
-            <Route path='/forgot' element={<ForgotPasswordPage />} />
-            <Route path='/user/:username' element={<ProfilePage />} />
-            <Route path='/getting-started' element={<GettingStarted />} />
-            <Route path='/chat' element={<ChatLog />} />
-            <Route path='/chat/:id' element={<ChatMessages />} />
-            <Route path='/notifications' element={<Notification />} />
-            <Route path='/not-found' element={<NotFoundPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+            <header className="bg-teal-400 text-white py-4 rounded">
+                <div className="container mx-auto px-4">
+                    <h1 className="text-3xl font-bold">SideHustler</h1>
+                    <p className="text-lg font-semibold">
+                    A database of side hustles - built by hustlers
+                    </p>
+                </div>
+                <Navigation  />
+            </header>
+            <div className="container mx-auto px-4">
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/search" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
+                    <Route path="/posts" element={<PrivateRoute> <PostsPage /> </PrivateRoute>} />
+                    <Route path="/post/:id" element={<PostPage />} />
+                    <Route path='/signup' element={<SignUpPage />} />
+                    <Route path='/signin' element={<SignInPage />} />
+                    <Route path='/forgot' element={<ForgotPasswordPage />} />
+                    <Route path='/user/:username' element={<ProfilePage />} />
+                    <Route path='/getting-started' element={<GettingStarted />} />
+                    <Route path='/chat' element={<ChatLog />} />
+                    <Route path='/chat/:id' element={<ChatMessages />} />
+                    <Route path='/notifications' element={<Notification />} />
+                    <Route path='/not-found' element={<NotFoundPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </div>
         </div>
       </AuthProvider>
     </>
