@@ -1,3 +1,5 @@
+#!/bin/bash
+
 vercel --prod >deployment-url.txt 2>error.txt
  
 code=$?

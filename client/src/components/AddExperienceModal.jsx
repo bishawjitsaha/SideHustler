@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateExperience } from '../validation/userValidation';
 import { AuthContext } from '../context/AuthContext';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -54,7 +55,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
-            const res =  await axios.post(`https://sidehustler-backend.onrender.com/user/edit/${user.userName}`, experiencePayload, {
+            const res =  await axios.post(`${backendUrl}/user/edit/${user.userName}`, experiencePayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

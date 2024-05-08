@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { SearchBar, SearchResult, SearchPostsFilters } from "../components";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const SearchPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -23,7 +24,7 @@ const SearchPage = () => {
 
       let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
       const { data } = await axios.get(
-        `https://sidehustler-backend.onrender.com/search?${query}`
+        `${backendUrl}/search?${query}`
         , {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`

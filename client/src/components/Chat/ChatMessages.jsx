@@ -4,6 +4,7 @@ import axios from "axios";
 import { AuthContext } from '../../context/AuthContext'
 import io from 'socket.io-client';
 import './chat.css';
+import { backendUrl } from '../../App';
 
 export const ChatMessages = () => {
     const { id } = useParams();
@@ -19,7 +20,7 @@ export const ChatMessages = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get(`https://sidehustler-backend.onrender.com/messages/${id}`, {
+            const response = await axios.get(`${backendUrl}/messages/${id}`, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }
@@ -41,7 +42,7 @@ export const ChatMessages = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${currentUser.displayName}`, {
+                const res = await axios.get(`${backendUrl}/user/${currentUser.displayName}`, {
                     headers: {
                       Authorization: `Bearer ${currentUser.accessToken}`
                     }
@@ -84,7 +85,7 @@ export const ChatMessages = () => {
 
     const socketRef = useRef();
     useEffect(() => {
-        socketRef.current = io('https://sidehustler-backend.onrender.com');
+        socketRef.current = io('${backendUrl}');
         socketRef.current.on('receive_message', async (data) => {
             if (data !== id) return;
             else await fetchMessages();
@@ -102,7 +103,7 @@ export const ChatMessages = () => {
             message: currMessage
         }
         try {
-            const response = await axios.post('https://sidehustler-backend.onrender.com/messages/addMessage', msg, {
+            const response = await axios.post('${backendUrl}/messages/addMessage', msg, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const Post = ({ post, status}) => {
     
@@ -13,7 +14,7 @@ const Post = ({ post, status}) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/getById/${post.posterId}`, {
+                const res = await axios.get(`${backendUrl}/user/getById/${post.posterId}`, {
                     headers: {
                         Authorization: `Bearer ${currentUser.accessToken}`
                     }

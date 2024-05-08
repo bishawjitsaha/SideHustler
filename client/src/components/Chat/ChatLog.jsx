@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext'
 import axios from 'axios';
+import { backendUrl } from '../../App';
 
 export const ChatLog = () => {
     const { currentUser } = useContext(AuthContext);
@@ -15,7 +16,7 @@ export const ChatLog = () => {
             if (!currentUser) return;
 
             try {
-                const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${currentUser.displayName}`, {
+                const res = await axios.get(`${backendUrl}/user/${currentUser.displayName}`, {
                     headers: {
                       Authorization: `Bearer ${currentUser.accessToken}`
                     }

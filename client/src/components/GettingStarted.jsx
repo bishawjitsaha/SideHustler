@@ -4,6 +4,7 @@ import axios from 'axios';
 import { doUpdateUserDisplayName } from '../firebase/firebaseFunctions';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { validateAge, validateUsername, validateName } from '../validation/userValidation';
+import { backendUrl } from '../App';
 
 function GettingStarted(){
   const { currentUser, setSetupComplete, setupComplete} = useContext(AuthContext); 
@@ -30,7 +31,7 @@ function GettingStarted(){
       return false;
     }
     try{
-      let {data} = await axios.get(`https://sidehustler-backend.onrender.com/user/verifyUser/${userName}`)
+      let {data} = await axios.get(`${backendUrl}/user/verifyUser/${userName}`)
       console.log(data.isUserNameUnique);
       if(data.isUserNameUnique === false){
         alert("That username already exists");
@@ -40,7 +41,7 @@ function GettingStarted(){
       console.log(e);
     }
     try {
-      const user = await axios.post(`https://sidehustler-backend.onrender.com/user/addInfo`, {
+      const user = await axios.post(`${backendUrl}/user/addInfo`, {
         userName: userName,
         firstName: firstName,
         lastName: lastName,

@@ -11,6 +11,7 @@ import {
   AddSkillsModal,
   EditInfoModal,
 } from "../components";
+import { backendUrl } from '../App';
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -34,7 +35,7 @@ function ProfilePage() {
 
     setLoading(true);
     try {
-      const res = await axios.get(`https://sidehustler-backend.onrender.com/user/${username}`, {
+      const res = await axios.get(`${backendUrl}/user/${username}`, {
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`,
         },

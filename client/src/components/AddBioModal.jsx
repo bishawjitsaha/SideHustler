@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateBio } from '../validation/userValidation';
 import { AuthContext } from '../context/AuthContext';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -44,7 +45,7 @@ function AddBioModal({ isOpen, user, handleClose, addBio }) {
         e.preventDefault();
         try {
             const validatedBio = validateBio(updatedUser.bio);
-            const res = await axios.post(`https://sidehustler-backend.onrender.com/user/${user.userName}`, { bio: validatedBio }, {
+            const res = await axios.post(`${backendUrl}/user/${user.userName}`, { bio: validatedBio }, {
                 headers: {
                     Authorization: `Bearer ${currentUser.accessToken}`
                 }

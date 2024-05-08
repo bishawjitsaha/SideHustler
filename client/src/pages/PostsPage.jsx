@@ -3,6 +3,7 @@ import { Post, AddPost } from "../components";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const PostsPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -25,7 +26,7 @@ const PostsPage = () => {
         return;
       }
       try {
-        const response = await axios.get("https://sidehustler-backend.onrender.com/posts/all", {
+        const response = await axios.get(`${backendUrl}/posts/all`, {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`
           }

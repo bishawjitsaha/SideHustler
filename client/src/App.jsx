@@ -13,6 +13,7 @@ import GettingStarted from "./components/GettingStarted.jsx"
 import ChatLog from "./components/Chat/ChatLog.jsx";
 import ChatMessages from "./components/Chat/ChatMessages.jsx";
 import Notification from "./components/Notification.jsx";
+export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   return (

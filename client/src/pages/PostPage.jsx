@@ -3,6 +3,7 @@ import axios from "axios";
 import { Post, RatingComponent } from "../components";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const PostPage = () => {
   const [post, setPost] = useState(null);
@@ -24,7 +25,7 @@ const PostPage = () => {
       }
       try {
         setLoading(true);
-        const response = await axios.get(`https://sidehustler-backend.onrender.com/posts/${id}`, {
+        const response = await axios.get(`${backendUrl}/posts/${id}`, {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`,
           },
@@ -64,7 +65,7 @@ const PostPage = () => {
   const handleApply = async () => {
     try {
       const response = await axios.get(
-        `https://sidehustler-backend.onrender.com/posts/applicant-add/${id}`,
+        `${backendUrl}/posts/applicant-add/${id}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`,
@@ -86,7 +87,7 @@ const PostPage = () => {
   const handleRemoveApplicant = async () => {
     try {
       const response = await axios.get(
-        `https://sidehustler-backend.onrender.com/posts/applicant-remove/${id}`,
+        `${backendUrl}/posts/applicant-remove/${id}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`,
@@ -99,7 +100,7 @@ const PostPage = () => {
 
         const updateResponse = await axios.put(
           //in case user is the selected applicant, remove selected applicant
-          `https://sidehustler-backend.onrender.com/posts/${id}`,
+          `${backendUrl}/posts/${id}`,
           {
             selectedApplicant: null,
           },
@@ -124,7 +125,7 @@ const PostPage = () => {
   const handleChooseApplicant = async (applicantId) => {
     try {
       const res = await axios.put(
-        `https://sidehustler-backend.onrender.com/posts/${post._id}`,
+        `${backendUrl}/posts/${post._id}`,
         { selectedApplicant: applicantId },
         {
           headers: {
@@ -144,7 +145,7 @@ const PostPage = () => {
   const handleUnchooseApplicant = async () => {
     try {
       const res = await axios.put(
-        `https://sidehustler-backend.onrender.com/posts/${post._id}`,
+        `${backendUrl}/posts/${post._id}`,
         { selectedApplicant: null },
         {
           headers: {
@@ -164,7 +165,7 @@ const PostPage = () => {
   const handleCompleteTask = async () => {
     try {
       const res = await axios.put(
-        `https://sidehustler-backend.onrender.com/posts/update-status/${post._id}`,
+        `${backendUrl}/posts/update-status/${post._id}`,
         { status: "completed" },
         {
           headers: {
@@ -185,7 +186,7 @@ const PostPage = () => {
   const handleRateApplicant = async (rating) => {
     try {
       const res = await axios.post(
-        `https://sidehustler-backend.onrender.com/user/update-rating/${chosenApplicant}`,
+        `${backendUrl}/user/update-rating/${chosenApplicant}`,
         { rating }
       );
       alert("Successfully rated applicant!");
@@ -199,7 +200,7 @@ const PostPage = () => {
   const GoToChat = async () => {
     try {
       const user = await axios.get(
-        `https://sidehustler-backend.onrender.com/user/getById/${currentUser.uid}`,
+        `${backendUrl}/user/getById/${currentUser.uid}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`,
@@ -208,7 +209,7 @@ const PostPage = () => {
       );
 
       const poster = await axios.get(
-        `https://sidehustler-backend.onrender.com/user/getById/${post.posterId}`,
+        `${backendUrl}/user/getById/${post.posterId}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`,
