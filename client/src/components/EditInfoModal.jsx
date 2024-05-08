@@ -81,7 +81,16 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
   }
 
   const handleErrors = (e) => {
-    setErrorMessages(e);
+    if (typeof e === 'string') {
+      // Frontend error
+      setErrorMessages(e);
+  } else if (e.response && e.response.data && e.response.data.message) {
+      // Backend error
+      setErrorMessages(e.response.data.message);
+  } else {
+      // Fallback for any other type of error
+      setErrorMessages('An error occurred.');
+  }
   }
 
   const handleSubmit = async (e) => {

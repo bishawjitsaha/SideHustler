@@ -129,7 +129,7 @@ export const validateSkills = (arr) => {
 			throw `Invalid name of skill`;
 		}
 		arr[i].name = arr[i].name.trim();
-		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+		if (!/^[a-zA-Z\s]+$/.test(arr[i].name)) throw "Skill name must be alphabetic";
 
 		if (
 			!arr[i].description ||
