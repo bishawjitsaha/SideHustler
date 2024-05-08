@@ -88,9 +88,9 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
             formData.append("file", image);
             return await axios.post(`${backendUrl}/image/postImgUpload`, formData, {
                 headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
+                    Authorization: `Bearer ${currentUser.accessToken}`
                 }
-              })
+            })
                 .then((res) => {
                     return res.data;
                 })
@@ -136,11 +136,11 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
 
             console.log("postObj", postObj);
 
-            const response = await axios.post('${backendUrl}/posts/create', postObj, {
+            const response = await axios.post(`${backendUrl}/posts/create`, postObj, {
                 headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
+                    Authorization: `Bearer ${currentUser.accessToken}`
                 }
-              });
+            });
             addPost(response.data.post)
 
             if (response.status === 200) {
