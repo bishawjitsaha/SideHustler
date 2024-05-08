@@ -42,7 +42,6 @@ const SearchPostFilters = ({ handleFilter }) => {
         <input
           type="date"
           className="border border-gray-300 rounded-md px-4 py-2 mr-2"
-          placeholder="Start Date"
           name="startDate"
           value={dateRange.startDate}
           onChange={handleDateRangeChange}
@@ -50,7 +49,6 @@ const SearchPostFilters = ({ handleFilter }) => {
         <input
           type="date"
           className="border border-gray-300 rounded-md px-4 py-2"
-          placeholder="End Date"
           name="endDate"
           value={dateRange.endDate}
           onChange={handleDateRangeChange}
