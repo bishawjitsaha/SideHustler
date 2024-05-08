@@ -2,6 +2,14 @@
 
 // import { ObjectId } from "mongodb";
 
+export const validateString = (str) => {
+	if (!str || typeof str !== "string" || str.trim().length === 0) {
+		throw `Invalid string`;
+	}
+	str.trim();
+	return str;
+};
+
 export const validateUsername = (str) => {
 	if (!str || typeof str !== "string" || str.trim().length === 0) {
 		throw `Invalid username`;
