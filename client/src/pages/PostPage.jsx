@@ -80,6 +80,7 @@ const PostPage = () => {
       );
       if (response.status === 200) {
         setIsApplicant(false);
+        setCurStatus("Open");
         alert("Successfully removed your application.");
 
         const updateResponse = await axios.put( //in case user is the selected applicant, remove selected applicant
