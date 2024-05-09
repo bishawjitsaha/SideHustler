@@ -8,7 +8,6 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import Navigation from './components/Navigation.jsx';
 import NotFoundPage from "./pages/NotFoundPage.jsx";
-import PrivateRoute from "./components/PrivateRoute.jsx";
 import GettingStarted from "./components/GettingStarted.jsx"
 import ChatLog from "./components/Chat/ChatLog.jsx";
 import ChatMessages from "./components/Chat/ChatMessages.jsx";
