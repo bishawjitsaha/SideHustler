@@ -80,6 +80,7 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
                     <div>
                         <label htmlFor='name'>Name: </label>
                         <input 
+                            id='name'
                             type='text'
                             name='name'
                             placeholder='Enter Skill Name Here'
@@ -90,6 +91,7 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
                     <div>
                         <label htmlFor='description'>Description: </label>
                         <input 
+                            id='description'
                             type='text'
                             name='description'
                             placeholder='Enter Skill Description Here'

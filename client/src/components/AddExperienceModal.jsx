@@ -94,6 +94,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                     <div>
                         <label htmlFor='company'>Company: </label>
                         <input 
+                            id='company'
                             type='text'
                             name='company'
                             placeholder='Enter Company Here'
@@ -104,6 +105,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                     <div>
                         <label htmlFor='position'>Position: </label>
                         <input 
+                            id='position'
                             type='text'
                             name='position'
                             placeholder='Enter Position Here'
@@ -114,9 +116,9 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                     <div>
                         <label htmlFor='startDate'>Start Date: </label>
                         <input 
+                            id='startDate'
                             type='date'
                             name='startDate'
-                            placeholder='Enter Start Date Here'
                             onChange={handleChange}
                             className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />
@@ -124,9 +126,9 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                     <div>
                         <label htmlFor='endDate'>End Date: </label>
                         <input 
+                            id='endDate'
                             type='date'
                             name='endDate'
-                            placeholder='Enter End Date Here'
                             onChange={handleChange}
                             className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
                         />

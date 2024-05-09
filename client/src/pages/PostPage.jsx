@@ -4,7 +4,6 @@ import { Post, RatingComponent } from "../components";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { backendUrl } from '../App';
-import { Link } from "react-router-dom";
 
 const PostPage = () => {
   const [post, setPost] = useState(null);

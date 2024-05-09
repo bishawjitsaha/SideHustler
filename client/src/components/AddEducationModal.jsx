@@ -80,6 +80,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                     <div>
                         <label htmlFor='school'>School: </label>
                         <input 
+                            id='school'
                             type='text'
                             name='school'
                             placeholder='Enter School Here'
@@ -91,6 +92,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                     <div>
                         <label htmlFor='degree'>Degree: </label>
                         <input 
+                            id='degree'
                             type='text'
                             name='degree'
                             placeholder='Enter Degree Here'
@@ -102,6 +104,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                     <div>
                         <label htmlFor='major'>Major: </label>
                         <input 
+                            id='major'
                             type='text'
                             name='major'
                             placeholder='Enter Major Here'
@@ -113,6 +116,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                     <div>
                         <label htmlFor='gradYear'>Grad Year: </label>
                         <input 
+                            id='gradYear'
                             type='text'
                             name='gradYear'
                             placeholder='Enter Grad Year Here'

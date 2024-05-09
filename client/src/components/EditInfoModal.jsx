@@ -336,7 +336,6 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
                 type="date"
                 id='startDate'
                 name='startDate'
-                placeholder='Start Date'
                 onChange={handleChange}
                 className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
               />
@@ -347,7 +346,6 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
                 type="date"
                 id='endDate'
                 name='endDate'
-                placeholder='End Date'
                 onChange={handleChange}
                 className='py-1 px-2 block w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50'
               />
@@ -370,7 +368,7 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
           </div>
           <div className='flex'>
             <div className='mr-4'>
-              <label htmlFor="skillName"> Skill Name: </label>
+              <label htmlFor="name"> Skill Name: </label>
               <input
                 type="text"
                 id='name'
@@ -381,7 +379,7 @@ function EditInfoModal({ isOpen, user, handleClose, addBio, addEducation, addExp
               />
             </div>
             <div className='mr-4'>
-              <label htmlFor="skillDescription"> Skill Description: </label>
+              <label htmlFor="description"> Skill Description: </label>
               <input
                 type="text"
                 id='description'

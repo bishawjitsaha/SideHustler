@@ -80,6 +80,7 @@ function AddBioModal({ isOpen, user, handleClose, addBio }) {
                     <div>
                         <label htmlFor='bio'>Bio: </label>
                         <input
+                            id='bio'
                             type='text'
                             name='bio'
                             placeholder='Enter Bio Here'
