@@ -3,7 +3,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateSkills } from '../validation/userValidation';
 import { AuthContext } from '../context/AuthContext';
-
+import { backendUrl } from '../App';
 ReactModal.setAppElement('#root');
 const customStyles = {
   content: {
@@ -49,7 +49,7 @@ function AddSkillsModal({isOpen, user, handleClose, addSkills}){
                 name: validatedSkills[0].name,
                 description: validatedSkills[0].description
             };
-            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, skillsPayload, {
+            const res = await axios.post(`${backendUrl}/user/edit/${user.userName}`, skillsPayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }
