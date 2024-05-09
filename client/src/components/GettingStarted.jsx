@@ -14,9 +14,6 @@ function GettingStarted(){
       navigate('/'); 
     }
   }, [setupComplete, navigate]);
-  // const refreshUser = async () => {
-  //   await currentUser.getIdToken(true);
-  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,10 +49,6 @@ function GettingStarted(){
         }
       });
       await doUpdateUserDisplayName(userName);
-<<<<<<< Updated upstream
-      await refreshUser();
-=======
->>>>>>> Stashed changes
       setSetupComplete(true);
         navigate("/");
     } catch (e) {
