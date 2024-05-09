@@ -267,7 +267,6 @@ function ProfilePage() {
                         <button onClick={() => navigate(`/post/${post._id}`)}>
                           {post.title}
                         </button>
-                        {/* <a href={`/post/${post._id}`}>{post.title}</a> */}
                       </p>
                     )}
 
@@ -301,9 +300,6 @@ function ProfilePage() {
                             {post.selectedApplicant.firstName}{" "}
                             {post.selectedApplicant.lastName}
                           </button>
-                          {/* <a href={`/user/${post.selectedApplicant.userName}`}>
-                                                    {post.selectedApplicant.firstName} {post.selectedApplicant.lastName}
-                                                </a> */}
                         </p>
                       ) : (
                         <p className="text-left ml-5">No Selected Applicant</p>

@@ -205,6 +205,7 @@ export async function updateSelectedApplicant(postId, userId) {
 	let user;
 	let updatedApplicant;
 	if(userId !== null){ // means that a user has been selected
+		// console.log("this route is being hit ", userId);
 		userId = validate.validateId(userId);
 		user = await userCollection.findOne({ _id: userId });
 		if (!user) throw "User not found";

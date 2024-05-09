@@ -7,48 +7,48 @@ import { backendUrl } from '../App';
 
 const Post = ({ post, status}) => {
     
-    const [user, setUser] = useState(null);
-    const { currentUser } = useContext(AuthContext);
+    // const [user, setUser] = useState(null);
+    // const { currentUser } = useContext(AuthContext);
     
     
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get(`${backendUrl}/user/getById/${post.posterId}`, {
-                    headers: {
-                        Authorization: `Bearer ${currentUser.accessToken}`
-                    }
-                });
-                setUser(res.data);
-            } catch (error) {
-                console.error("Error fetching user:", error);
-            }
-        };
-        if(!currentUser){
-            return;
-        }else{
-            fetchUser();
-        }
-    }, [post.posterId]);
+    // useEffect(() => {
+    //     const fetchUser = async () => {
+    //         try {
+    //             const res = await axios.get(`http://localhost:3000/user/getById/${post.posterId}`, {
+    //                 headers: {
+    //                     Authorization: `Bearer ${currentUser.accessToken}`
+    //                 }
+    //             });
+    //             setUser(res.data);
+    //         } catch (error) {
+    //             console.error("Error fetching user:", error);
+    //         }
+    //     };
+    //     if(!currentUser){
+    //         return;
+    //     }else{
+    //         fetchUser();
+    //     }
+    // }, [post.posterId]);
 
   return (
         <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
-                <div className="flex justify-start items-center mb-4">
-                    {user &&   
+                {/* <div className="flex justify-start items-center mb-4">
+                    {post.posterUsername &&   
                         <Link 
-                            to={`/user/${user.userName}`} 
+                            to={`/user/${post.posterUsername}`} 
                             className="text-teal-500 text-left font-bold text-xl hover:text-teal-200"
                         >
-                            {user.userName}
+                            {post.posterUsername}
                         </Link>
                     }
-                </div>
-                <Link key={post._id} to={`/post/${post._id}`}>
+                </div> */}
+                {/* <Link key={post._id} to={`/post/${post._id}`}> */}
                     <h2 className="text-2xl font-bold mb-4 text-blue-700 overflow-ellipsis overflow-hidden">
                         {post.title}
                     </h2>
-                </Link>
+                {/* </Link> */}
 
 
                 <p className="text-gray-700 mb-4">{post.description}</p>

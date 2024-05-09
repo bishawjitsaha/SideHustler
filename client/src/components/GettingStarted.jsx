@@ -51,7 +51,7 @@ function GettingStarted(){
           Authorization: `Bearer ${currentUser.accessToken}`
         }
       });
-      doUpdateUserDisplayName(userName);
+      await doUpdateUserDisplayName(userName);
       await refreshUser();
       setSetupComplete(true);
         navigate("/");

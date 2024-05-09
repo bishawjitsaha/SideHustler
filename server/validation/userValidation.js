@@ -80,7 +80,7 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string for school: ${obj.school}`;
 	}
-	if (!/^[a-zA-Z]+$/.test(obj.school)) throw "School must be alphabetic";
+	if (!/^[a-zA-Z ']+$/.test(obj.school)) throw "School must be alphabetic";
 
 	obj.school.trim();
 	if (
@@ -90,7 +90,7 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string for degree: ${obj.degree}`;
 	}
-	if (!/^[a-zA-Z]+$/.test(obj.degree)) throw "Degree must be alphabetic";
+	if (!/^[a-zA-Z ']+$/.test(obj.degree)) throw "Degree must be alphabetic";
 
 	obj.degree.trim();
 	if (
@@ -100,7 +100,7 @@ export const validateEducation = (obj) => {
 	) {
 		throw `Invalid string for major: ${obj.major}`;
 	}
-	if (!/^[a-zA-Z]+$/.test(obj.major)) throw "Major must be alphabetic";
+	if (!/^[a-zA-Z ]+$/.test(obj.major)) throw "Major must be alphabetic";
 
 	obj.major.trim();
 	
@@ -142,7 +142,7 @@ export const validateSkills = (arr) => {
 			throw `Invalid string for name of skill: ${arr[i].name}`;
 		}
 		arr[i].name = arr[i].name.trim();
-		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+		if (!/^[a-zA-Z\s.']+$/.test(arr[i].name)) throw "Skill name must be alphabetic";
 
 		if (
 			!arr[i].description ||
@@ -152,7 +152,7 @@ export const validateSkills = (arr) => {
 			throw `Invalid string for description of skill: ${arr[i].description}`;
 		}
 		arr[i].description = arr[i].description.trim();
-		if (!/^[a-zA-Z\s]+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
+		if (!/^[a-zA-Z\s.,']+$/.test(arr[i].description)) throw "Skill description must be alphabetic";
 
 	}
 	return arr;
@@ -206,7 +206,7 @@ export const validateExperience = (arr) => {
 			throw `Invalid string for company: ${arr[i].company}`;
 		}
 		arr[i].company.trim();
-		if (!/^[a-zA-Z\s]+$/.test(arr[i].company)) throw "Company must be alphabetic";
+		if (!/^[a-zA-Z\s.']+$/.test(arr[i].company)) throw "Company must be alphabetic";
 
 		if (
 			!arr[i].position ||
@@ -280,7 +280,7 @@ export const validatereservedTime = (arr) => {
 			throw `Invalid string: ${arr[i].dateStart}`;
 		}
 		arr[i].dateStart.trim();
-		arr[i].dateStart = checkDate(arr[i].dateStart);
+		// arr[i].dateStart = checkDate(arr[i].dateStart);
 		if (
 			!arr[i].timeStart ||
 			typeof arr[i].timeStart !== "string" ||
@@ -314,7 +314,9 @@ export const validatereservedTime = (arr) => {
 			throw `Invalid string: ${arr[i].dateEnd}`;
 		}
 		arr[i].dateEnd.trim();
-		arr[i].dateEnd = checkDate(arr[i].dateEnd);
+        const {startDate, endDate} = checkDate(arr[i].dateStart, arr[i].dateEnd);
+		arr[i].dateStart = startDate;
+        arr[i].dateEnd  = endDate;
 	}
 	return arr;
 };
