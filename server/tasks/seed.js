@@ -3,7 +3,11 @@ import * as userData from '../data/users.js';
 import * as postData from '../data/posts.js';
 import { createNotification } from "../data/notifications.js";
 import { createChat } from "../data/messages.js";
+import { uploadPfP, uploadPostImage } from '../data/images.js';
 import { firebase } from "../firebase/serverconfig.js";
+import fs from 'fs';
+import path from "path";
+import { getStorage } from 'firebase-admin/storage';
 
 const auth = firebase.auth();
 
@@ -247,8 +251,47 @@ const completePost = async (postId) => {
     }
 }
 
+const copyFileToUploads = async (sourcePath) => {
+    const fileName = path.basename(sourcePath);
+    const destinationPath = path.join('../server/uploads/', fileName);
+  
+    return new Promise((resolve, reject) => {
+      fs.copyFile(sourcePath, destinationPath, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(destinationPath);
+        }
+      });
+    });
+};
+
+
+
 const main = async () => {
     try {
+        //drop firebase users
+        auth.listUsers().then((listUsersResult) => {
+            const promises = listUsersResult.users.map((userRecord) => {
+                return auth.deleteUser(userRecord.uid);
+              });
+              return Promise.all(promises);
+            })
+            .then(() => {
+              console.log('All users deleted successfully');
+            })
+            .catch((error) => {
+              console.error('Error deleting users:', error);
+            });
+
+
+        // Drop Firebase Storage
+        const storage = getStorage(firebase);
+        const bucketRef = storage.bucket();
+        await bucketRef.deleteFiles({
+            force: true
+        });
+
         // Drop the database
         await createFireBaseUsers();
         const db = await dbConnection();
@@ -777,6 +820,46 @@ const main = async () => {
         });
 
         console.log('Dummy users created successfully!');
+        //Uploading post pictures
+        console.log('Adding Post Pictures');
+
+        let post1Path = "./tasks/Images/Post Images/post1.jpg";
+        post1Path = await copyFileToUploads(post1Path);
+        post1Path = path.resolve(post1Path);
+        const post1url = await uploadPostImage(post1Path);
+
+        let post3Path = "./tasks/Images/Post Images/post3.jpg";
+        post3Path = await copyFileToUploads(post3Path);
+        post3Path = path.resolve(post3Path);
+        const post3url = await uploadPostImage(post3Path);
+
+        let post5Path = "./tasks/Images/Post Images/post5.jpg";
+        post5Path = await copyFileToUploads(post5Path);
+        post5Path = path.resolve(post5Path);
+        const post5url = await uploadPostImage(post5Path);
+
+        let post6Path = "./tasks/Images/Post Images/post6.jpg";
+        post6Path = await copyFileToUploads(post6Path);
+        post6Path = path.resolve(post6Path);
+        const post6url = await uploadPostImage(post6Path);
+
+        let post11Path = "./tasks/Images/Post Images/post11.jpg";
+        post11Path = await copyFileToUploads(post11Path);
+        post11Path = path.resolve(post11Path);
+        const post11url = await uploadPostImage(post11Path);
+
+        let post17Path = "./tasks/Images/Post Images/post17.jpg";
+        post17Path = await copyFileToUploads(post17Path);
+        post17Path = path.resolve(post17Path);
+        const post17url = await uploadPostImage(post17Path);
+
+        let post20Path = "./tasks/Images/Post Images/post20.jpg";
+        post20Path = await copyFileToUploads(post20Path);
+        post20Path = path.resolve(post20Path);
+        const post20url = await uploadPostImage(post20Path);
+
+        console.log('Post Pictures added successfully!');
+
 
         // Create dummy posts for tasks or jobs
         const taskTime1 = { dateStart: '2024-06-25', dateEnd: '2024-06-26', timeStart: '17:00', timeEnd: '10:00' };
@@ -786,7 +869,7 @@ const main = async () => {
             taskTime1,
             100,
             user1._id,
-            null, // Empty array for photos
+            post1url,
             "in-person",
             ["Indoors", "Childcare"]
         );
@@ -810,7 +893,7 @@ const main = async () => {
             taskTime3,
             75,
             user3._id,
-            null, // Empty array for photos
+            post3url, 
             "in-person",
             ["Assembly", "Indoors", "Handywork"]
         );
@@ -834,7 +917,7 @@ const main = async () => {
             taskTime5,
             150,
             user5._id,
-            null, // Empty array for photos
+            post5url, 
             "in-person",
             ["Indoors", "Handywork"]
         );
@@ -846,7 +929,7 @@ const main = async () => {
             taskTime6,
             40,
             user6._id,
-            null, // Empty array for photos
+            post6url,
             "in-person",
             ["Tutoring"]
         );
@@ -906,7 +989,7 @@ const main = async () => {
             taskTime11,
             80,
             user1._id,
-            null, // Empty array for photos
+            post11url, 
             "in-person",
             ["Outdoors", "Lawn Care"]
         );
@@ -978,7 +1061,7 @@ const main = async () => {
             taskTime17,
             20,
             user7._id,
-            null, // Empty array for photos
+            post17url,
             "in-person",
             ["Petcare", "Outdoors"]
         );
@@ -1014,7 +1097,7 @@ const main = async () => {
             taskTime20,
             750,
             user10._id,
-            null, // Empty array for photos
+            post20url,
             "remote",
             ["IT Support"]
         );
@@ -1111,6 +1194,59 @@ const main = async () => {
 
         console.log('Done completing posts!');
 
+        console.log('Adding Profile Pictures');
+
+        let AlexanderBrownPfpPath = "./tasks/Images/Profile Images/AlexanderBrown.png";
+        AlexanderBrownPfpPath = await copyFileToUploads(AlexanderBrownPfpPath);
+        AlexanderBrownPfpPath = path.resolve(AlexanderBrownPfpPath);
+        await uploadPfP("AlexanderBrown", AlexanderBrownPfpPath);
+
+        let AmandaSmithPfpPath = "./tasks/Images/Profile Images/AmandaSmith.png";
+        AmandaSmithPfpPath = await copyFileToUploads(AmandaSmithPfpPath);
+        AmandaSmithPfpPath = path.resolve(AmandaSmithPfpPath);
+        await uploadPfP("AmandaSmith", AmandaSmithPfpPath);
+
+        let DavidWilsonPfpPath = "./tasks/Images/Profile Images/DavidWilson.png";
+        DavidWilsonPfpPath = await copyFileToUploads(DavidWilsonPfpPath);
+        DavidWilsonPfpPath = path.resolve(DavidWilsonPfpPath);
+        await uploadPfP("DavidWilson", DavidWilsonPfpPath);
+
+        let EmilyJonesPfpPath = "./tasks/Images/Profile Images/EmilyJones.png";
+        EmilyJonesPfpPath = await copyFileToUploads(EmilyJonesPfpPath);
+        EmilyJonesPfpPath = path.resolve(EmilyJonesPfpPath);
+        await uploadPfP("EmilyJones", EmilyJonesPfpPath);
+
+        let JaneSmithPfpPath = "./tasks/Images/Profile Images/JaneSmith.png";
+        JaneSmithPfpPath = await copyFileToUploads(JaneSmithPfpPath);
+        JaneSmithPfpPath = path.resolve(JaneSmithPfpPath);
+        await uploadPfP("JaneSmith", JaneSmithPfpPath);
+
+        let JohnDoePfpPath = "./tasks/Images/Profile Images/JohnDoe.png";
+        JohnDoePfpPath = await copyFileToUploads(JohnDoePfpPath);
+        JohnDoePfpPath = path.resolve(JohnDoePfpPath);
+        await uploadPfP("JohnDoe", JohnDoePfpPath);
+
+        let MichaelBrownPfpPath = "./tasks/Images/Profile Images/MichaelBrown.png";
+        MichaelBrownPfpPath = await copyFileToUploads(MichaelBrownPfpPath);
+        MichaelBrownPfpPath = path.resolve(MichaelBrownPfpPath);
+        await uploadPfP("MichaelBrown", MichaelBrownPfpPath);
+
+        let MikeJohnsonPfpPath = "./tasks/Images/Profile Images/MikeJohnson.png";
+        MikeJohnsonPfpPath = await copyFileToUploads(MikeJohnsonPfpPath);
+        MikeJohnsonPfpPath = path.resolve(MikeJohnsonPfpPath);
+        await uploadPfP("MikeJohnson", MikeJohnsonPfpPath);
+
+        let RobertSmithPfpPath = "./tasks/Images/Profile Images/RobertSmith.png";
+        RobertSmithPfpPath = await copyFileToUploads(RobertSmithPfpPath);
+        RobertSmithPfpPath = path.resolve(RobertSmithPfpPath);
+        await uploadPfP("RobertSmith", RobertSmithPfpPath);
+        
+        let SarahWilsonPfpPath = "./tasks/Images/Profile Images/SarahWilson.png";
+        SarahWilsonPfpPath = await copyFileToUploads(SarahWilsonPfpPath);
+        SarahWilsonPfpPath = path.resolve(SarahWilsonPfpPath);
+        await uploadPfP("SarahWilson", SarahWilsonPfpPath);
+
+        console.log('Done adding Profile Pictures!');
 
         console.log('Done seeding the database!');
   } catch (error) {

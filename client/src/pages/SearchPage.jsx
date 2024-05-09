@@ -41,11 +41,11 @@ const SearchPage = () => {
   };
   const parseDate = (date) => {
     const parts = date.split('-');
-  const year = parseInt(parts[0], 10);
-  const month = parseInt(parts[1], 10) - 1;
-  const day = parseInt(parts[2], 10);
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
 
-  return new Date(year, month, day);
+    return new Date(year, month, day);
   }
   const handleFilter = ({ priceRange, dateRange }) => {
     if (searchResults.length === 0) return;
@@ -69,7 +69,7 @@ const SearchPage = () => {
         const dateA = new Date(a.taskTime.dateStart);
         const dateB = new Date(b.taskTime.dateStart);
         return dateA - dateB; // Subtracts dateA from dateB to sort in ascending order
-    });
+      });
     }
 
     setFilteredResults(filteredResults);
@@ -83,7 +83,9 @@ const SearchPage = () => {
     <div>
       <SearchBar onSearch={handleSearch} />
       {showFilters && <SearchPostsFilters handleFilter={handleFilter} />}
-      {searchResults && searchResults.length > 0 && <SearchResult data={filteredResults} />}
+      {searchResults && searchResults.length > 0 ? <SearchResult data={filteredResults} /> :
+        <h1>No results found</h1>
+      }
     </div>
   );
 };

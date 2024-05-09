@@ -58,6 +58,7 @@ function GettingStarted(){
   return(
     <div className='flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
       <div className="max-w-md w-full space-y-8">
+        <h1 className="mt-2 text-center text-4xl font-bold text-gray-900">Getting Started</h1>
         <form onSubmit={handleSubmit} className='mt-8 space-y-6'>
           <div className='rounded-md shadow-sm -space-y-px'>
             <div>
@@ -119,7 +120,7 @@ function GettingStarted(){
           </div>
           <br/>
           <button
-            className='button'
+            className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4'
             id='submitButton'
             name='submitButton'
             type='submit'
