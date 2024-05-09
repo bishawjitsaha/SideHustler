@@ -208,7 +208,6 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
                             onChange={handleChange}
                             className="mt-1 p-2 border border-gray-300 rounded-md w-full resize-none focus:ring-blue-500 focus:border-blue-500"
                             rows="2"
-                            resize="none"
                         />
                     </div>
                     <p className="block font-medium text-gray-700 mb-3">
