@@ -3,7 +3,7 @@ import axios from "axios";
 import { Post, RatingComponent } from "../components";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { backendUrl } from '../App';
+import { backendUrl } from "../App";
 
 const PostPage = () => {
   const [post, setPost] = useState(null);
@@ -245,7 +245,11 @@ const PostPage = () => {
         <div className="mx-auto">
           <br />
           <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
-            <Link key={post.posterId} to={`/user/${post.posterUsername}`} className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4">
+            <Link
+              key={post.posterId}
+              to={`/user/${post.posterUsername}`}
+              className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4"
+            >
               {post.posterUsername}
             </Link>
             <Post post={post} status={curStatus} />
@@ -345,13 +349,23 @@ const PostPage = () => {
             />
           )}
 
-          {currentUser && post.posterId !== currentUser.uid && !isApplicant && curStatus !== "completed" && (
-            <button
-              onClick={handleApply}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Apply to Post
-            </button>
+          {currentUser && post.posterId !== currentUser.uid && !isApplicant && (
+            <>
+              {curStatus === "open" && !chosenApplicant ? (
+                <button
+                  onClick={handleApply}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                >
+                  Apply to Post
+                </button>
+              ) : (
+                <p>
+                  {chosenApplicant
+                    ? "Someone else has already been selected for this job."
+                    : "Applications are closed for this post."}
+                </p>
+              )}
+            </>
           )}
         </div>
       ) : (
