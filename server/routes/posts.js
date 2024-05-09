@@ -1,6 +1,6 @@
 import express from "express";
 import * as postFunctions from "../data/posts.js";
-import { getUserById, updateSelectedApplicant } from "../data/users.js";
+import { getUserById, updateSelectedApplicant, checkReservedTime } from "../data/users.js";
 import { createNotification } from "../data/notifications.js";
 import { createChat } from "../data/messages.js";
 import verifyToken from "../middleware.js";
@@ -137,10 +137,13 @@ router.route("/update-status/:id").put(verifyToken, async (req, res) => {
 router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
   try {
     const uid = req.uid;
-    // console.log(req.params.id, uid)
+    
+    const checkReserved = await checkReservedTime(req.params.id, uid);
+    if(!checkReserved){
+      throw "You have already reserved a time for this post";
+    }
 
     let updatedPost = await postFunctions.addApplicant(req.params.id, uid);
-    
     
     // notify the posterID that someone has applied
     const post = await postFunctions.getPostById(req.params.id);
@@ -148,7 +151,7 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
 
     const noti = await createNotification(post.posterId,
       "post",
-      getApplicant.userName + "has applied to your post",
+      getApplicant.userName + " has applied to your post",
       `/user/${getApplicant.userName}`
     );
 
@@ -159,7 +162,6 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
       `/post/${req.params.id}`
     );
 
-    // console.log(updatedPost)
     return res.status(200).json({ post: updatedPost });
   } catch (e) {
     console.log(e);
@@ -170,7 +172,6 @@ router.route("/applicant-add/:id").get(verifyToken, async (req, res) => {
 router.route("/applicant-remove/:id").get(verifyToken, async (req, res) => {
   try {
     const uid = req.uid;
-    // console.log(req.params.id, uid)
     let updatedPost = await postFunctions.removeApplicant(
       req.params.id,
       uid

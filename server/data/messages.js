@@ -14,7 +14,7 @@ export async function createChat(user1, user2) {
     for (let i = 0; i < user_one.chatLog.length; i++) {
         if (user_one.chatLog[i].to === user2) 
             {
-                console.log("chat already exists");
+                // console.log("chat already exists");
                 return
             };
     }
@@ -25,7 +25,7 @@ export async function createChat(user1, user2) {
     for (let i = 0; i < user_two.chatLog.length; i++) {
         if (user_two.chatLog[i].to === user1) 
             {
-                console.log("chat already exists");
+                // console.log("chat already exists");
                 return
             };
     }

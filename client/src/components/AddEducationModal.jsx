@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateEducation } from '../validation/userValidation';
 import { AuthContext } from '../context/AuthContext';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -48,7 +49,7 @@ function AddEducationModal({isOpen, user, handleClose, addEducation}){
                 major: validatedEducation.major,
                 gradYear: validatedEducation.gradYear
             };
-            const res = await axios.post(`http://localhost:3000/user/edit/${user.userName}`, educationPayload, {
+            const res = await axios.post(`${backendUrl}/user/edit/${user.userName}`, educationPayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }

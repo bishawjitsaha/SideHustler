@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from "../context/AuthContext";
 import TagSelector from "./TagSelector";
 import * as postValidation from '../validation/postValidation.js';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 
@@ -82,26 +83,29 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
 
 
     const handleUpload = async () => {
-        const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-        if (image && allowedTypes.includes(image.type.toLowerCase())) {
-            const formData = new FormData();
-            formData.append("file", image);
-            return await axios.post('http://localhost:3000/image/postImgUpload', formData, {
-                headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
-                }
-              })
-                .then((res) => {
-                    return res.data;
-                })
-                .catch((err) => {
+        if (image) {
+            const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+            if (allowedTypes.includes(image.type.toLowerCase())) {
+                const formData = new FormData();
+                formData.append("file", image);
+                try {
+                    const response = await axios.post(`${backendUrl}/image/postImgUpload`, formData, {
+                        headers: {
+                            Authorization: `Bearer ${currentUser.accessToken}`
+                        }
+                    });
+                    return response.data;
+                } catch (err) {
                     console.log(err);
-                });
+                    handleErrors("Error uploading image");
+                }
+            } else {
+                handleErrors("Invalid file type");
+                console.log("Invalid file type");
+            }
         }
-        else {
-            handleErrors("Invalid file type");
-            console.log("Invalid file type");
-        }
+        // Return null if no image is selected
+        return null;
     };
 
     const handleChange = (e) => {
@@ -129,18 +133,18 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
                 taskTime: { dateStart: newPost.dateStart, dateEnd: newPost.dateEnd, timeStart: newPost.timeStart, timeEnd: newPost.timeEnd },
                 taskPayment: parseFloat(newPost.taskPayment),
                 workType: newPost.workType,
-                photos: postURL,
+                photos: postURL ? postURL : "",
                 posterId: currentUser.uid,
                 tags: selectedTags,
             };
 
             console.log("postObj", postObj);
 
-            const response = await axios.post('http://localhost:3000/posts/create', postObj, {
+            const response = await axios.post(`${backendUrl}/posts/create`, postObj, {
                 headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
+                    Authorization: `Bearer ${currentUser.accessToken}`
                 }
-              });
+            });
             addPost(response.data.post)
 
             if (response.status === 200) {

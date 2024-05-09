@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import { validateExperience } from '../validation/userValidation';
 import { AuthContext } from '../context/AuthContext';
+import { backendUrl } from '../App';
 
 ReactModal.setAppElement('#root');
 const customStyles = {
@@ -27,7 +28,16 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
     const { currentUser } = useContext(AuthContext)
     
     const handleErrors = (e) => {
-        setErrorMessages(e);
+        if (typeof e === 'string') {
+            // Frontend error
+            setErrorMessages(e);
+        } else if (e.response && e.response.data && e.response.data.message) {
+            // Backend error
+            setErrorMessages(e.response.data.message);
+        } else {
+            // Fallback for any other type of error
+            setErrorMessages('An error occurred.');
+        }
     }
     const handleCloseAddModal = () => {
         setShowAddModal(false);
@@ -54,7 +64,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
-            const res =  await axios.post(`http://localhost:3000/user/edit/${user.userName}`, experiencePayload, {
+            const res =  await axios.post(`${backendUrl}/user/edit/${user.userName}`, experiencePayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
                 }
@@ -64,7 +74,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
             handleClose();
             addExperience(addedExperience);
         } catch (e) {
-            handleErrors(e.response.data.message);
+            handleErrors(e);
             setIsError(true);
         }
     }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const Post = ({ post, status}) => {
     
@@ -51,8 +52,13 @@ const Post = ({ post, status}) => {
 
 
                 <p className="text-gray-700 mb-4">{post.description}</p>
-                {post.photos !== "" && <img src={post.photos} alt="post Image" className="mb-4 h-48 mx-auto" />}
-
+                {post.photos && (
+                    <img
+                        src={post.photos}
+                        alt="Post"
+                        className="w-full h-64 object-cover object-center rounded-lg mb-4"
+                    />
+                )}
             </div>
 
             <hr className="border-gray-200 my-4" />
@@ -68,6 +74,17 @@ const Post = ({ post, status}) => {
                                 day: "2-digit",
                             }
                         )}{" "}
+                    </p>
+                    <p>
+                        End Date:{" "}
+                        {new Date(post.taskTime.dateEnd).toLocaleString(
+                            "en-US",
+                            {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                            }
+                        )}
                     </p>
                     {status &&
                         <p>Status: {status.charAt(0).toUpperCase() + status.slice(1)}</p>

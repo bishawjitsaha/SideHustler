@@ -3,6 +3,7 @@ import { Post, AddPost } from "../components";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { backendUrl } from '../App';
 
 const PostsPage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -20,12 +21,12 @@ const PostsPage = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      if(!currentUser){
+      if (!currentUser) {
         setLoading(true);
         return;
       }
       try {
-        const response = await axios.get("http://localhost:3000/posts/all", {
+        const response = await axios.get(`${backendUrl}/posts/all`, {
           headers: {
             Authorization: `Bearer ${currentUser.accessToken}`
           }
@@ -38,7 +39,7 @@ const PostsPage = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     console.log("Post State: ", posts);
@@ -51,13 +52,13 @@ const PostsPage = () => {
   return (
     <>
       <div className="flex justify-start mt-8">
-            <button
-                onClick={handleOpenModal}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
-            >
-                Create Post
-            </button>
-        </div>
+        <button
+          onClick={handleOpenModal}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+        >
+          Create Post
+        </button>
+      </div>
 
       {isModalOpen && (
         <AddPost
@@ -70,13 +71,13 @@ const PostsPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-gray-200 rounded-lg mx-auto px-auto">
         {posts &&
           posts.map((post) => (
-            <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
-                <Link key={post.posterId} to={`/user/${post.posterUsername}`} className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4">
+            <div key={post._id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
+                <Link to={`/user/${post.posterUsername}`} className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4">
                     {post.posterUsername}
                 </Link>
-                <Link key={post._id} to={`/post/${post._id}`} className="transform transition duration-250 ease-in-out hover:scale-105">
-                    <Post post={post} status={post.status} key={post._id}/>
-                </Link>
+                <Link to={`/post/${post._id}`} className="transform transition duration-250 ease-in-out hover:scale-105">
+                  <Post post={post} status={post.status} />
+                </Link> 
             </div>
           ))}
       </div>
