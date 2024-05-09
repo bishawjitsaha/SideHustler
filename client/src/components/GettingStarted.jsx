@@ -83,7 +83,7 @@ function GettingStarted(){
                   className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   required
                   name='firstName'
-                  type='firstName'
+                  type='text'
                   placeholder='firstName'
                 />
               </label>
@@ -97,7 +97,7 @@ function GettingStarted(){
                   className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   required
                   name='lastName'
-                  type='lastName'
+                  type='text'
                   placeholder='lastName'
                 />
               </label>
@@ -111,7 +111,7 @@ function GettingStarted(){
                   className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                   required
                   name='age'
-                  type='age'
+                  type='number'
                   placeholder='age'
                 />
               </label>
