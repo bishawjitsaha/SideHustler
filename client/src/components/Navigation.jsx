@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate,Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { doSignOut } from '../firebase/firebaseFunctions';
 import "../App.css";
@@ -11,13 +11,15 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser && setupComplete) {
-      setUserDataLoaded(true);
-      setProfileLink(currentUser.displayName)
-    } else {
-      setUserDataLoaded(false);
-      if (!setupComplete && currentUser) {
-        navigate('/getting-started');
+    if(currentUser  && !setupComplete){
+      navigate("/getting-started");
+    }
+    else{
+      if (currentUser) {
+        setUserDataLoaded(true);
+        setProfileLink(currentUser.displayName)
+      } else {
+        setUserDataLoaded(false);
       }
     }
   }, [currentUser, setupComplete, navigate]);

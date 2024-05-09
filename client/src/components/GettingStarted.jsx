@@ -10,8 +10,11 @@ function GettingStarted(){
   const { currentUser, setSetupComplete, setupComplete} = useContext(AuthContext); 
   let navigate = useNavigate();
   useEffect(() => {
-    if (setupComplete) {
+    if (!currentUser && !setupComplete) {
       navigate('/'); 
+    }
+    if(currentUser && setupComplete){
+      navigate('/')
     }
   }, [setupComplete, navigate]);
 
@@ -50,7 +53,7 @@ function GettingStarted(){
       });
       await doUpdateUserDisplayName(userName);
       setSetupComplete(true);
-        navigate("/");
+      navigate("/");
     } catch (e) {
       alert(e);
     }
