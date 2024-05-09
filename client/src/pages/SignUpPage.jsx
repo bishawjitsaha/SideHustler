@@ -65,118 +65,126 @@ function SignUpPage(props) {
   }
 
   return (
-    <div className='card'>
-      <h1>Sign up</h1>
+    <div className='flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+      <div className="max-w-md w-full space-y-8">
+        <h1 className="mt-2 text-center text-4xl font-bold text-gray-900">Sign up</h1>
       {pwMatch && <h4 className='error'>{pwMatch}</h4>}
-      <form onSubmit={handleSignUp}>
-        <div className='form-group'>
-          <label>
-            Username:
-            <br />
-            <input
-              className='form-control'
-              required
-              name='displayName'
-              type='text'
-              placeholder='Name'
-              autoFocus={true}
-            />
-          </label>
-
-          <div className='form-group'>
-            <label>
-              First Name:
-              <br />
-              <input
-                className='form-control'
-                required
-                name='firstName'
-                type='firstName'
-                placeholder='firstName'
-              />
-            </label>
+        <form onSubmit={handleSignUp} className='mt-8 space-y-6'>
+          <div className='rounded-md shadow-sm -space-y-px'>
+            <div>
+              <label>
+                Username:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  required
+                  name='displayName'
+                  type='text'
+                  placeholder='Username'
+                  autoFocus={true}
+                />
+              </label>
+            </div>
+            <br/>
+            <div>
+              <label>
+                First Name:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  required
+                  name='firstName'
+                  type='firstName'
+                  placeholder='First name'
+                />
+              </label>
+            </div>
+            <br/>
+            <div>
+              <label>
+                Last Name:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  required
+                  name='lastName'
+                  type='lastName'
+                  placeholder='Last name'
+                />
+              </label>
+            </div>
+            <br/>
+            <div>
+              <label>
+                age:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  required
+                  name='age'
+                  type='age'
+                  placeholder='Age'
+                />
+              </label>
+            </div>
+            <br/>
+            <div>
+              <label>
+                Email:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  required
+                  name='email'
+                  type='email'
+                  placeholder='Email'
+                />
+              </label>
+            </div>
+            <br/>
+            <div>
+              <label>
+                Password:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  id='passwordOne'
+                  name='passwordOne'
+                  type='password'
+                  placeholder='Password'
+                  autoComplete='off'
+                  required
+                />
+              </label>
+            </div>
+            <br/>
+            <div>
+              <label>
+                Confirm Password:
+                <br />
+                <input
+                  className='appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                  name='passwordTwo'
+                  type='password'
+                  placeholder='Confirm Password'
+                  autoComplete='off'
+                  required
+                />
+              </label>
+            </div>
           </div>
-          <div className='form-group'>
-            <label>
-              Last Name:
-              <br />
-              <input
-                className='form-control'
-                required
-                name='lastName'
-                type='lastName'
-                placeholder='lastName'
-              />
-            </label>
-          </div>
-          <div className='form-group'>
-            <label>
-              age:
-              <br />
-              <input
-                className='form-control'
-                required
-                name='age'
-                type='age'
-                placeholder='age'
-              />
-            </label>
-          </div>
-        </div>
-        <div className='form-group'>
-          <label>
-            Email:
-            <br />
-            <input
-              className='form-control'
-              required
-              name='email'
-              type='email'
-              placeholder='Email'
-            />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Password:
-            <br />
-            <input
-              className='form-control'
-              id='passwordOne'
-              name='passwordOne'
-              type='password'
-              placeholder='Password'
-              autoComplete='off'
-              required
-            />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Confirm Password:
-            <br />
-            <input
-              className='form-control'
-              name='passwordTwo'
-              type='password'
-              placeholder='Confirm Password'
-              autoComplete='off'
-              required
-            />
-          </label>
-        </div>
         <button
-          className='button'
+          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-4'
           id='submitButton'
           name='submitButton'
           type='submit'
         >
           Sign Up
         </button>
-
       </form>
       <br />
       <SocialSignIn />
+      </div>
     </div>
   );
 }

@@ -39,7 +39,14 @@ const SearchPage = () => {
       console.error(error);
     }
   };
+  const parseDate = (date) => {
+    const parts = date.split('-');
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[2], 10);
 
+  return new Date(year, month, day);
+  }
   const handleFilter = ({ priceRange, dateRange }) => {
     if (searchResults.length === 0) return;
     let filteredResults = [...searchResults];
@@ -54,10 +61,15 @@ const SearchPage = () => {
     if (dateRange.startDate !== "" && dateRange.endDate !== "") {
       filteredResults = filteredResults.filter((item) => {
         const itemDate = new Date(item.taskTime.dateStart);
-        const startDate = new Date(dateRange.startDate);
-        const endDate = new Date(dateRange.endDate);
+        const startDate = parseDate(dateRange.startDate);
+        const endDate = parseDate(dateRange.endDate);
         return itemDate >= startDate && itemDate <= endDate;
       });
+      filteredResults.sort((a, b) => {
+        const dateA = new Date(a.taskTime.dateStart);
+        const dateB = new Date(b.taskTime.dateStart);
+        return dateA - dateB; // Subtracts dateA from dateB to sort in ascending order
+    });
     }
 
     setFilteredResults(filteredResults);

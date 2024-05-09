@@ -191,7 +191,7 @@ const PostPage = () => {
         { rating }
       );
       alert("Successfully rated applicant!");
-      setShowRatingModal(false); // Close the rating modal after rating submission
+      setShowRatingModal(false); 
     } catch (error) {
       console.error("Error rating applicant:", error.message);
       alert("Failed to rate applicant.");
