@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import img1 from '../../public/imgs/img1.png';
-import img2 from '../../public/imgs/img2.png'
-import img3 from '../../public/imgs/img3.png'
-import img4 from '../../public/imgs/img4.png'
+import img1 from '/imgs/img1.png';
+import img2 from '/imgs/img2.png'
+import img3 from '/imgs/img3.png'
+import img4 from '/imgs/img4.png'
 const images = [
   img1,
   img2,
@@ -15,7 +15,7 @@ const slides = [images[images.length - 1], ...images, images[0]];
 function HomePageSlider() {
   const [currentIndex, setCurrentIndex] = useState(1);
   const sliderRef = useRef(null);
-  const transitionTime = 5004
+  const transitionTime = 1500;
 
   const goToNext = () => {
     if (currentIndex >= slides.length - 1) {
@@ -38,7 +38,7 @@ function HomePageSlider() {
   };
 
   useEffect(() => {
-    const interval = setInterval(goToNext, 8000);
+    const interval = setInterval(goToNext, 2000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
@@ -47,7 +47,7 @@ function HomePageSlider() {
     const transitionEnd = () => slider.style.transition = 'none';
 
     slider.addEventListener('transitionend', transitionEnd);
-    
+
     return () => {
       slider.removeEventListener('transitionend', transitionEnd);
     };
