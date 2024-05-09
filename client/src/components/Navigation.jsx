@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { doSignOut } from '../firebase/firebaseFunctions';
 import "../App.css";
-import axios from "axios";
 
 const Navigation = () => {
   const [userDataLoaded, setUserDataLoaded] = useState(false);

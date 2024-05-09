@@ -45,7 +45,7 @@ function AddBioModal({ isOpen, user, handleClose, addBio }) {
         e.preventDefault();
         try {
             const validatedBio = validateBio(updatedUser.bio);
-            const res = await axios.post(`${backendUrl}/user/${user.userName}`, { bio: validatedBio }, {
+            const res = await axios.post(`${backendUrl}/user/edit/${user.userName}`, { bio: validatedBio }, {
                 headers: {
                     Authorization: `Bearer ${currentUser.accessToken}`
                 }
