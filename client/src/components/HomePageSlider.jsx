@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import img1 from '../../public/imgs/img1.png';
 import img2 from '../../public/imgs/img2.png'
 import img3 from '../../public/imgs/img3.png'
+import img4 from '../../public/imgs/img4.png'
 const images = [
   img1,
   img2,
   img3,
+  img4
 ];
 
 const slides = [images[images.length - 1], ...images, images[0]];
@@ -13,7 +15,7 @@ const slides = [images[images.length - 1], ...images, images[0]];
 function HomePageSlider() {
   const [currentIndex, setCurrentIndex] = useState(1);
   const sliderRef = useRef(null);
-  const transitionTime = 500;
+  const transitionTime = 5004
 
   const goToNext = () => {
     if (currentIndex >= slides.length - 1) {
