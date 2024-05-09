@@ -4,7 +4,6 @@ import axios from 'axios';
 import { validateSkills } from '../validation/userValidation';
 import { AuthContext } from '../context/AuthContext';
 import { backendUrl } from '../App';
-
 ReactModal.setAppElement('#root');
 const customStyles = {
   content: {

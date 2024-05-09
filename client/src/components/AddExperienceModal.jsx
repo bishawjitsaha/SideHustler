@@ -64,6 +64,7 @@ function AddExperienceModal({isOpen, user, handleClose, addExperience}){
                 startDate: validatedExperience[0].startDate,
                 endDate: validatedExperience[0].endDate
             };
+            
             const res =  await axios.post(`${backendUrl}/user/edit/${user.userName}`, experiencePayload, {
                 headers: {
                   Authorization: `Bearer ${currentUser.accessToken}`
