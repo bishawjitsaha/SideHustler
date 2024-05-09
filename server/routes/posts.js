@@ -55,7 +55,7 @@ router.route("/:id").get(verifyToken, async (req, res) => {
         `/user/${updatedApplicant.userName}`
       );
 
-      const currUser = await getUserById(currPost.posterId);;
+      const currUser = await getUserById(currPost.posterId);
 
       // open up a chat between them
       const newChat = createChat(updatedApplicant.userName, currUser.userName);

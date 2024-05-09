@@ -245,7 +245,13 @@ const PostPage = () => {
       ) : post ? (
         <div className="mx-auto">
           <br />
-          <Post post={post} status={curStatus} />
+           <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
+                <Link key={post.posterId} to={`/user/${post.posterUsername}`} className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4">
+                    {post.posterUsername}
+                </Link>
+                <Post post={post} status={curStatus} />
+            </div>
+          
           {isApplicant ? (
             <>
               {chosenApplicant ? (

@@ -20,6 +20,7 @@ export const createPost = async (title, description, taskTime, taskPayment, post
         taskTime: validData.taskTime,
         taskPayment: validData.taskPayment,
         posterId: posterId,
+        posterUsername: user.userName,
         photos: photos, // one image
         workType: validData.workType, // "remote" or "in-person"
         applicants: [],

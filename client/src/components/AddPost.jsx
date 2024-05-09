@@ -55,6 +55,7 @@ const AddPost = ({ isOpen, handleClose, addPost }) => {
         taskPayment: null,
         tags: null,
         workType: 'in-person',
+        photos: null,
     });
     const [errorMessages, setErrorMessages] = useState('');
     const [isError, setIsError] = useState(false);

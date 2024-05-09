@@ -16,7 +16,7 @@ const RatingComponent = ({ isOpen, onClose, onSubmit }) => {
   };
 
   const handleRatingChange = (event, value) => {
-    console.log("Rating: ", value);
+    // console.log("Rating: ", value);
     setRating(value);
   };
 
