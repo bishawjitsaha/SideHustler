@@ -109,8 +109,6 @@ export const uploadPostImage = async (imagePath) => {
     const url = await uploadImage(imagePath);
     if (!url) throw 'Could not upload image';
 
-    console.log("Image url is: ", url);
-
     return url;
 };
 

@@ -25,9 +25,7 @@ function App() {
             <header className="bg-teal-400 text-white py-4 rounded">
                 <div className="container mx-auto px-4">
                     <h1 className="text-3xl font-bold">SideHustler</h1>
-                    <p className="text-lg font-semibold">
-                    A database of side hustles - built by hustlers
-                    </p>
+                    <p>A database of side hustles - built by hustlers</p>
                 </div>
                 <Navigation  />
             </header>

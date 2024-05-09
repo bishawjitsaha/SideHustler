@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext'
 import io from 'socket.io-client';
 import './chat.css';
 import { backendUrl } from '../../App';
+import { validateString } from "../../validation/userValidation";
 
 export const ChatMessages = () => {
     const { id } = useParams();
@@ -14,26 +15,9 @@ export const ChatMessages = () => {
     const [chatPartner, setChatPartner] = useState('');
     const [currMessage, setCurrMessage] = useState('');
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
-
-
-    const fetchMessages = async () => {
-        try {
-            const response = await axios.get(`${backendUrl}/messages/${id}`, {
-                headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
-                }
-              });
-
-            setHistory(response.data.messages);
-        } catch (error) {
-            console.error(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    };
 
 
     useEffect(() => {
@@ -44,9 +28,9 @@ export const ChatMessages = () => {
             try {
                 const res = await axios.get(`${backendUrl}/user/${currentUser.displayName}`, {
                     headers: {
-                      Authorization: `Bearer ${currentUser.accessToken}`
+                        Authorization: `Bearer ${currentUser.accessToken}`
                     }
-                  });
+                });
 
                 setChatLog(res.data.chatLog);
 
@@ -61,9 +45,28 @@ export const ChatMessages = () => {
                 if (!allowed) { navigate('/chat') }
             }
             catch (e) {
-                console.error(e);;
+                console.error(e);
             }
         };
+
+        const fetchMessages = async () => {
+            if (!currentUser) return;
+            try {
+                const response = await axios.get(`${backendUrl}/messages/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${currentUser.accessToken}`
+                    }
+                });
+
+                setHistory(response.data.messages);
+            } catch (error) {
+                console.error(error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+
 
         fetchUser();
 
@@ -85,7 +88,7 @@ export const ChatMessages = () => {
 
     const socketRef = useRef();
     useEffect(() => {
-        socketRef.current = io('${backendUrl}');
+        socketRef.current = io(`${backendUrl}`);
         socketRef.current.on('receive_message', async (data) => {
             if (data !== id) return;
             else await fetchMessages();
@@ -96,18 +99,28 @@ export const ChatMessages = () => {
 
     const sendMessage = async (e) => {
         e.preventDefault();
-        if (!currMessage) return;
+        setError(null);
+
+        try {
+            validateString(currMessage, 'Message');
+            if (currMessage.length > 100)
+                throw 'Message is too long';
+        } catch (error) {
+            setError("Message is not a valid string or it is more than 100 characters long");
+            return;
+        }
+
         const msg = {
             sender: currentUser.displayName,
             chatId: id,
             message: currMessage
         }
         try {
-            const response = await axios.post('${backendUrl}/messages/addMessage', msg, {
+            const response = await axios.post(`${backendUrl}/messages/addMessage`, msg, {
                 headers: {
-                  Authorization: `Bearer ${currentUser.accessToken}`
+                    Authorization: `Bearer ${currentUser.accessToken}`
                 }
-              });
+            });
 
             socketRef.current.emit('send_message', id);
             const temp = {
@@ -149,6 +162,7 @@ export const ChatMessages = () => {
                     <button onClick={sendMessage}>Send</button>
                 </form>
             </div>
+            {error && <p className="text-red-600" >{error}</p>}
         </div>
     )
 

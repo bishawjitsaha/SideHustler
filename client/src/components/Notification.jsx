@@ -15,10 +15,10 @@ export const Notification = () => {
             try {
                 const response = await axios.get(`${backendUrl}/notifications/${currentUser.uid}`, {
                     headers: {
-                      Authorization: `Bearer ${currentUser.accessToken}`
+                        Authorization: `Bearer ${currentUser.accessToken}`
                     }
-                  });
-                
+                });
+
                 setNotifications(response.data.notifications);
             } catch (error) {
                 console.error(error);
@@ -42,10 +42,10 @@ export const Notification = () => {
             {notifications.map((notification, index) => {
                 return (
                     <div key={index}>
-                        <p>{notification.content}</p>
-                        <p>{notification.type}</p>
-                        <Link to={notification.link}>View</Link>
-                        <p>{formatDate(notification.date)}</p>
+                        <p> ({formatDate(notification.date)})
+                            {" " + notification.content + " "}
+                            <Link to={notification.link}>View</Link>
+                        </p>
                     </div>
                 )
             })}

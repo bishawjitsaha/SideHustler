@@ -24,6 +24,7 @@ export const validateTaskTime = (taskTime) => {
     if (!taskTime.dateEnd) throw "Task end date must be provided";
 
     taskTime.dateStart = taskTime.dateStart.trim();
+    console("dateStart in server",taskTime.dateStart);
     taskTime.dateEnd = taskTime.dateEnd.trim();
     taskTime.timeStart = taskTime.timeStart.trim();
     taskTime.timeEnd = taskTime.timeEnd.trim();

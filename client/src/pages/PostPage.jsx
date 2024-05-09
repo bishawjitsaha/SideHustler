@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Post, RatingComponent } from "../components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { backendUrl } from '../App';
+import { backendUrl } from "../App";
 
 const PostPage = () => {
   const [post, setPost] = useState(null);
@@ -96,6 +96,7 @@ const PostPage = () => {
       );
       if (response.status === 200) {
         setIsApplicant(false);
+        setCurStatus("Open");
         alert("Successfully removed your application.");
 
         const updateResponse = await axios.put(
@@ -190,7 +191,7 @@ const PostPage = () => {
         { rating }
       );
       alert("Successfully rated applicant!");
-      setShowRatingModal(false); // Close the rating modal after rating submission
+      setShowRatingModal(false);
     } catch (error) {
       console.error("Error rating applicant:", error.message);
       alert("Failed to rate applicant.");
@@ -222,7 +223,7 @@ const PostPage = () => {
       )?.chatID;
 
       if (!chatId) {
-        throw new Error("Chat not found");
+        // throw "Chat not found";
       }
 
       navigate(`/chat/${chatId}`);
@@ -243,7 +244,17 @@ const PostPage = () => {
       ) : post ? (
         <div className="mx-auto">
           <br />
-          <Post post={post} status={curStatus} />
+          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
+            <Link
+              key={post.posterId}
+              to={`/user/${post.posterUsername}`}
+              className="text-teal-500 text-left font-bold text-xl hover:text-teal-200 mb-4"
+            >
+              {post.posterUsername}
+            </Link>
+            <Post post={post} status={curStatus} />
+          </div>
+
           {isApplicant ? (
             <>
               {chosenApplicant ? (
@@ -339,12 +350,22 @@ const PostPage = () => {
           )}
 
           {currentUser && post.posterId !== currentUser.uid && !isApplicant && (
-            <button
-              onClick={handleApply}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Apply to Post
-            </button>
+            <>
+              {curStatus === "open" && !chosenApplicant ? (
+                <button
+                  onClick={handleApply}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                >
+                  Apply to Post
+                </button>
+              ) : (
+                <p>
+                  {chosenApplicant
+                    ? "Someone else has already been selected for this job."
+                    : "Applications are closed for this post."}
+                </p>
+              )}
+            </>
           )}
         </div>
       ) : (
