@@ -10,12 +10,25 @@ function GettingStarted(){
   const { currentUser, setSetupComplete, setupComplete} = useContext(AuthContext); 
   let navigate = useNavigate();
   useEffect(() => {
-    if (!currentUser && !setupComplete) {
-      navigate('/'); 
+    let getUser = async () => {
+      if(!currentUser){
+        return;
+      }
+      try{
+        const user = await axios.get(`${backendUrl}/user/${currentUser.displayName}`, {
+          headers: {
+            Authorization: `Bearer ${currentUser.accessToken}`
+          }
+        });
+        if(user.data.userName){
+          setSetupComplete(true);
+          navigate("/");
+        }
+      } catch (e){
+        console.log("User not found");
+      }
     }
-    if(currentUser && setupComplete){
-      navigate('/')
-    }
+    getUser();
   }, [setupComplete, navigate]);
 
   const handleSubmit = async (event) => {

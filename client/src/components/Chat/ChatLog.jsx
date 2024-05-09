@@ -51,9 +51,9 @@ export const ChatLog = () => {
                     })
                 ) : (
                     <p>
-                        No chats found
-                        Apply to posts and get selected to chat with the owner of the post
-                        Or create a post and and select an applicant to chat with them
+                        No chats found<br />
+                        Apply to posts and get selected to chat with the owner of the post <br />
+                        Or create a post and select an applicant to chat with them
                     </p>
                 )}
         </div>
