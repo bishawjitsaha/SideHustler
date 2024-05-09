@@ -1,12 +1,15 @@
-(node:94361) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:7473) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Vercel CLI 34.1.1
 Retrieving project…
 Deploying devv64s-projects/sidehustler
-Uploading [--------------------] (0.0B/2.4KB)
-Uploading [====================] (2.4KB/2.4KB)
-Inspect: https://vercel.com/devv64s-projects/sidehustler/J2VdY6qTuVo2oNGfCRTGnVMZ7AUE [3s]
-Production: https://sidehustler-nlcstx4hg-devv64s-projects.vercel.app [3s]
+Uploading [--------------------] (0.0B/3.4MB)
+Uploading [=====---------------] (883.0KB/3.4MB)
+Uploading [==========----------] (1.7MB/3.4MB)
+Uploading [===============-----] (2.6MB/3.4MB)
+Uploading [====================] (3.4MB/3.4MB)
+Inspect: https://vercel.com/devv64s-projects/sidehustler/AaTJPi4yWYSME1gTVTTK17oDgmLp [6s]
+Production: https://sidehustler-jic231w0e-devv64s-projects.vercel.app [6s]
 Queued
 Building
 Completing

@@ -1,8 +1,8 @@
 # SideHustler
 
-**VERCEL FRONTEND HOSTED LINK:** (insert link here)
+**VERCEL FRONTEND HOSTED LINK:** [https://sidehustler.vercel.app/](https://sidehustler.vercel.app/)
 
-**ONRENDER BACKEND HOSTED LINK:** (insert link here)
+**ONRENDER BACKEND HOSTED LINK:** [https://sidehustler-backend.onrender.com/home](https://sidehustler-backend.onrender.com/home)
 
 
 ## Dependencies
@@ -39,6 +39,22 @@ npm start
 cd client/
 npm i
 npm run dev
+```
+
+# Run Frontend Locally with Backend Hosted
+
+Open a terminal in the root directory. Make sure the `.env.local` and `.env.deployed` files are present in the `client/` directory.
+
+```bash
+cd  client/
+npm  i
+./start.sh  --deployed
+```
+
+This method can also be used to run everything locally by simply running the backend locally as we did in the previous section (on port 3000) and doing:
+
+```bash
+./start.sh --local
 ```
 
 Enjoy.
