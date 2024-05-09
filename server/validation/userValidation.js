@@ -46,6 +46,7 @@ export const validateAge = (age) => {
 		throw `Invalid age: ${age}`;
 	}
 	if (age < 18) throw "User must be 18 years or older";
+	if (age > 120) throw "User must be 120 years or younger";
 	return age;
 };
 

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const User = ({ user }) => {
   return (
-    <Link to={`/user/${user.username}`} className="block">
+    <Link to={`/user/${user.userName}`} className="block">
       <div className="bg-white shadow-md rounded-lg p-6 mb-4">
         <h2 className="text-2xl font-bold mb-4 text-blue-700">{`${user.firstName} ${user.lastName}`}</h2>
 

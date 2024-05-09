@@ -33,9 +33,11 @@ if [ ! -f "$ENV_FILE" ]; then
     exit 1
 fi
 
-VITE_BACKEND_URL=$(cat $ENV_FILE | grep VITE_BACKEND_URL | cut -d '=' -f2)
+# Set VITE_BACKEND_URL based on the selected mode
+export VITE_BACKEND_URL=$(cat $ENV_FILE | grep VITE_BACKEND_URL | cut -d '=' -f2)
+
+# Verify the correct URL is being used
 echo "Using API URL: $VITE_BACKEND_URL"
 
-export VITE_API_URL=$VITE_BACKEND_URL
-
+# Run your development server
 npm run dev

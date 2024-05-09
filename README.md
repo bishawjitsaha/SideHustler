@@ -57,4 +57,6 @@ This method can also be used to run everything locally by simply running the bac
 ./start.sh --local
 ```
 
+The render.com backend spins down after periods of inactivity, so you may have to wait 5 minutes until the server gives a response! Sorry for the inconvenience!
+
 Enjoy.

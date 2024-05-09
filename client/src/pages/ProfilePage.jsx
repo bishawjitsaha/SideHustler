@@ -11,7 +11,7 @@ import {
   AddSkillsModal,
   EditInfoModal,
 } from "../components";
-import { backendUrl } from '../App';
+import { backendUrl } from "../App";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -114,15 +114,17 @@ function ProfilePage() {
             {user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1)}
           </h1>
           <p>Contact: {user.email} </p>
-          <img
-            src={
-              user.pfp !== ""
-                ? user.pfp
-                : "https://braverplayers.org/wp-content/uploads/2022/09/blank-pfp.png"
-            }
-            alt="Profile"
-            className="w-32 h-32 rounded-full"
-          />
+          <div className="flex justify-center my-3">
+            <img
+              src={
+                user.pfp !== ""
+                  ? user.pfp
+                  : "https://braverplayers.org/wp-content/uploads/2022/09/blank-pfp.png"
+              }
+              alt="Profile"
+              className="w-32 h-32 rounded-full shadow-xl border-4 border-white"
+            />
+          </div>
           {currentUser.displayName && currentUser.displayName === username && (
             <button onClick={() => handleOpenInfoModal()}>Edit</button>
           )}
