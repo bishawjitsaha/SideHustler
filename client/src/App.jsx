@@ -15,6 +15,8 @@ import ChatMessages from "./components/Chat/ChatMessages.jsx";
 import Notification from "./components/Notification.jsx";
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+console.log("backendUrl", backendUrl);
+
 function App() {
   return (
     <>

@@ -9,6 +9,7 @@ const SearchPage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
+  const [searched, setSearched] = useState(false);
 
   const handleSearch = async (searchTerm, searchType) => {
     if (searchType === "tags" && searchTerm === "") {
@@ -20,6 +21,7 @@ const SearchPage = () => {
       return false;
     }
     try {
+      setSearched(true);
       if (!currentUser) return;
 
       let query = searchTerm ? `${searchType}=${searchTerm}` : `${searchType}=`
@@ -82,10 +84,9 @@ const SearchPage = () => {
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
-      {showFilters && <SearchPostsFilters handleFilter={handleFilter} />}
-      {searchResults && searchResults.length > 0 ? <SearchResult data={filteredResults} /> :
-        <h1>No results found</h1>
-      }
+      {searched && showFilters && <SearchPostsFilters handleFilter={handleFilter} />}
+      {searched && searchResults && searchResults.length === 0 && <h2>No results found.</h2>}
+      {searched && searchResults && searchResults.length > 0 && <SearchResult data={filteredResults} />}
     </div>
   );
 };

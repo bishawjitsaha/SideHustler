@@ -1,6 +1,7 @@
 import React from "react";
 import { Post, User } from "./";
 import { Link } from "react-router-dom";
+
 const SearchResult = ({ data }) => {
   return (
     <div>
